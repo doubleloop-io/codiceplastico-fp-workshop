@@ -41,7 +41,7 @@ lazy val scalacSettings = Seq(
   "-deprecation", // warn about use of deprecated APIs
   "-unchecked", // warn about unchecked type parameters
   "-feature", // warn about misused language features
-  "-language:existentials", // ???
+  "-language:existentials", // Existential types (besides wildcard types) can be written and inferred
   "-language:higherKinds", // allow higher kinded types without `import scala.language.higherKinds`
   "-Ypartial-unification" // allow the compiler to unify type constructors of different arities
 )
