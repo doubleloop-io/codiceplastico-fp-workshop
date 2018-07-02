@@ -2,7 +2,7 @@ package fpworkshop.day2.validation
 
 object Round1 {
 
-  // Model central behaviour and data (function and ADT)
+  // Model central behaviour and/or data (function and ADT)
 
   /*
 
@@ -56,18 +56,25 @@ object Round1 {
     I disponibili per i casi di errore sono: Option, Either, Try. Quale prendere?
     Per scegliere dobbiamo pensare come vogliamo utilizzare questi effetti alla fine del programma.
     Vogliamo un messaggio di errore? Si, allora Option è scartato. Dobbiamo rimanere accoppiati al
-    concetto di exceptio perchè sfruttiamo librerie java che vivono in quel mondo? No, allora Try è scartato.
+    concetto di exception perchè per es. sfruttiamo librerie java che vivono in quel mondo? No, allora Try è scartato.
     Rimane Either, ok ma come modelliamo il tipo di errore? Possiamo fare direttamente una stringa oppure usare
     un enumerato o sum type, ma in particolare ci interessa sapere se avremo a che fare con un solo errore o con N errori.
 
     type Rule[A, B] = A => Either[List[ValidationError], B]
 
+    Che schifo! mi sanguinano gli occhi!
+
+    type Result[A] = Either[List[ValidationError], A]
+    type Rule[A, B] = A => Result[B]
+
     Fantastico. Ultimissimo passo per quanto con i type alias si riesca a fare grandi cose,
     rimangono pur sempre un tool con poteri limitati, pensato per cambiare il nome alle cose.
     La scelta idiomatica in Scala è l'uso di un trait.
 
+    type Result[A] = Either[List[ValidationError], A]
+
     trait Rule[A, B] {
-      def apply(value: A): Either[List[ValidationError], B]
+      def apply(value: A): Result[B]
     }
 
     Il nome "apply" non è casuale. :-)

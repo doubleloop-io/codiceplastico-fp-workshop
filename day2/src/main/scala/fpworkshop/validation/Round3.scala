@@ -10,8 +10,10 @@ object Round3 {
   final case object TooSmall extends ValidationError
   final case object NotInteger extends ValidationError
 
+  type Result[A] = Either[List[ValidationError], A]
+
   trait Rule[A, B] {
-    def apply(value: A): Either[List[ValidationError], B]
+    def apply(value: A): Result[B]
   }
 
   val checkGtZero: Rule[Int, Int] =
@@ -31,7 +33,11 @@ object Round3 {
         v => Right(v)
       )
 
-  // TODO: it's an int and it's positive
+  // TODO: the string must be a positive integer
   val checkNumber: Rule[String, Int] = ???
+
+  case class Person(name: String, age: Int)
+
+  val checkPerson: Rule[(String, String), Person] = ???
 
 }

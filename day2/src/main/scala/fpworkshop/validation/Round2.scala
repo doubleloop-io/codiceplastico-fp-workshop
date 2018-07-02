@@ -6,8 +6,10 @@ object Round2 {
 
   sealed trait ValidationError
 
+  type Result[A] = Either[List[ValidationError], A]
+
   trait Rule[A, B] {
-    def apply(value: A): Either[List[ValidationError], B]
+    def apply(value: A): Result[B]
   }
 
   val checkGtZero: Rule[Int, Int] = ???
