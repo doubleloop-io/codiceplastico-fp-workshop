@@ -1,4 +1,4 @@
-package fpworkshop
+package fpworkshop.day2.validation
 
 object Round1 {
 
@@ -67,8 +67,10 @@ object Round1 {
     La scelta idiomatica in Scala è l'uso di un trait.
 
     trait Rule[A, B] {
-      def check(value: A): Either[List[ValidationError], B]
+      def apply(value: A): Either[List[ValidationError], B]
     }
+
+    Il nome "apply" non è casuale. :-)
 
  */
 

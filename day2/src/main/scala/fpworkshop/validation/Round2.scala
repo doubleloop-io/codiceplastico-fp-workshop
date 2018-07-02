@@ -1,4 +1,4 @@
-package fpworkshop
+package fpworkshop.day2.validation
 
 object Round2 {
 
@@ -7,13 +7,13 @@ object Round2 {
   sealed trait ValidationError
 
   trait Rule[A, B] {
-    def check(value: A): Either[List[ValidationError], B]
+    def apply(value: A): Either[List[ValidationError], B]
   }
 
-  val checkGtZero: Rule[Int, Int] = ??? 
+  val checkGtZero: Rule[Int, Int] = ???
 
   // TODO: checkNotEmpty
-  
+
   // TODO: checkInt
 
 }
