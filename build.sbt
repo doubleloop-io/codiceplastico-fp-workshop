@@ -47,7 +47,9 @@ lazy val scalacSettings = Seq(
 )
 
 lazy val resolversSettings = Seq(
-  Resolver.sonatypeRepo("public")
+  Resolver.sonatypeRepo("public"),
+  Resolver.sonatypeRepo("snapshots"),
+  Resolver.sonatypeRepo("releases")
 )
 
 lazy val libsSettings = Seq(
