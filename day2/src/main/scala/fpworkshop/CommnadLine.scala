@@ -34,7 +34,7 @@ object CommandLine {
 
   object Round2 {
 
-    case class Configuration(cmds:List[Command])
+    case class Configuration(cmds: List[Command])
     case class Command(name: String, run: String => Invocation)
     case class Invocation(of: Command, args: String, exec: String)
 
@@ -47,19 +47,23 @@ object CommandLine {
         .find(x => x.name == name)
         .map(x => x.run(args))
 
-
-    def process(conf:Configuration, input:String):String =  {
+    def process(conf: Configuration, input: String): String = {
       val a = input.split(' ')
-       val r = parse(conf.cmds, a.head, a.tail.mkString(" "))
-       r match {
-         case Some(i) => s"Ran ${i.of.name} with args ${i.args}: ${i.exec}"
-         case None => "Unrecognised command."
-       }
+      val r = parse(conf.cmds, a.head, a.tail.mkString(" "))
+      r match {
+        case Some(i) => s"Ran ${i.of.name} with args ${i.args}: ${i.exec}"
+        case None    => "Unrecognised command."
+      }
     }
 
-    val echoCommand:Command = Command("echo", x => Invocation(echoCommand, x, x))
-    val sortCommand:Command = Command("sort", x => Invocation(sortCommand, x, x.split(' ').sorted.mkString(" ")))
-    val helpCommand:Command = Command("help", x => Invocation(helpCommand, x, "Come on, it's easy!"))
+    val echoCommand: Command =
+      Command("echo", x => Invocation(echoCommand, x, x))
+    val sortCommand: Command = Command(
+      "sort",
+      x => Invocation(sortCommand, x, x.split(' ').sorted.mkString(" "))
+    )
+    val helpCommand: Command =
+      Command("help", x => Invocation(helpCommand, x, "Come on, it's easy!"))
     val commands = List(echoCommand, sortCommand, helpCommand)
 
     def demo(line: String) = {
