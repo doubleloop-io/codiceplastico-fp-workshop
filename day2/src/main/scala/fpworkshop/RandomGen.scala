@@ -4,9 +4,9 @@ package fpworkshop
 
 # Functional Random Generators
 
-Scala uses the Java library to generate random values.
+Imagine that our API allow us to generate only integers
 
-val rand = new java.util.Random()
+val rand = new scala.util.Random()
 val value = rand.nextInt()
 
 How to get random values for other domains, such as:
@@ -21,7 +21,7 @@ object OOPStyle {
   }
 
   val integers = new Generator[Int] {
-    val rand = new java.util.Random()
+    val rand = new scala.util.Random()
     def run() = rand.nextInt()
   }
 
