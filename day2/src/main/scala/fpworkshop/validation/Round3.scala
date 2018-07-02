@@ -38,6 +38,7 @@ object Round3 {
 
   case class Person(name: String, age: Int)
 
+  // TODO: not empty name and positive age
   val checkPerson: Rule[(String, String), Person] = ???
 
 }
