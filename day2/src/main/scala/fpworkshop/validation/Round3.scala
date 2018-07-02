@@ -31,4 +31,7 @@ object Round3 {
         v => Right(v)
       )
 
+  // TODO: it's an int and it's positive
+  val checkNumber: Rule[String, Int] = ???
+
 }
