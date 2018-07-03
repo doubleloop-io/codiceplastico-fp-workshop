@@ -12,25 +12,25 @@ object Round5Tests extends SimpleTestSuite {
   testAsync("match the /hello route") {
     val req = Request(POST, Uri("/hello"), "matteo")
     for (res <- app(req))
-      yield assertEquals(Response(OK, "Hello, matteo!"), res)
+      yield assertEquals(res, Response(OK, "Hello, matteo!"))
   }
 
   testAsync("match the /ciao route") {
     val req = Request(POST, Uri("/ciao"), "matteo")
     for (res <- app(req))
-      yield assertEquals(Response(OK, "Ciao, matteo!"), res)
+      yield assertEquals(res, Response(OK, "Ciao, matteo!"))
   }
 
   testAsync("match the /hola route") {
     val req = Request(POST, Uri("/hola"), "matteo")
     for (res <- app(req))
-      yield assertEquals(Response(OK, "Hola, matteo!"), res)
+      yield assertEquals(res, Response(OK, "Hola, matteo!"))
   }
 
   testAsync("fallback route") {
     val req = Request(POST, Uri("/not-hello"), "matteo")
     for (res <- app(req))
-      yield assertEquals(Response(NotFound), res)
+      yield assertEquals(res, Response(NotFound))
   }
 
 }

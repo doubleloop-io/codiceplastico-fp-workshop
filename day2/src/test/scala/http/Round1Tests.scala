@@ -9,13 +9,13 @@ object Round1Tests extends SimpleTestSuite {
   test("match the route") {
     val req = Request(POST, Uri("/hello"), "matteo")
     val res = app(req)
-    assertEquals(Response(OK, "Hello, matteo!"), res)
+    assertEquals(res, Response(OK, "Hello, matteo!"))
   }
 
   test("fallback route") {
     val req = Request(POST, Uri("/not-hello"), "matteo")
     val res = app(req)
-    assertEquals(Response(NotFound), res)
+    assertEquals(res, Response(NotFound))
   }
 
 }
