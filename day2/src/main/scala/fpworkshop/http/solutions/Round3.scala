@@ -23,7 +23,7 @@ object Round3 {
 
   val app: HttpApp = combine(hello, ciao)
 
-  // TODO: same target as previous exercise but
-  // this time we have to compose the Option effect
-  def combine(first: HttpApp, second: HttpApp): HttpApp = ???
+  def combine(first: HttpApp, second: HttpApp): HttpApp = { req =>
+    first(req) orElse second(req)
+  }
 }
