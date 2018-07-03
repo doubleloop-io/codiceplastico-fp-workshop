@@ -1,4 +1,4 @@
-package day2.fpworkshop.http
+package day2.http
 
 object Round2 {
   // INFO: Combine two routes in one app

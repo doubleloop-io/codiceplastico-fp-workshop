@@ -1,4 +1,4 @@
-package day2.fpworkshop.http
+package day2.http
 
 import cats._
 import cats.data._

@@ -1,4 +1,4 @@
-package day2.fpworkshop
+package day2
 
 package object http {
 

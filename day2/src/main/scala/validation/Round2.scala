@@ -1,4 +1,4 @@
-package fpworkshop.day2.validation
+package day2.validation
 
 object Round2 {
 

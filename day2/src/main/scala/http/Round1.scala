@@ -1,4 +1,4 @@
-package day2.fpworkshop.http
+package day2.http
 
 object Round1 {
   // INFO: Define a simple http service

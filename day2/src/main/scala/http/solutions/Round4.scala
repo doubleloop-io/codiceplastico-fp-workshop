@@ -1,6 +1,6 @@
-package day2.fpworkshop.http.solutions
+package day2.http.solutions
 
-import day2.fpworkshop.http._
+import day2.http._
 
 object Round4 {
   // INFO: Introduce fallback route as cross-cutting combinator

@@ -1,4 +1,4 @@
-package fpworkshop
+package day2
 
 object CommandLine {
 

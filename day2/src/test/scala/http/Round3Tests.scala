@@ -1,8 +1,8 @@
-package day2.fpworkshop.http
+package day2.http
 
 import minitest._
 
-import day2.fpworkshop.http.solutions.Round3._
+import day2.http.solutions.Round3._
 
 object Round3Tests extends SimpleTestSuite {
 
