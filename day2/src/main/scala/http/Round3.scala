@@ -1,7 +1,7 @@
 package day2.http
 
 object Round3 {
-  // INFO: From PartialFunction to Effect
+  // GOAL: From PartialFunction to Effect
 
   type HttpApp = Request => Option[Response]
 

@@ -3,7 +3,7 @@ package day2.http.solutions
 import day2.http._
 
 object Round1 {
-  // INFO: Define a simple http service
+  // GOAL: Define a simple http service
 
   type HttpApp = Request => Response
 

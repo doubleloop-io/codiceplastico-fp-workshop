@@ -1,7 +1,7 @@
 package day2.http
 
 object Round1 {
-  // INFO: Define a simple http service
+  // GOAL: Define a simple http service
 
   type HttpApp = Request => Response
 

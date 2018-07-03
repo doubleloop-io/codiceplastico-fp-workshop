@@ -1,7 +1,7 @@
 package day2.http
 
 object Round4 {
-  // INFO: Introduce fallback route as cross-cutting combinator
+  // GOAL: Introduce fallback route as cross-cutting combinator
 
   // NOTE: The central abtraction has been splitted in two:
   // - HttpRoutes that encode: maybe a route can provide a response

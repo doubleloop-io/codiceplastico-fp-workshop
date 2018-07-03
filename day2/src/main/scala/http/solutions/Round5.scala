@@ -6,7 +6,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import day2.http._
 
 object Round5 {
-  // INFO: Introduce asynchrony
+  // GOAL: Introduce asynchrony
 
   object Translator {
 
@@ -16,15 +16,6 @@ object Round5 {
       }
     }
   }
-  // object Translator {
-
-  //   def greetAsync(lang: String, name: String): Future[String] =
-  //     Future.successful(greet(lang, name))
-
-  //   def greet(lang: String, name: String): String = lang match {
-  //     case "ES" => s"Hola, $name!"
-  //   }
-  // }
 
   type HttpApp = Request => Future[Response]
   type HttpRoutes = Request => Option[Future[Response]]

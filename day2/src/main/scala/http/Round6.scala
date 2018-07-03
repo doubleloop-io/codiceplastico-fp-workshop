@@ -6,7 +6,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import day2.http._
 
 object Round6 {
-  // INFO: Introduce route middleware
+  // GOAL: Introduce route middleware
 
   object Translator {
 

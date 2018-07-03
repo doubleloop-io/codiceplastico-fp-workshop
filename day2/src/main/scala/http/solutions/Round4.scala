@@ -3,7 +3,7 @@ package day2.http.solutions
 import day2.http._
 
 object Round4 {
-  // INFO: Introduce fallback route as cross-cutting combinator
+  // GOAL: Introduce fallback route as cross-cutting combinator
 
   type HttpApp = Request => Response
   type HttpRoutes = Request => Option[Response]

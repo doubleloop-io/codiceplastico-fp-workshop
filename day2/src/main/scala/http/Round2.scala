@@ -1,7 +1,7 @@
 package day2.http
 
 object Round2 {
-  // INFO: Combine two routes in one app
+  // GOAL: Combine two routes in one app
 
   type HttpApp = Request => Response
 

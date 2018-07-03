@@ -3,7 +3,7 @@ package day2.http.solutions
 import day2.http._
 
 object Round2 {
-  // INFO: Combine two routes in one app
+  // GOAL: Combine two routes in one app
 
   type HttpApp = Request => Response
 

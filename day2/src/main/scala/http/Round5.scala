@@ -6,7 +6,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import day2.http._
 
 object Round5 {
-  // INFO: Introduce asynchrony
+  // GOAL: Introduce asynchrony
 
   object Translator {
 
