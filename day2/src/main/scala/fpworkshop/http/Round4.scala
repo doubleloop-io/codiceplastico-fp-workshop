@@ -1,4 +1,4 @@
-package fpworkshop.day2.http
+package day2.fpworkshop.http
 
 object Round4 {
   // INFO: Introduce fallback route as cross-cutting combinator

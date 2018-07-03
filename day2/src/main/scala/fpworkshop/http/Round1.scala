@@ -1,4 +1,4 @@
-package fpworkshop.day2.http
+package day2.fpworkshop.http
 
 object Round1 {
   // INFO: Define a simple http service
@@ -34,7 +34,7 @@ object Round1 {
   // 2. a fallback route that always match and produces a NotFound response
   // See the test for more info.
 
-  val helloWorld: HttpApp = {
+  val app: HttpApp = {
     ???
   }
 }

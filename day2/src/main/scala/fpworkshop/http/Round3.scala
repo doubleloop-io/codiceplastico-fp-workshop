@@ -1,4 +1,4 @@
-package fpworkshop.day2.http
+package day2.fpworkshop.http
 
 object Round3 {
   // INFO: From PartialFunction to Effect
