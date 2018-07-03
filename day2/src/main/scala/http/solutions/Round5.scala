@@ -10,13 +10,21 @@ object Round5 {
 
   object Translator {
 
-    def greetAsync(lang: String, name: String): Future[String] =
-      Future.successful(greet(lang, name))
-
-    def greet(lang: String, name: String): String = lang match {
-      case "ES" => s"Hola, $name!"
+    def italianAsync(text: String): Future[String] = Future {
+      text match {
+        case "Hello, matteo!" => s"Ciao, matteo!"
+      }
     }
   }
+  // object Translator {
+
+  //   def greetAsync(lang: String, name: String): Future[String] =
+  //     Future.successful(greet(lang, name))
+
+  //   def greet(lang: String, name: String): String = lang match {
+  //     case "ES" => s"Hola, $name!"
+  //   }
+  // }
 
   type HttpApp = Request => Future[Response]
   type HttpRoutes = Request => Option[Future[Response]]
@@ -32,17 +40,12 @@ object Round5 {
 
   val ciao: HttpRoutes = HttpRoutes.of {
     case Request(POST, Uri("/ciao"), name) =>
-      Future.successful(Response(OK, s"Ciao, $name!"))
-  }
-
-  val hola: HttpRoutes = HttpRoutes.of {
-    case Request(POST, Uri("/hola"), name) =>
       Translator
-        .greetAsync("ES", name)
+        .italianAsync(s"Hello, $name!")
         .map(Response(OK, _))
   }
 
-  val app: HttpApp = seal(combine(hello, combine(ciao, hola)))
+  val app: HttpApp = seal(combine(hello, ciao))
 
   def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = { req =>
     first(req) orElse second(req)

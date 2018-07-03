@@ -21,12 +21,6 @@ object Round5Tests extends SimpleTestSuite {
       yield assertEquals(res, Response(OK, "Ciao, matteo!"))
   }
 
-  testAsync("match the /hola route") {
-    val req = Request(POST, Uri("/hola"), "matteo")
-    for (res <- app(req))
-      yield assertEquals(res, Response(OK, "Hola, matteo!"))
-  }
-
   testAsync("fallback route") {
     val req = Request(POST, Uri("/not-hello"), "matteo")
     for (res <- app(req))
