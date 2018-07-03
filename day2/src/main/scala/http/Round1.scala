@@ -5,6 +5,18 @@ object Round1 {
 
   type HttpApp = Request => Response
 
+  // TODO: Define two routes:
+  // 1. a route that match POST "/hello"
+  // with a name in the body and produces a response
+  // OK with che body "Hello, {name}!".
+  // 2. a fallback route that always match and produces a NotFound response
+  // See the test for more info.
+
+  val app: HttpApp = {
+    ???
+  }
+
+  // Below there are some usage examples.
   object ModelExamples {
 
     val getReq = Request(GET, Uri("/some/path"))
@@ -25,16 +37,5 @@ object Round1 {
 
     val s1 = isEven(6) // "6 is even"
     val s2 = isEven(3) // throws a MatchError
-  }
-
-  // TODO: Define two routes:
-  // 1. a route that match POST "/hello"
-  // with a name in the body and produces a response
-  // OK with che body "Hello, {name}!".
-  // 2. a fallback route that always match and produces a NotFound response
-  // See the test for more info.
-
-  val app: HttpApp = {
-    ???
   }
 }
