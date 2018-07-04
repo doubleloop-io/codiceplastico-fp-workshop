@@ -91,8 +91,10 @@ object Round8 {
   val appTranslateOnRoute: HttpApp = seal(translate(hello))
   val appTranslateOnApp: HttpApp = translate(seal(hello))
 
-  def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes =
-    first.combineK(second)
+  def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = Kleisli {
+    req =>
+      first(req) orElse second(req)
+  }
 
   def seal(routes: HttpRoutes): HttpApp =
     routes.mapF(_.getOrElseF(Future.successful(Response(NotFound))))
