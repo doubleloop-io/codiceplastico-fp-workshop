@@ -1,4 +1,4 @@
-package day2.validation
+package day2.validation.solutions
 
 import scala.util.Try
 
@@ -6,7 +6,8 @@ import cats._
 import cats.data._
 import cats.implicits._
 
-object Final {
+object Round6 {
+  // GOAL: Override applicative product combinator
 
   sealed trait ValidationError
   final case object Empty extends ValidationError
@@ -16,6 +17,10 @@ object Final {
   sealed trait Result[+A]
   final case class Success[+A](value: A) extends Result[A]
   final case class Fail(errors: List[ValidationError]) extends Result[Nothing]
+
+  trait Rule[A, B] {
+    def apply(value: A): Result[B]
+  }
 
   implicit val resultMonad = new Monad[Result] with StackSafeMonad[Result] {
     def pure[A](a: A) = Success(a)
@@ -32,10 +37,6 @@ object Final {
         case (Success(_), err @ Fail(_)) => err
         case (Fail(l1), Fail(l2))        => Fail(l1 ++ l2)
       }
-  }
-
-  trait Rule[A, B] {
-    def apply(value: A): Result[B]
   }
 
   val checkGtZero: Rule[Int, Int] =
@@ -55,14 +56,13 @@ object Final {
         v => Success(v)
       )
 
-  def checkNumber: Rule[String, Int] =
+  val checkNumber: Rule[String, Int] =
     value => checkInt(value).flatMap(checkGtZero(_))
 
   case class Person(name: String, age: Int)
 
-  def checkPerson: Rule[(String, String), Person] = {
+  val checkPerson: Rule[(String, String), Person] = {
     case (nameRaw, ageRaw) =>
       (checkNotEmpty(nameRaw), checkNumber(ageRaw)).mapN(Person.apply)
   }
-
 }

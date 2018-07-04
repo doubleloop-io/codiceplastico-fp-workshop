@@ -46,6 +46,7 @@ object Round4 {
 
   val checkPerson: Rule[(String, String), Person] = {
     case (nameRaw, ageRaw) =>
-      (checkNotEmpty(nameRaw), checkNumber(ageRaw)).mapN(Person.apply)
+      Applicative[Result]
+        .map2(checkNotEmpty(nameRaw), checkNumber(ageRaw))(Person.apply)
   }
 }

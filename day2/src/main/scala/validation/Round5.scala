@@ -1,4 +1,4 @@
-package day2.validation.solutions
+package day2.validation
 
 import scala.util.Try
 
@@ -6,8 +6,8 @@ import cats._
 import cats.data._
 import cats.implicits._
 
-object Round4 {
-  // GOAL: Implement custom effect
+object Round5 {
+  // GOAL: Override applicative map2 combinator
 
   sealed trait ValidationError
   final case object Empty extends ValidationError
@@ -29,6 +29,10 @@ object Round4 {
       case Success(v)    => f(v)
       case err @ Fail(l) => err
     }
+
+    override def map2[A, B, Z](fa: Result[A], fb: Result[B])(
+        f: (A, B) ⇒ Z
+    ): Result[Z] = ???
   }
 
   val checkGtZero: Rule[Int, Int] =

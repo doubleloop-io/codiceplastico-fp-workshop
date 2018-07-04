@@ -6,8 +6,8 @@ import cats._
 import cats.data._
 import cats.implicits._
 
-object Round4 {
-  // GOAL: Implement custom effect
+object Round5 {
+  // GOAL: Override applicative map2 combinator
 
   sealed trait ValidationError
   final case object Empty extends ValidationError
@@ -28,6 +28,15 @@ object Round4 {
     def flatMap[A, B](fa: Result[A])(f: A => Result[B]): Result[B] = fa match {
       case Success(v)    => f(v)
       case err @ Fail(l) => err
+    }
+
+    override def map2[A, B, Z](fa: Result[A], fb: Result[B])(
+        f: (A, B) ⇒ Z
+    ): Result[Z] = (fa, fb) match {
+      case (Success(a), Success(b))    => Success(f(a, b))
+      case (err @ Fail(_), Success(_)) => err
+      case (Success(_), err @ Fail(_)) => err
+      case (Fail(l1), Fail(l2))        => Fail(l1 ++ l2)
     }
   }
 

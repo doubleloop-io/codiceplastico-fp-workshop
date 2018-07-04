@@ -1,4 +1,4 @@
-package day2.validation.solutions
+package day2.validation
 
 import scala.util.Try
 
@@ -6,8 +6,8 @@ import cats._
 import cats.data._
 import cats.implicits._
 
-object Round4 {
-  // GOAL: Implement custom effect
+object Round6 {
+  // GOAL: Override applicative product combinator
 
   sealed trait ValidationError
   final case object Empty extends ValidationError
@@ -29,6 +29,9 @@ object Round4 {
       case Success(v)    => f(v)
       case err @ Fail(l) => err
     }
+
+    override def product[A, B](fa: Result[A], fb: Result[B]): Result[(A, B)] =
+      ???
   }
 
   val checkGtZero: Rule[Int, Int] =
@@ -55,7 +58,6 @@ object Round4 {
 
   val checkPerson: Rule[(String, String), Person] = {
     case (nameRaw, ageRaw) =>
-      Applicative[Result]
-        .map2(checkNotEmpty(nameRaw), checkNumber(ageRaw))(Person.apply)
+      (checkNotEmpty(nameRaw), checkNumber(ageRaw)).mapN(Person.apply)
   }
 }
