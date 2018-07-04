@@ -1,6 +1,10 @@
-package day2.validation
+package day2.validation.solutions
 
 import scala.util.Try
+
+import cats._
+import cats.data._
+import cats.implicits._
 
 object Round3 {
   // GOAL: build derived combinators
@@ -33,12 +37,13 @@ object Round3 {
         v => Right(v)
       )
 
-  // TODO: the string must be a positive integer
-  val checkNumber: Rule[String, Int] = ???
+  val checkNumber: Rule[String, Int] =
+    value => checkInt(value).flatMap(checkGtZero(_))
 
   case class Person(name: String, age: Int)
 
-  // TODO: not empty name and positive age
-  val checkPerson: Rule[(String, String), Person] = ???
-
+  val checkPerson: Rule[(String, String), Person] = {
+    case (nameRaw, ageRaw) =>
+      (checkNotEmpty(nameRaw), checkNumber(ageRaw)).mapN(Person.apply)
+  }
 }

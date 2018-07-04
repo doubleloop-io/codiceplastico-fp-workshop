@@ -1,9 +1,10 @@
-package day2.validation
+package day2.validation.solutions
 
 import scala.util.Try
 
-object Round3 {
-  // GOAL: build derived combinators
+object Round2 {
+
+  // GOAL: Build basic combinators
 
   sealed trait ValidationError
   final case object Empty extends ValidationError
@@ -32,13 +33,4 @@ object Round3 {
         _ => Left(List(NotInteger)),
         v => Right(v)
       )
-
-  // TODO: the string must be a positive integer
-  val checkNumber: Rule[String, Int] = ???
-
-  case class Person(name: String, age: Int)
-
-  // TODO: not empty name and positive age
-  val checkPerson: Rule[(String, String), Person] = ???
-
 }

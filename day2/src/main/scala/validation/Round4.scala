@@ -2,14 +2,20 @@ package day2.validation
 
 import scala.util.Try
 
-object Round3 {
-  // GOAL: build derived combinators
+import cats._
+import cats.data._
+import cats.implicits._
+
+object Round4 {
+  // GOAL: Implement custom effect
 
   sealed trait ValidationError
   final case object Empty extends ValidationError
   final case object TooSmall extends ValidationError
   final case object NotInteger extends ValidationError
 
+  // TODO: replace type alias of Either with custom effect
+  // sealed trait Result[+A]
   type Result[A] = Either[List[ValidationError], A]
 
   trait Rule[A, B] {
@@ -33,12 +39,13 @@ object Round3 {
         v => Right(v)
       )
 
-  // TODO: the string must be a positive integer
-  val checkNumber: Rule[String, Int] = ???
+  val checkNumber: Rule[String, Int] =
+    value => checkInt(value).flatMap(checkGtZero(_))
 
   case class Person(name: String, age: Int)
 
-  // TODO: not empty name and positive age
-  val checkPerson: Rule[(String, String), Person] = ???
-
+  val checkPerson: Rule[(String, String), Person] = {
+    case (nameRaw, ageRaw) =>
+      (checkNotEmpty(nameRaw), checkNumber(ageRaw)).mapN(Person.apply)
+  }
 }

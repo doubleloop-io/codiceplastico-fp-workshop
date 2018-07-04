@@ -2,7 +2,7 @@ package day2.validation
 
 object Round2 {
 
-  // Build basic combinators
+  // GOAL: Build basic combinators
 
   sealed trait ValidationError
 
@@ -12,10 +12,10 @@ object Round2 {
     def apply(value: A): Result[B]
   }
 
+  // TODO: Implement the rule
   val checkGtZero: Rule[Int, Int] = ???
 
-  // TODO: checkNotEmpty
+  // TODO: Implement the rule checkNotEmpty
 
-  // TODO: checkInt
-
+  // TODO: Implement the rule checkInt
 }
