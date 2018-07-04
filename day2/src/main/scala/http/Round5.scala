@@ -46,5 +46,5 @@ object Round5 {
       Response(OK, s"Ciao, $name!")
   }
 
-  val app: HttpApp = seal(combine(hello, combine(ciao, hola)))
+  val app: HttpApp = seal(combine(hello, ciao))
 }
