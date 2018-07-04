@@ -38,10 +38,15 @@ object Round7 {
   def seal(routes: HttpRoutes): HttpApp =
     routes.andThen(_.getOrElseF(Future.successful(Response(NotFound))))
 
+  // TODO: Invoke the translator with the Response's body
+  // and produce a new Response with the translated text
   def translateR(route: HttpRoutes): HttpRoutes = ???
 
+  // TODO: Invoke the translator with the Response's body
+  // and produce a new Response with the translated text
   def translateA(route: HttpApp): HttpApp = ???
 
+  // NOTE: Now the uri is parametric
   def greet(theUri: Uri): HttpRoutes = HttpRoutes.of {
     case Request(POST, uri, name) if uri == theUri =>
       Future.successful(Response(OK, s"Hello, $name!"))
@@ -51,6 +56,7 @@ object Round7 {
   val ciao: HttpRoutes = translateR(greet(Uri("/ciao")))
 
   val app: HttpApp = seal(combine(hello, ciao))
+
   val appTranslateOnRoute: HttpApp = seal(translateR(hello))
   val appTranslateOnApp: HttpApp = translateA(seal(hello))
 }

@@ -20,8 +20,8 @@ object Round8 {
       })
   }
 
-  // TODO: Define a common abstraction for HttpApp and HttpRoutes
-  // and delete the old definitions
+  // TODO: Define a common abstraction for HttpApp and HttpRoutes,
+  // delete the old definitions and fix the rest of the code
   // type Http[F[_]] = ???
   // type HttpApp = ???
   // type HttpRoutes = ???
@@ -46,7 +46,8 @@ object Round8 {
   def seal(routes: HttpRoutes): HttpApp =
     routes.andThen(_.getOrElseF(Future.successful(Response(NotFound))))
 
-  // TODO: Implement me
+  // TODO: Invoke the translator with the Response's body
+  // and produce a new Response with the translated text
   // def translate[F[_]: Monad](http: Http[F]): Http[F] = ???
 
   def greet(theUri: Uri): HttpRoutes = HttpRoutes.of {
@@ -59,6 +60,7 @@ object Round8 {
   // val ciao: HttpRoutes = translate(greet(Uri("/ciao")))
 
   // val app: HttpApp = seal(combine(hello, ciao))
+
   // val appTranslateOnRoute: HttpApp = seal(translate(hello))
   // val appTranslateOnApp: HttpApp = translate(seal(hello))
 }

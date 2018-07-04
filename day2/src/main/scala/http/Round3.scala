@@ -3,13 +3,18 @@ package day2.http
 object Round3 {
   // GOAL: From PartialFunction to Effect
 
+  // NOTE: The return type changed
+  // from Response
+  // to   Option[Response]
   type HttpApp = Request => Option[Response]
 
   object HttpApp {
+
+    // NOTE: combinato to convert from PartialFunction
     def of(pf: PartialFunction[Request, Response]): HttpApp = pf.lift
   }
 
-  // TODO: same target as previous exercise but
+  // TODO: same goal as previous exercise but
   // this time we have to compose the Option effect
   def combine(first: HttpApp, second: HttpApp): HttpApp = ???
 

@@ -26,13 +26,17 @@ object Round6 {
   type HttpRoutes = Request => Option[Future[Response]]
 
   object HttpRoutes {
+
+    // TODO: Fix me
     def of(pf: PartialFunction[Request, Future[Response]]): HttpRoutes = pf.lift
   }
 
+  // TODO: Fix me
   def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = { req =>
     first(req) orElse second(req)
   }
 
+  // TODO: Fix me
   def seal(routes: HttpRoutes): HttpApp =
     routes.andThen(_.getOrElse(Future.successful(Response(NotFound))))
 

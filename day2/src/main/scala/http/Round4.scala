@@ -1,7 +1,7 @@
 package day2.http
 
 object Round4 {
-  // GOAL: Introduce fallback route as cross-cutting combinator
+  // GOAL: Re-introduce fallback route as cross-cutting combinator
 
   // NOTE: The central abtraction has been splitted in two:
   // - HttpRoutes that encode: maybe a route can provide a response
@@ -18,7 +18,7 @@ object Round4 {
   }
 
   // TODO: Implements the combinator that attach
-  // at the end of the routes chain a fallback route
+  // at the end of the routes a fallback route
   // that always match and produces a NotFound response
   def seal(routes: HttpRoutes): HttpApp = ???
 
