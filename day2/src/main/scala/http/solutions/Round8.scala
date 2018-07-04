@@ -85,7 +85,9 @@ object Round8 {
   }
 
   val hello: HttpRoutes = greet(Uri("/hello"))
+  val ciao: HttpRoutes = translate(greet(Uri("/ciao")))
 
+  val app: HttpApp = seal(combine(hello, ciao))
   val appTranslateOnRoute: HttpApp = seal(translate(hello))
   val appTranslateOnApp: HttpApp = translate(seal(hello))
 

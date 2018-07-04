@@ -42,9 +42,11 @@ object Round8 {
       Future.successful(Response(OK, s"Hello, $name!"))
   }
 
-  val hello: HttpRoutes = greet(Uri("/hello"))
-
   // TODO: uncomment after implementing the translate function
+  // val hello: HttpRoutes = greet(Uri("/hello"))
+  // val ciao: HttpRoutes = translate(greet(Uri("/ciao")))
+
+  // val app: HttpApp = seal(combine(hello, ciao))
   // val appTranslateOnRoute: HttpApp = seal(translate(hello))
   // val appTranslateOnApp: HttpApp = translate(seal(hello))
 
