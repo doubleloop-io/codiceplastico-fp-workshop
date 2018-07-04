@@ -79,18 +79,6 @@ object Round8 {
       Kleisli(req => OptionT(pf.lift(req).sequence))
   }
 
-  def greet(theUri: Uri): HttpRoutes = HttpRoutes.of {
-    case Request(POST, uri, name) if uri == theUri =>
-      Future.successful(Response(OK, s"Hello, $name!"))
-  }
-
-  val hello: HttpRoutes = greet(Uri("/hello"))
-  val ciao: HttpRoutes = translate(greet(Uri("/ciao")))
-
-  val app: HttpApp = seal(combine(hello, ciao))
-  val appTranslateOnRoute: HttpApp = seal(translate(hello))
-  val appTranslateOnApp: HttpApp = translate(seal(hello))
-
   def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = Kleisli {
     req =>
       first(req) orElse second(req)
@@ -106,4 +94,17 @@ object Round8 {
           .liftF(Translator.italian[F](res.body))
           .map(ita => res.copy(body = ita))
     )
+
+  def greet(theUri: Uri): HttpRoutes = HttpRoutes.of {
+    case Request(POST, uri, name) if uri == theUri =>
+      Future.successful(Response(OK, s"Hello, $name!"))
+  }
+
+  val hello: HttpRoutes = greet(Uri("/hello"))
+  val ciao: HttpRoutes = translate(greet(Uri("/ciao")))
+
+  val app: HttpApp = seal(combine(hello, ciao))
+
+  val appTranslateOnRoute: HttpApp = seal(translate(hello))
+  val appTranslateOnApp: HttpApp = translate(seal(hello))
 }

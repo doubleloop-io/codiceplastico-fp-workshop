@@ -5,6 +5,10 @@ object Round2 {
 
   type HttpApp = Request => Response
 
+  // TODO: Implements a logic that apply the routes in order
+  // and stop on the first that match.
+  def combine(first: HttpApp, second: HttpApp): HttpApp = ???
+
   // TODO: Remove the fallback route
   val hello: HttpApp = {
     case Request(POST, Uri("/hello"), name) =>
@@ -19,8 +23,4 @@ object Round2 {
   val ciao: HttpApp = ???
 
   val app: HttpApp = combine(hello, ciao)
-
-  // TODO: Implements a logic that apply the routes in order
-  // and stop on the first that match.
-  def combine(first: HttpApp, second: HttpApp): HttpApp = ???
 }

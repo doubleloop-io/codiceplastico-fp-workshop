@@ -37,6 +37,18 @@ object Round8 {
     }
   }
 
+  // TODO: Fix me
+  def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = { req =>
+    first(req) orElse second(req)
+  }
+
+  // TODO: Fix me
+  def seal(routes: HttpRoutes): HttpApp =
+    routes.andThen(_.getOrElseF(Future.successful(Response(NotFound))))
+
+  // TODO: Implement me
+  // def translate[F[_]: Monad](http: Http[F]): Http[F] = ???
+
   def greet(theUri: Uri): HttpRoutes = HttpRoutes.of {
     case Request(POST, uri, name) if uri == theUri =>
       Future.successful(Response(OK, s"Hello, $name!"))
@@ -49,15 +61,4 @@ object Round8 {
   // val app: HttpApp = seal(combine(hello, ciao))
   // val appTranslateOnRoute: HttpApp = seal(translate(hello))
   // val appTranslateOnApp: HttpApp = translate(seal(hello))
-
-  // TODO: Fix me
-  def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = { req =>
-    first(req) orElse second(req)
-  }
-
-  // TODO: Fix me
-  def seal(routes: HttpRoutes): HttpApp =
-    routes.andThen(_.getOrElseF(Future.successful(Response(NotFound))))
-
-  // def translate[F[_]: Monad](http: Http[F]): Http[F] = ???
 }

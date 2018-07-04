@@ -31,6 +31,17 @@ object Round7 {
     }
   }
 
+  def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = { req =>
+    first(req) orElse second(req)
+  }
+
+  def seal(routes: HttpRoutes): HttpApp =
+    routes.andThen(_.getOrElseF(Future.successful(Response(NotFound))))
+
+  def translateR(route: HttpRoutes): HttpRoutes = ???
+
+  def translateA(route: HttpApp): HttpApp = ???
+
   def greet(theUri: Uri): HttpRoutes = HttpRoutes.of {
     case Request(POST, uri, name) if uri == theUri =>
       Future.successful(Response(OK, s"Hello, $name!"))
@@ -42,15 +53,4 @@ object Round7 {
   val app: HttpApp = seal(combine(hello, ciao))
   val appTranslateOnRoute: HttpApp = seal(translateR(hello))
   val appTranslateOnApp: HttpApp = translateA(seal(hello))
-
-  def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = { req =>
-    first(req) orElse second(req)
-  }
-
-  def seal(routes: HttpRoutes): HttpApp =
-    routes.andThen(_.getOrElseF(Future.successful(Response(NotFound))))
-
-  def translateR(route: HttpRoutes): HttpRoutes = ???
-
-  def translateA(route: HttpApp): HttpApp = ???
 }

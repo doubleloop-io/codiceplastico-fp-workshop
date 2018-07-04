@@ -24,6 +24,13 @@ object Round5 {
     def of(pf: PartialFunction[Request, Future[Response]]): HttpRoutes = pf.lift
   }
 
+  def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = { req =>
+    first(req) orElse second(req)
+  }
+
+  def seal(routes: HttpRoutes): HttpApp =
+    routes.andThen(_.getOrElse(Future.successful(Response(NotFound))))
+
   val hello: HttpRoutes = HttpRoutes.of {
     case Request(POST, Uri("/hello"), name) =>
       Future.successful(Response(OK, s"Hello, $name!"))
@@ -37,11 +44,4 @@ object Round5 {
   }
 
   val app: HttpApp = seal(combine(hello, ciao))
-
-  def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = { req =>
-    first(req) orElse second(req)
-  }
-
-  def seal(routes: HttpRoutes): HttpApp =
-    routes.andThen(_.getOrElse(Future.successful(Response(NotFound))))
 }

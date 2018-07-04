@@ -9,6 +9,10 @@ object Round3 {
     def of(pf: PartialFunction[Request, Response]): HttpApp = pf.lift
   }
 
+  // TODO: same target as previous exercise but
+  // this time we have to compose the Option effect
+  def combine(first: HttpApp, second: HttpApp): HttpApp = ???
+
   val hello: HttpApp = HttpApp.of {
     case Request(POST, Uri("/hello"), name) =>
       Response(OK, s"Hello, $name!")
@@ -20,8 +24,4 @@ object Round3 {
   }
 
   val app: HttpApp = combine(hello, ciao)
-
-  // TODO: same target as previous exercise but
-  // this time we have to compose the Option effect
-  def combine(first: HttpApp, second: HttpApp): HttpApp = ???
 }

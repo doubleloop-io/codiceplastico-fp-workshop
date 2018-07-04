@@ -11,6 +11,10 @@ object Round3 {
     def of(pf: PartialFunction[Request, Response]): HttpApp = pf.lift
   }
 
+  def combine(first: HttpApp, second: HttpApp): HttpApp = { req =>
+    first(req) orElse second(req)
+  }
+
   val hello: HttpApp = HttpApp.of {
     case Request(POST, Uri("/hello"), name) =>
       Response(OK, s"Hello, $name!")
@@ -22,8 +26,4 @@ object Round3 {
   }
 
   val app: HttpApp = combine(hello, ciao)
-
-  def combine(first: HttpApp, second: HttpApp): HttpApp = { req =>
-    first(req) orElse second(req)
-  }
 }

@@ -17,12 +17,12 @@ object Round2 {
       Response(OK, s"Ciao, $name!")
   }
 
-  val app: HttpApp = combine(hello, ciao)
-
   def combine(x: HttpApp, y: HttpApp): HttpApp = { req =>
     try x(req)
     catch {
       case e: MatchError => y(req)
     }
   }
+
+  val app: HttpApp = combine(hello, ciao)
 }

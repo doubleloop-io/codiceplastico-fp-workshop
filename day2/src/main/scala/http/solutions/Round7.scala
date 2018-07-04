@@ -31,18 +31,6 @@ object Round7 {
     }
   }
 
-  def greet(theUri: Uri): HttpRoutes = HttpRoutes.of {
-    case Request(POST, uri, name) if uri == theUri =>
-      Future.successful(Response(OK, s"Hello, $name!"))
-  }
-
-  val hello: HttpRoutes = greet(Uri("/hello"))
-  val ciao: HttpRoutes = translateR(greet(Uri("/ciao")))
-
-  val app: HttpApp = seal(combine(hello, ciao))
-  val appTranslateOnRoute: HttpApp = seal(translateR(hello))
-  val appTranslateOnApp: HttpApp = translateA(seal(hello))
-
   def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = { req =>
     first(req) orElse second(req)
   }
@@ -69,4 +57,17 @@ object Round7 {
             .map(txt => res.copy(body = txt))
       )
     )
+
+  def greet(theUri: Uri): HttpRoutes = HttpRoutes.of {
+    case Request(POST, uri, name) if uri == theUri =>
+      Future.successful(Response(OK, s"Hello, $name!"))
+  }
+
+  val hello: HttpRoutes = greet(Uri("/hello"))
+  val ciao: HttpRoutes = translateR(greet(Uri("/ciao")))
+
+  val app: HttpApp = seal(combine(hello, ciao))
+
+  val appTranslateOnRoute: HttpApp = seal(translateR(hello))
+  val appTranslateOnApp: HttpApp = translateA(seal(hello))
 }
