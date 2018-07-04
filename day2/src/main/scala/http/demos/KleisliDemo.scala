@@ -1,4 +1,4 @@
-package day2.http.solutions
+package day2.http.demos
 
 import cats._
 import cats.data._
