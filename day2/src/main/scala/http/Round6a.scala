@@ -1,11 +1,11 @@
-package day2.http.solutions
+package day2.http
 
 import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 import day2.http._
 
-object Round6 {
+object Round6a {
   // GOAL: Introduce route middleware
 
   object Translator {
@@ -41,15 +41,6 @@ object Round6 {
   def seal(routes: HttpRoutes): HttpApp =
     routes.andThen(_.getOrElse(Future.successful(Response(NotFound))))
 
-  def translate(route: HttpRoutes): HttpRoutes =
-    route.andThen(
-      _.map(
-        _.flatMap(
-          res =>
-            Translator
-              .italianAsync(res.body)
-              .map(txt => res.copy(body = txt))
-        )
-      )
-    )
+  // TODO: invoke the Translator after the route and only if the route match
+  def translate(route: HttpRoutes): HttpRoutes = ???
 }

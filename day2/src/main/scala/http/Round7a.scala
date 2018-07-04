@@ -5,7 +5,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 import day2.http._
 
-object Round7 {
+object Round7a {
   // GOAL: Introduce app middleware
 
   object Translator {

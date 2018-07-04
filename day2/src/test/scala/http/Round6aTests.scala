@@ -5,9 +5,9 @@ import minitest._
 import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
 
-import day2.http.solutions.Round6._
+import day2.http.solutions.Round6a._
 
-object Round6Tests extends SimpleTestSuite {
+object Round6aTests extends SimpleTestSuite {
 
   testAsync("match the /hello route") {
     val req = Request(POST, Uri("/hello"), "matteo")

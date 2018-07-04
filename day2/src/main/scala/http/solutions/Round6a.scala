@@ -5,8 +5,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 import day2.http._
 
-object Round7 {
-  // GOAL: Introduce app middleware
+object Round6a {
+  // GOAL: Introduce route middleware
 
   object Translator {
 
@@ -30,9 +30,9 @@ object Round7 {
   }
 
   val hello: HttpRoutes = greet(Uri("/hello"))
+  val ciao: HttpRoutes = translate(greet(Uri("/ciao")))
 
-  val appTranslateOnRoute: HttpApp = seal(translateR(hello))
-  val appTranslateOnApp: HttpApp = translateA(seal(hello))
+  val app: HttpApp = seal(combine(hello, ciao))
 
   def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = { req =>
     first(req) orElse second(req)
@@ -41,7 +41,7 @@ object Round7 {
   def seal(routes: HttpRoutes): HttpApp =
     routes.andThen(_.getOrElse(Future.successful(Response(NotFound))))
 
-  def translateR(route: HttpRoutes): HttpRoutes =
+  def translate(route: HttpRoutes): HttpRoutes =
     route.andThen(
       _.map(
         _.flatMap(
@@ -50,16 +50,6 @@ object Round7 {
               .italianAsync(res.body)
               .map(txt => res.copy(body = txt))
         )
-      )
-    )
-
-  def translateA(route: HttpApp): HttpApp =
-    route.andThen(
-      _.flatMap(
-        res =>
-          Translator
-            .italianAsync(res.body)
-            .map(txt => res.copy(body = txt))
       )
     )
 }
