@@ -9,7 +9,6 @@ object Round5 {
   // GOAL: Introduce asynchrony
 
   object Translator {
-
     def italian(text: String): Future[String] = Future {
       text match {
         case "Hello, matteo!" => s"Ciao, matteo!"

@@ -13,7 +13,6 @@ object Round7 {
   // GOAL: Introduce route and app middlewares
 
   object Translator {
-
     def italian(text: String): Future[String] = Future {
       text match {
         case "Hello, matteo!" => s"Ciao, matteo!"

@@ -13,7 +13,6 @@ object Round8 {
   // GOAL: Write middleware once, reuse everywhere
 
   object Translator {
-
     def italian[F[_]: Monad](text: String): F[String] =
       Monad[F].pure(text match {
         case "Hello, matteo!" => s"Ciao, matteo!"

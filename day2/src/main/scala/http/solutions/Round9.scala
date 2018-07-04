@@ -13,7 +13,6 @@ object Round9 {
   // GOAL: Remove custom combine
 
   object Translator {
-
     def italian[F[_]: Monad](text: String): F[String] =
       Monad[F].pure(text match {
         case "Hello, matteo!" => s"Ciao, matteo!"
