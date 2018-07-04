@@ -14,7 +14,7 @@ object Round7 {
 
   object Translator {
 
-    def italianAsync(text: String): Future[String] = Future {
+    def italian(text: String): Future[String] = Future {
       text match {
         case "Hello, matteo!" => s"Ciao, matteo!"
       }

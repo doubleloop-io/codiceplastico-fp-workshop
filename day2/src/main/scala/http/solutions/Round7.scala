@@ -14,7 +14,7 @@ object Round7 {
 
   object Translator {
 
-    def italianAsync(text: String): Future[String] = Future {
+    def italian(text: String): Future[String] = Future {
       text match {
         case "Hello, matteo!" => s"Ciao, matteo!"
       }
@@ -53,7 +53,7 @@ object Round7 {
       _.semiflatMap(
         res =>
           Translator
-            .italianAsync(res.body)
+            .italian(res.body)
             .map(txt => res.copy(body = txt))
       )
     )
@@ -63,7 +63,7 @@ object Round7 {
       _.flatMap(
         res =>
           Translator
-            .italianAsync(res.body)
+            .italian(res.body)
             .map(txt => res.copy(body = txt))
       )
     )

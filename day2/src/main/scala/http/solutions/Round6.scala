@@ -14,7 +14,7 @@ object Round6 {
 
   object Translator {
 
-    def italianAsync(text: String): Future[String] = Future {
+    def italian(text: String): Future[String] = Future {
       text match {
         case "Hello, matteo!" => s"Ciao, matteo!"
       }
@@ -39,7 +39,7 @@ object Round6 {
   val ciao: HttpRoutes = HttpRoutes.of {
     case Request(POST, Uri("/ciao"), name) =>
       Translator
-        .italianAsync(s"Hello, $name!")
+        .italian(s"Hello, $name!")
         .map(Response(OK, _))
   }
 
