@@ -5,9 +5,9 @@ import minitest._
 import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
 
-import day2.http.solutions.Round6a._
+import day2.http.solutions.Round6._
 
-object Round6aTests extends SimpleTestSuite {
+object Round6Tests extends SimpleTestSuite {
 
   testAsync("match the /hello route") {
     val req = Request(POST, Uri("/hello"), "matteo")
@@ -24,7 +24,7 @@ object Round6aTests extends SimpleTestSuite {
   testAsync("fallback route") {
     val req = Request(POST, Uri("/not-hello"), "matteo")
     for (res <- app(req))
-      yield assertEquals(Response(NotFound), res)
+      yield assertEquals(res, Response(NotFound))
   }
 
 }
