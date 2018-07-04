@@ -1,21 +1,21 @@
-package day2.http
+// package day2.http
 
-import minitest._
+// import minitest._
 
-import day2.http.solutions.Round2._
+// import day2.http.Round2._
 
-object Round2Tests extends SimpleTestSuite {
+// object Round2Tests extends SimpleTestSuite {
 
-  test("match the /hello route") {
-    val req = Request(POST, Uri("/hello"), "matteo")
-    val res = app(req)
-    assertEquals(res, Response(OK, "Hello, matteo!"))
-  }
+//   test("match the /hello route") {
+//     val req = Request(POST, Uri("/hello"), "matteo")
+//     val res = app(req)
+//     assertEquals(res, Response(OK, "Hello, matteo!"))
+//   }
 
-  test("match the /ciao route") {
-    val req = Request(POST, Uri("/ciao"), "matteo")
-    val res = app(req)
-    assertEquals(res, Response(OK, "Ciao, matteo!"))
-  }
+//   test("match the /ciao route") {
+//     val req = Request(POST, Uri("/ciao"), "matteo")
+//     val res = app(req)
+//     assertEquals(res, Response(OK, "Ciao, matteo!"))
+//   }
 
-}
+// }
