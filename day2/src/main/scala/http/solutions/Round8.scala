@@ -12,13 +12,6 @@ import day2.http._
 object Round8 {
   // GOAL: Write middleware once, reuse everywhere
 
-  object Translator {
-    def italian[F[_]: Monad](text: String): F[String] =
-      Monad[F].pure(text match {
-        case "Hello, matteo!" => s"Ciao, matteo!"
-      })
-  }
-
   /*
 
     Guardiamo le astrazioni base
@@ -90,7 +83,7 @@ object Round8 {
     http.flatMap(
       res =>
         Kleisli
-          .liftF(Translator.italian[F](res.body))
+          .liftF(Translator.italianM[F](res.body))
           .map(ita => res.copy(body = ita))
     )
 

@@ -26,4 +26,24 @@ package object http {
       body: String = ""
   )
 
+  object Translator {
+
+    import scala.concurrent._
+    import scala.concurrent.ExecutionContext.Implicits.global
+
+    import cats._
+    import cats.data._
+    import cats.implicits._
+
+    def italian(text: String): Future[String] = Future {
+      text match {
+        case "Hello, matteo!" => s"Ciao, matteo!"
+      }
+    }
+
+    def italianM[F[_]: Monad](text: String): F[String] =
+      Monad[F].pure(text match {
+        case "Hello, matteo!" => s"Ciao, matteo!"
+      })
+  }
 }

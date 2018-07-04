@@ -8,14 +8,6 @@ import day2.http._
 object Round5 {
   // GOAL: Introduce asynchrony
 
-  object Translator {
-    def italian(text: String): Future[String] = Future {
-      text match {
-        case "Hello, matteo!" => s"Ciao, matteo!"
-      }
-    }
-  }
-
   // TODO: Add Future effect around Resonse
   // and fix the rest of the code
   type HttpApp = Request => Response

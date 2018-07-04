@@ -12,13 +12,6 @@ import day2.http._
 object Round9 {
   // GOAL: Remove custom combine
 
-  object Translator {
-    def italian[F[_]: Monad](text: String): F[String] =
-      Monad[F].pure(text match {
-        case "Hello, matteo!" => s"Ciao, matteo!"
-      })
-  }
-
   type Http[F[_]] = Kleisli[F, Request, Response]
   type HttpApp = Http[Future]
   type HttpRoutes = Http[OptionT[Future, ?]]
@@ -46,7 +39,7 @@ object Round9 {
     http.flatMap(
       res =>
         Kleisli
-          .liftF(Translator.italian[F](res.body))
+          .liftF(Translator.italianM[F](res.body))
           .map(ita => res.copy(body = ita))
     )
 

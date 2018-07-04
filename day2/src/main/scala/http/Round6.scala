@@ -8,14 +8,6 @@ import day2.http._
 object Round6 {
   // GOAL: Flip nested effects and collapse them w/ monad transformer
 
-  object Translator {
-    def italian(text: String): Future[String] = Future {
-      text match {
-        case "Hello, matteo!" => s"Ciao, matteo!"
-      }
-    }
-  }
-
   type HttpApp = Request => Future[Response]
   // TODO: change return type
   // original  Option[Future[Response]]

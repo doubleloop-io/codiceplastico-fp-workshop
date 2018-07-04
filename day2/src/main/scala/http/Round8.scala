@@ -12,14 +12,6 @@ import day2.http._
 object Round8 {
   // GOAL: Write middleware once, reuse everywhere
 
-  object Translator {
-
-    def italian[F[_]: Monad](text: String): F[String] =
-      Monad[F].pure(text match {
-        case "Hello, matteo!" => s"Ciao, matteo!"
-      })
-  }
-
   // TODO: Define a common abstraction for HttpApp and HttpRoutes,
   // delete the old definitions and fix the rest of the code
   // type Http[F[_]] = ???
