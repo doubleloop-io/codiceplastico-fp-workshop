@@ -11,8 +11,7 @@ object OptionFutureDemo {
 
   case class OptionFuture[A](value: Option[Future[A]])
 
-  implicit val optionFutureMonad = new Monad[OptionFuture]
-  with StackSafeMonad[OptionFuture] {
+  implicit val optionFutureMonad = new Monad[OptionFuture] with StackSafeMonad[OptionFuture] {
 
     def pure[A](a: A): OptionFuture[A] = OptionFuture(Some(Future(a)))
 

@@ -23,9 +23,8 @@ object Round8 {
   object HttpRoutes {
 
     // TODO: Fix me
-    def of(pf: PartialFunction[Request, Future[Response]]): HttpRoutes = {
-      req =>
-        OptionT(pf.lift(req).sequence)
+    def of(pf: PartialFunction[Request, Future[Response]]): HttpRoutes = { req =>
+      OptionT(pf.lift(req).sequence)
     }
   }
 

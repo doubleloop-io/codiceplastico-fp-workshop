@@ -16,9 +16,8 @@ object Round7 {
   type HttpRoutes = Request => OptionT[Future, Response]
 
   object HttpRoutes {
-    def of(pf: PartialFunction[Request, Future[Response]]): HttpRoutes = {
-      req =>
-        OptionT(pf.lift(req).sequence)
+    def of(pf: PartialFunction[Request, Future[Response]]): HttpRoutes = { req =>
+      OptionT(pf.lift(req).sequence)
     }
   }
 

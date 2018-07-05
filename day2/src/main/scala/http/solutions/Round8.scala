@@ -71,9 +71,8 @@ object Round8 {
       Kleisli(req => OptionT(pf.lift(req).sequence))
   }
 
-  def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = Kleisli {
-    req =>
-      first(req) orElse second(req)
+  def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = Kleisli { req =>
+    first(req) orElse second(req)
   }
 
   def seal(routes: HttpRoutes): HttpApp =
