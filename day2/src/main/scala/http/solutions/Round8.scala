@@ -72,7 +72,7 @@ object Round8 {
   }
 
   def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = Kleisli { req =>
-    first(req) orElse second(req)
+    first(req).orElse(second(req))
   }
 
   def seal(routes: HttpRoutes): HttpApp =

@@ -15,7 +15,7 @@ object KleisliDemo {
       i => 1.0 / i
 
     val program: String => Double =
-      parse andThen reciprocal
+      parse.andThen(reciprocal)
 
   }
 
@@ -28,7 +28,7 @@ object KleisliDemo {
       Kleisli(i => if (i != 0) Some(1.0 / i) else None)
 
     val program: Kleisli[Option, String, Double] =
-      parseK andThen reciprocalK
+      parseK.andThen(reciprocalK)
 
   }
 }

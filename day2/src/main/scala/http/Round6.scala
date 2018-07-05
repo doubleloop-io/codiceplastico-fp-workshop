@@ -24,7 +24,7 @@ object Round6 {
 
   // TODO: Fix me
   def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = { req =>
-    first(req) orElse second(req)
+    first(req).orElse(second(req))
   }
 
   // TODO: Fix me

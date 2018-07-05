@@ -28,7 +28,7 @@ object Round9 {
 
   // TODO: Remove me
   def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = Kleisli { req =>
-    first(req) orElse second(req)
+    first(req).orElse(second(req))
   }
 
   def seal(routes: HttpRoutes): HttpApp =

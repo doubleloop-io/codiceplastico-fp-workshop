@@ -12,7 +12,7 @@ object Round3 {
   }
 
   def combine(first: HttpApp, second: HttpApp): HttpApp = { req =>
-    first(req) orElse second(req)
+    first(req).orElse(second(req))
   }
 
   val hello: HttpApp = HttpApp.of {

@@ -14,7 +14,7 @@ object Round4 {
   }
 
   def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = { req =>
-    first(req) orElse second(req)
+    first(req).orElse(second(req))
   }
 
   // TODO: Implements the combinator that attach
