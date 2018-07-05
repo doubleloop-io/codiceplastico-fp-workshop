@@ -7,8 +7,8 @@ object Round2 {
   // GOAL: Build basic combinators
 
   sealed trait ValidationError
-  final case object Empty extends ValidationError
-  final case object TooSmall extends ValidationError
+  final case object Empty      extends ValidationError
+  final case object TooSmall   extends ValidationError
   final case object NotInteger extends ValidationError
 
   type Result[A] = Either[List[ValidationError], A]

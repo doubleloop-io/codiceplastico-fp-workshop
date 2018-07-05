@@ -6,7 +6,7 @@ object Round4 {
   // NOTE: The central abtraction has been splitted in two:
   // - HttpRoutes that encode: maybe a route can provide a response
   // - HttpApp that encode: an application must always provide a response
-  type HttpApp = Request => Response
+  type HttpApp    = Request => Response
   type HttpRoutes = Request => Option[Response]
 
   object HttpRoutes {

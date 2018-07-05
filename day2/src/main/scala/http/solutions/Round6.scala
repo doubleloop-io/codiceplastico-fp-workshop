@@ -12,7 +12,7 @@ import day2.http._
 object Round6 {
   // GOAL: Flip nested effects and collapse them w/ monad transformer
 
-  type HttpApp = Request => Future[Response]
+  type HttpApp    = Request => Future[Response]
   type HttpRoutes = Request => OptionT[Future, Response]
 
   object HttpRoutes {

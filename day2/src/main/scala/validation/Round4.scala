@@ -10,8 +10,8 @@ object Round4 {
   // GOAL: Implement custom effect
 
   sealed trait ValidationError
-  final case object Empty extends ValidationError
-  final case object TooSmall extends ValidationError
+  final case object Empty      extends ValidationError
+  final case object TooSmall   extends ValidationError
   final case object NotInteger extends ValidationError
 
   // TODO: replace type alias of Either with custom effect

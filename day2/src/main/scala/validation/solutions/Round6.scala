@@ -10,12 +10,12 @@ object Round6 {
   // GOAL: Override applicative product combinator
 
   sealed trait ValidationError
-  final case object Empty extends ValidationError
-  final case object TooSmall extends ValidationError
+  final case object Empty      extends ValidationError
+  final case object TooSmall   extends ValidationError
   final case object NotInteger extends ValidationError
 
   sealed trait Result[+A]
-  final case class Success[+A](value: A) extends Result[A]
+  final case class Success[+A](value: A)               extends Result[A]
   final case class Fail(errors: List[ValidationError]) extends Result[Nothing]
 
   trait Rule[A, B] {

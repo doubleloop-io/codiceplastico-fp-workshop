@@ -8,7 +8,7 @@ import day2.http._
 object Round5 {
   // GOAL: Introduce asynchrony
 
-  type HttpApp = Request => Future[Response]
+  type HttpApp    = Request => Future[Response]
   type HttpRoutes = Request => Option[Future[Response]]
 
   object HttpRoutes {

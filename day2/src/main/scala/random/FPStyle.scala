@@ -17,7 +17,7 @@ object FPStyle {
   }
 
   val integers = new Generator[Int] {
-    val rand = new java.util.Random()
+    val rand  = new java.util.Random()
     def run() = rand.nextInt()
   }
 
@@ -50,7 +50,7 @@ object FPStyle {
 
     for {
       isEnd <- booleans
-      list <- if (isEnd) end else cons
+      list  <- if (isEnd) end else cons
     } yield list
   }
 
@@ -81,7 +81,7 @@ object FPStyle {
 
   val items = for {
     desc <- const("T-shirt")
-    qty <- choose(0, 1000)
+    qty  <- choose(0, 1000)
     size <- oneOf("S", "M", "L", "XL")
   } yield Item(desc, qty, size)
 
@@ -89,7 +89,7 @@ object FPStyle {
       predicate: A => Boolean
   ): Unit = {
     for (i <- 1 until count) {
-      val value = ga.run()
+      val value  = ga.run()
       val result = predicate(value)
       assert(result, "test failed for " + value)
     }

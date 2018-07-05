@@ -13,7 +13,7 @@ object Round9 {
   // GOAL: Remove custom combine
 
   type Http[F[_]] = Kleisli[F, Request, Response]
-  type HttpApp = Http[Future]
+  type HttpApp    = Http[Future]
   type HttpRoutes = Http[OptionT[Future, ?]]
 
   object HttpApp {
@@ -43,11 +43,11 @@ object Round9 {
   }
 
   val hello: HttpRoutes = greet(Uri("/hello"))
-  val ciao: HttpRoutes = translate(greet(Uri("/ciao")))
+  val ciao: HttpRoutes  = translate(greet(Uri("/ciao")))
 
-  val app: HttpApp = seal(hello.combineK(ciao))
+  val app: HttpApp       = seal(hello.combineK(ciao))
   val appSymbol: HttpApp = seal(hello <+> ciao)
 
   val appTranslateOnRoute: HttpApp = seal(translate(hello))
-  val appTranslateOnApp: HttpApp = translate(seal(hello))
+  val appTranslateOnApp: HttpApp   = translate(seal(hello))
 }

@@ -17,7 +17,7 @@ object Round8 {
   // type Http[F[_]] = ???
   // type HttpApp = ???
   // type HttpRoutes = ???
-  type HttpApp = Request => Future[Response]
+  type HttpApp    = Request => Future[Response]
   type HttpRoutes = Request => OptionT[Future, Response]
 
   object HttpRoutes {

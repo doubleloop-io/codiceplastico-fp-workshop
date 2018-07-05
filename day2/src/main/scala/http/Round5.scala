@@ -10,7 +10,7 @@ object Round5 {
 
   // TODO: Add Future effect around Resonse
   // and fix the rest of the code
-  type HttpApp = Request => Response
+  type HttpApp    = Request => Response
   type HttpRoutes = Request => Option[Response]
 
   object HttpRoutes {

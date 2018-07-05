@@ -19,10 +19,10 @@ object Round1 {
   // Below there are some usage examples.
   object ModelExamples {
 
-    val getReq = Request(GET, Uri("/some/path"))
+    val getReq  = Request(GET, Uri("/some/path"))
     val postReq = Request(POST, Uri("/some/other/path"), "The body is a Stirng")
 
-    val okRes = Response(OK)
+    val okRes  = Response(OK)
     val okRes2 = Response(OK, "Once again, the body is a String")
     val badRes = Response(BadRequest)
   }

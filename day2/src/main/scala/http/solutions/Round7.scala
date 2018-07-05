@@ -12,7 +12,7 @@ import day2.http._
 object Round7 {
   // GOAL: Introduce route and app middlewares
 
-  type HttpApp = Request => Future[Response]
+  type HttpApp    = Request => Future[Response]
   type HttpRoutes = Request => OptionT[Future, Response]
 
   object HttpRoutes {
@@ -54,10 +54,10 @@ object Round7 {
   }
 
   val hello: HttpRoutes = greet(Uri("/hello"))
-  val ciao: HttpRoutes = translateR(greet(Uri("/ciao")))
+  val ciao: HttpRoutes  = translateR(greet(Uri("/ciao")))
 
   val app: HttpApp = seal(combine(hello, ciao))
 
   val appTranslateOnRoute: HttpApp = seal(translateR(hello))
-  val appTranslateOnApp: HttpApp = translateA(seal(hello))
+  val appTranslateOnApp: HttpApp   = translateA(seal(hello))
 }
