@@ -1,4 +1,4 @@
-package day2.validation.demos
+package demos
 
 import cats._
 import cats.data._

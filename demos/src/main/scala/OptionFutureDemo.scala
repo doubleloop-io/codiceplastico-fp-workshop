@@ -1,4 +1,4 @@
-package day2.http.demos
+package demos
 
 import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global

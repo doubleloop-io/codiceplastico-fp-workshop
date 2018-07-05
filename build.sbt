@@ -3,7 +3,7 @@ import Dependencies._
 lazy val global = project
   .in(file("."))
   .settings(settings)
-  .aggregate(day1, day2, day3)
+  .aggregate(day1, day2, day3, demos)
 
 lazy val day1 = project
   .settings(
@@ -20,6 +20,12 @@ lazy val day2 = project
 lazy val day3 = project
   .settings(
     name := "day3",
+    settings
+  )
+
+lazy val demos = project
+  .settings(
+    name := "demos",
     settings
   )
 
