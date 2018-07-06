@@ -5,7 +5,7 @@ import minitest._
 import java.io.ByteArrayOutputStream
 import java.io.StringReader
 
-import day1.Game0._
+import day1.Round0._
 
 object Game0Tests extends SimpleTestSuite {
 
