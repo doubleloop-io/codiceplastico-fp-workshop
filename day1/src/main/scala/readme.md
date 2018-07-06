@@ -18,6 +18,9 @@
     - from class field to local var
     - inline local
 - use lens to manipulate (get, set, modify, …) immutable objects
+    - copy is great but it's not scalable with nested structure
+    - the code leak the structure of your model (fragile to change)
+    - they compose!
 - enforce correctness through types
     - remove primitive
     - don't reuse similar types for different needs
