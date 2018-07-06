@@ -24,10 +24,10 @@ class Game {
       def begin(name: String) = Player(name, Position.origin)
     }
 
-    case class Land(grid: Vector[Vector[String]])
+    case class Field(grid: Vector[Vector[String]])
 
-    object Land {
-      def mk3x3 = Land(
+    object Field {
+      def mk3x3 = Field(
         Vector(
           Vector("-", "-", "-"),
           Vector("-", "-", "-"),
@@ -36,7 +36,7 @@ class Game {
       )
     }
 
-    case class GameWorld(player: Player, land: Land) {}
+    case class GameWorld(player: Player, field: Field) {}
   }
 
   object Logic {
@@ -48,7 +48,7 @@ class Game {
     var world: GameWorld = null
 
     def initWorld(): Unit = {
-      world = GameWorld(Player.begin(askName()), Land.mk3x3)
+      world = GameWorld(Player.begin(askName()), Field.mk3x3)
       println("Use commands to play")
     }
 
@@ -126,14 +126,11 @@ class Game {
     }
 
     def render: String = {
+      val (x, y)  = Position.unapply(world.player.position).get
+      val grid    = world.field.grid
+      val updated = grid.updated(x, grid(x).updated(y, "x"))
 
-      def putPlayer(field: Vector[Vector[String]]) = {
-        val row = field(world.player.position.x)
-        field.updated(world.player.position.x, row.updated(world.player.position.y, "x"))
-      }
-
-      val field = putPlayer(world.land.grid)
-      enter + field.map(_.mkString(" | ")).mkString(enter) + enter
+      enter + updated.map(_.mkString(" | ")).mkString(enter) + enter
     }
   }
 
