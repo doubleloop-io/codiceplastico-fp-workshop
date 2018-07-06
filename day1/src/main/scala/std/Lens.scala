@@ -1,6 +1,5 @@
 package day1.std
 
-// basic lens definition
 case class Lens[S, A](get: S => A, set: (S, A) => S) {
 
   def |->[B](that: Lens[A, B]): Lens[S, B] =
@@ -10,14 +9,8 @@ case class Lens[S, A](get: S => A, set: (S, A) => S) {
     get = that.get.compose(get),
     set = (s, b) => set(s, that.set(get(s), b))
   )
+
+  def modify(f: A => A): S => S = { s =>
+    set(s, f(get(s)))
+  }
 }
-
-/*
-
-Alias for optics composition:
-<-> == composeIso
-?-> == composePrism
-|-> == composeLens
-|->> == composeTraversal
-
-*/
