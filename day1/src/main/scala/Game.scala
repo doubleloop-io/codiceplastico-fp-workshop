@@ -54,26 +54,22 @@ class Game {
 
     def gameLoop(): Unit =
       while (executing) {
-        executing = gameStep()
+        gameStep()
       }
 
-    def gameStep(): Boolean = {
+    def gameStep(): Unit = {
       val line = readLine()
 
-      if (line.length == 0)
-        true
-      else {
+      if (line.length > 0) {
         val words = line.trim.toLowerCase.split("\\s+")
         words(0) match {
 
           case "help" => {
             printHelp()
-            true
           }
 
           case "show" => {
             printWorld()
-            true
           }
 
           case "move" => {
@@ -87,12 +83,11 @@ class Game {
                 case "left"  => world.player.move(Position(0, -1))
               }
             }
-            true
           }
 
           case "quit" => {
             printQuit()
-            false
+            executing = false
           }
 
         }
