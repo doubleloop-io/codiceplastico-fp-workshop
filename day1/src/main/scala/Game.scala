@@ -7,13 +7,18 @@ class Game {
 
   object Domain {
 
-    case class Position(x: Int, y: Int)
+    case class Position(var x: Int, var y: Int)
 
     object Position {
       val start = Position(0, 0)
     }
 
-    case class Player(name: String, position: Position)
+    case class Player(name: String, position: Position) {
+      def move(delta: Position): Unit = {
+        position.x += delta.x
+        position.y += delta.y
+      }
+    }
 
     object Player {
       def begin(name: String) = Player(name, Position.start)
@@ -37,11 +42,15 @@ class Game {
   object Logic {
     import Domain._
 
+    val enter = System.getProperty("line.separator")
+
     var executing        = true
     var world: GameWorld = null
 
-    def initWorld(): Unit =
+    def initWorld(): Unit = {
       world = GameWorld(Player.begin(askName()), Land.mk3x3)
+      println("Use commands to play")
+    }
 
     def gameLoop(): Unit =
       while (executing) {
@@ -49,7 +58,6 @@ class Game {
       }
 
     def gameStep(): Boolean = {
-      println("Enter a command:")
       val line = readLine()
 
       if (line.length == 0)
@@ -69,7 +77,16 @@ class Game {
           }
 
           case "move" => {
-            ???
+            if (words.length < 2)
+              println("Missing direction")
+            else {
+              words(1) match {
+                case "up"    => world.player.move(Position(-1, 0))
+                case "down"  => world.player.move(Position(1, 0))
+                case "right" => world.player.move(Position(0, 1))
+                case "left"  => world.player.move(Position(0, -1))
+              }
+            }
             true
           }
 
@@ -97,7 +114,8 @@ class Game {
 
     def printHelp(): Unit = {
       val expected =
-        s"""Valid commands:
+        s"""|
+         |Valid commands:
          |
          | help
          | show
@@ -117,7 +135,6 @@ class Game {
         field.updated(world.player.position.x, row.updated(world.player.position.y, "x"))
       }
 
-      val enter = System.getProperty("line.separator")
       val field = renderPlayer(renderField)
       enter + field.map(_.mkString(" | ")).mkString(enter) + enter
     }

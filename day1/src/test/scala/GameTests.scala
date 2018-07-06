@@ -13,7 +13,7 @@ object GameTests extends SimpleTestSuite {
     val expected =
       s"""What is your name?
          |Hello, Luke, welcome to the game!
-         |Enter a command:
+         |Use commands to play
          |Bye bye Luke!
          |""".stripMargin
 
@@ -26,7 +26,8 @@ object GameTests extends SimpleTestSuite {
     val expected =
       s"""What is your name?
          |Hello, Luke, welcome to the game!
-         |Enter a command:
+         |Use commands to play
+         |
          |Valid commands:
          |
          | help
@@ -34,7 +35,6 @@ object GameTests extends SimpleTestSuite {
          | move <up|down|left|right>
          | quit
          |
-         |Enter a command:
          |Bye bye Luke!
          |""".stripMargin
 
@@ -47,13 +47,60 @@ object GameTests extends SimpleTestSuite {
     val expected =
       s"""What is your name?
          |Hello, Luke, welcome to the game!
-         |Enter a command:
+         |Use commands to play
          |
          |x | - | -
          |- | - | -
          |- | - | -
          |
-         |Enter a command:
+         |Bye bye Luke!
+         |""".stripMargin
+
+    assertEquals(result, expected)
+  }
+
+  test("move downx2, rightx2, upx2, leftx2") {
+    val result = execute(
+      input("Luke"),
+      input("move down"),
+      input("move down"),
+      input("move right"),
+      input("move right"),
+      input("move up"),
+      input("move up"),
+      input("move left"),
+      input("move left"),
+      input("show"),
+      input("quit")
+    )
+
+    val expected =
+      s"""What is your name?
+         |Hello, Luke, welcome to the game!
+         |Use commands to play
+         |
+         |x | - | -
+         |- | - | -
+         |- | - | -
+         |
+         |Bye bye Luke!
+         |""".stripMargin
+
+    assertEquals(result, expected)
+  }
+
+  test("move without direction") {
+    val result = execute(
+      input("Luke"),
+      input("move"),
+      input("quit")
+    )
+
+    val expected =
+      s"""What is your name?
+         |Hello, Luke, welcome to the game!
+         |Use commands to play
+         |Missing direction
          |Bye bye Luke!
          |""".stripMargin
 
