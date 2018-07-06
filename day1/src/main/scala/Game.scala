@@ -88,6 +88,7 @@ class Game {
                 case "down"  => world.player.move(Position(1, 0))
                 case "right" => world.player.move(Position(0, 1))
                 case "left"  => world.player.move(Position(0, -1))
+                case _       => println("Unknown direction")
               }
             }
           }

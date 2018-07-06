@@ -125,6 +125,24 @@ object GameTests extends SimpleTestSuite {
     assertEquals(result, expected)
   }
 
+  test("unknown move direction") {
+    val result = execute(
+      input("Luke"),
+      input("move qwerty"),
+      input("quit")
+    )
+
+    val expected =
+      s"""What is your name?
+         |Hello, Luke, welcome to the game!
+         |Use commands to play
+         |Unknown direction
+         |Bye bye Luke!
+         |""".stripMargin
+
+    assertEquals(result, expected)
+  }
+
   private def input(value: String): String =
     value + enter
 
