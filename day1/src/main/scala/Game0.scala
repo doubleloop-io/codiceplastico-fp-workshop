@@ -2,119 +2,120 @@ package day1
 
 import scala.io.StdIn._
 
-class Game0 {
-  import Domain._
-
-  object Domain {
-
-    case class Position(var x: Int, var y: Int)
-
-    object Position {
-      val origin = Position(0, 0)
-    }
-
-    case class Player(name: String, position: Position) {
-      def move(delta: Position): Unit = {
-        position.x += delta.x
-        position.y += delta.y
-      }
-    }
-
-    object Player {
-      def begin(name: String) = Player(name, Position.origin)
-    }
-
-    case class Field(grid: Vector[Vector[String]])
-
-    object Field {
-      def mk3x3 = Field(
-        Vector(
-          Vector("-", "-", "-"),
-          Vector("-", "-", "-"),
-          Vector("-", "-", "-")
-        )
-      )
-    }
-
-    case class GameWorld(player: Player, field: Field) {}
-  }
-
-  object Logic {
+object Game0 {
+  class Game {
     import Domain._
 
-    val enter = System.getProperty("line.separator")
+    object Domain {
 
-    var executing        = true
-    var world: GameWorld = null
+      case class Position(var x: Int, var y: Int)
 
-    def initWorld(): Unit = {
-      world = GameWorld(Player.begin(askName()), Field.mk3x3)
-      println("Use commands to play")
-    }
-
-    def askName(): String = {
-      println("What is your name?")
-      val name = readLine().trim
-      println(s"Hello, $name, welcome to the game!")
-      name
-    }
-
-    def gameLoop(): Unit =
-      while (executing) {
-        gameStep()
+      object Position {
+        val origin = Position(0, 0)
       }
 
-    def gameStep(): Unit = {
-      val line = readLine()
-
-      if (line.length > 0) {
-        val words = line.trim.toLowerCase.split("\\s+")
-        words(0) match {
-
-          case "help" => {
-            printHelp()
-          }
-
-          case "show" => {
-            printWorld()
-          }
-
-          case "move" => {
-            if (words.length < 2)
-              println("Missing direction")
-            else {
-              words(1) match {
-                case "up"    => world.player.move(Position(-1, 0))
-                case "down"  => world.player.move(Position(1, 0))
-                case "right" => world.player.move(Position(0, 1))
-                case "left"  => world.player.move(Position(0, -1))
-                case _       => println("Unknown direction")
-              }
-            }
-          }
-
-          case "quit" => {
-            printQuit()
-            executing = false
-          }
-
-          case _ => {
-            println("Unknown command")
-          }
-
+      case class Player(name: String, position: Position) {
+        def move(delta: Position): Unit = {
+          position.x += delta.x
+          position.y += delta.y
         }
       }
+
+      object Player {
+        def begin(name: String) = Player(name, Position.origin)
+      }
+
+      case class Field(grid: Vector[Vector[String]])
+
+      object Field {
+        def mk3x3 = Field(
+          Vector(
+            Vector("-", "-", "-"),
+            Vector("-", "-", "-"),
+            Vector("-", "-", "-")
+          )
+        )
+      }
+
+      case class GameWorld(player: Player, field: Field) {}
     }
 
-    def printWorld(): Unit =
-      println(render)
+    object Logic {
+      import Domain._
 
-    def printQuit(): Unit =
-      println(s"Bye bye ${world.player.name}!")
+      val enter = System.getProperty("line.separator")
 
-    def printHelp(): Unit = {
-      val expected =
-        s"""|
+      var executing        = true
+      var world: GameWorld = null
+
+      def initWorld(): Unit = {
+        world = GameWorld(Player.begin(askName()), Field.mk3x3)
+        println("Use commands to play")
+      }
+
+      def askName(): String = {
+        println("What is your name?")
+        val name = readLine().trim
+        println(s"Hello, $name, welcome to the game!")
+        name
+      }
+
+      def gameLoop(): Unit =
+        while (executing) {
+          gameStep()
+        }
+
+      def gameStep(): Unit = {
+        val line = readLine()
+
+        if (line.length > 0) {
+          val words = line.trim.toLowerCase.split("\\s+")
+          words(0) match {
+
+            case "help" => {
+              printHelp()
+            }
+
+            case "show" => {
+              printWorld()
+            }
+
+            case "move" => {
+              if (words.length < 2)
+                println("Missing direction")
+              else {
+                words(1) match {
+                  case "up"    => world.player.move(Position(-1, 0))
+                  case "down"  => world.player.move(Position(1, 0))
+                  case "right" => world.player.move(Position(0, 1))
+                  case "left"  => world.player.move(Position(0, -1))
+                  case _       => println("Unknown direction")
+                }
+              }
+            }
+
+            case "quit" => {
+              printQuit()
+              executing = false
+            }
+
+            case _ => {
+              println("Unknown command")
+            }
+
+          }
+        }
+      }
+
+      def printWorld(): Unit =
+        println(render)
+
+      def printQuit(): Unit =
+        println(s"Bye bye ${world.player.name}!")
+
+      def printHelp(): Unit = {
+        val expected =
+          s"""|
          |Valid commands:
          |
          | help
@@ -122,21 +123,22 @@ class Game0 {
          | move <up|down|left|right>
          | quit
          |""".stripMargin
-      println(expected)
+        println(expected)
+      }
+
+      def render: String = {
+        val (x, y)  = Position.unapply(world.player.position).get
+        val grid    = world.field.grid
+        val updated = grid.updated(x, grid(x).updated(y, "x"))
+
+        enter + updated.map(_.mkString(" | ")).mkString(enter) + enter
+      }
     }
 
-    def render: String = {
-      val (x, y)  = Position.unapply(world.player.position).get
-      val grid    = world.field.grid
-      val updated = grid.updated(x, grid(x).updated(y, "x"))
-
-      enter + updated.map(_.mkString(" | ")).mkString(enter) + enter
+    import Logic._
+    def run(): Unit = {
+      initWorld()
+      gameLoop()
     }
-  }
-
-  import Logic._
-  def run(): Unit = {
-    initWorld()
-    gameLoop()
   }
 }

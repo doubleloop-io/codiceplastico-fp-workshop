@@ -5,7 +5,9 @@ import minitest._
 import java.io.ByteArrayOutputStream
 import java.io.StringReader
 
-object GameTests extends SimpleTestSuite {
+import day1.Game0._
+
+object Game0Tests extends SimpleTestSuite {
 
   test("enter then quit") {
     val result = execute(input("Luke"), input("quit"))
@@ -151,7 +153,7 @@ object GameTests extends SimpleTestSuite {
     val out   = new ByteArrayOutputStream
     Console.withIn(input) {
       Console.withOut(out) {
-        Main.main(Array())
+        new Game().run()
       }
     }
     out.toString
