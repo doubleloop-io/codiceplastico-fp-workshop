@@ -52,6 +52,13 @@ class Game {
       println("Use commands to play")
     }
 
+    def askName(): String = {
+      println("What is your name?")
+      val name = readLine().trim
+      println(s"Hello, $name, welcome to the game!")
+      name
+    }
+
     def gameLoop(): Unit =
       while (executing) {
         gameStep()
@@ -90,15 +97,12 @@ class Game {
             executing = false
           }
 
+          case _ => {
+            println("Unknown command")
+          }
+
         }
       }
-    }
-
-    def askName(): String = {
-      println("What is your name?")
-      val name = readLine().trim
-      println(s"Hello, $name, welcome to the game!")
-      name
     }
 
     def printWorld(): Unit =
