@@ -2,7 +2,7 @@ package day1.solutions
 
 import scala.io.StdIn._
 
-object Game2 {
+object Round2 {
   class Game {
     import Domain._
 
