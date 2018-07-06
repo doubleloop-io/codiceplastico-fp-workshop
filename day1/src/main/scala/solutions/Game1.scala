@@ -1,27 +1,23 @@
-package day1
+package day1.solutions
 
 import scala.io.StdIn._
 
-class Game {
+class Game1 {
   import Domain._
 
   object Domain {
 
-    case class Position(x: Int, y: Int) {
-      def shift(delta: Position): Position = {
-        val newx = x + delta.x
-        val newy = y + delta.y
-        copy(x = newx, y = newy)
-      }
-    }
+    case class Position(var x: Int, var y: Int)
 
     object Position {
       val origin = Position(0, 0)
     }
 
     case class Player(name: String, position: Position) {
-      def move(delta: Position): Player =
-        copy(position = position.shift(delta))
+      def move(delta: Position): Unit = {
+        position.x += delta.x
+        position.y += delta.y
+      }
     }
 
     object Player {
@@ -63,13 +59,11 @@ class Game {
     }
 
     def gameLoop(): Unit = {
-      gameStep match {
-        case Some(_) => gameLoop()
-        case None    => ()
-      }
+      if (gameStep())
+        gameLoop()
     }
 
-    def gameStep(): Option[Unit] = {
+    def gameStep(): Boolean = {
       val line = readLine()
 
       if (line.length > 0) {
@@ -78,12 +72,12 @@ class Game {
 
           case "help" => {
             printHelp()
-            continue
+            true
           }
 
           case "show" => {
             printWorld()
-            continue
+            true
           }
 
           case "move" => {
@@ -91,29 +85,29 @@ class Game {
               println("Missing direction")
             else {
               words(1) match {
-                case "up"    => world = world.copy(player = world.player.move(Position(-1, 0)))
-                case "down"  => world = world.copy(player = world.player.move(Position(1, 0)))
-                case "right" => world = world.copy(player = world.player.move(Position(0, 1)))
-                case "left"  => world = world.copy(player = world.player.move(Position(0, -1)))
+                case "up"    => world.player.move(Position(-1, 0))
+                case "down"  => world.player.move(Position(1, 0))
+                case "right" => world.player.move(Position(0, 1))
+                case "left"  => world.player.move(Position(0, -1))
                 case _       => println("Unknown direction")
               }
             }
-            continue
+            true
           }
 
           case "quit" => {
             printQuit()
-            end
+            false
           }
 
           case _ => {
             println("Unknown command")
-            continue
+            true
           }
 
         }
       } else
-        continue
+        true
     }
 
     def printWorld(): Unit =
@@ -142,9 +136,6 @@ class Game {
 
       enter + updated.map(_.mkString(" | ")).mkString(enter) + enter
     }
-
-    def end: Option[Unit]      = None
-    def continue: Option[Unit] = Some(())
   }
 
   import Logic._

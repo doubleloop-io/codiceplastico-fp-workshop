@@ -1,8 +1,8 @@
-package day1
+package day1.solutions
 
 import scala.io.StdIn._
 
-class Game {
+class Game3 {
   import Domain._
 
   object Domain {

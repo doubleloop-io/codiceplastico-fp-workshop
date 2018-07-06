@@ -1,27 +1,23 @@
-package day1
+package day1.solutions
 
 import scala.io.StdIn._
 
-class Game {
+class Game2 {
   import Domain._
 
   object Domain {
 
-    case class Position(x: Int, y: Int) {
-      def shift(delta: Position): Position = {
-        val newx = x + delta.x
-        val newy = y + delta.y
-        copy(x = newx, y = newy)
-      }
-    }
+    case class Position(var x: Int, var y: Int)
 
     object Position {
       val origin = Position(0, 0)
     }
 
     case class Player(name: String, position: Position) {
-      def move(delta: Position): Player =
-        copy(position = position.shift(delta))
+      def move(delta: Position): Unit = {
+        position.x += delta.x
+        position.y += delta.y
+      }
     }
 
     object Player {
@@ -91,10 +87,10 @@ class Game {
               println("Missing direction")
             else {
               words(1) match {
-                case "up"    => world = world.copy(player = world.player.move(Position(-1, 0)))
-                case "down"  => world = world.copy(player = world.player.move(Position(1, 0)))
-                case "right" => world = world.copy(player = world.player.move(Position(0, 1)))
-                case "left"  => world = world.copy(player = world.player.move(Position(0, -1)))
+                case "up"    => world.player.move(Position(-1, 0))
+                case "down"  => world.player.move(Position(1, 0))
+                case "right" => world.player.move(Position(0, 1))
+                case "left"  => world.player.move(Position(0, -1))
                 case _       => println("Unknown direction")
               }
             }
