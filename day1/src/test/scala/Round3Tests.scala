@@ -51,9 +51,9 @@ object Round3Tests extends SimpleTestSuite {
          |Hello, Luke, welcome to the game!
          |Use commands to play
          |
-         |x | - | -
-         |- | - | -
-         |- | - | -
+         |x - -
+         |- - -
+         |- - -
          |
          |Bye bye Luke!
          |""".stripMargin
@@ -81,9 +81,9 @@ object Round3Tests extends SimpleTestSuite {
          |Hello, Luke, welcome to the game!
          |Use commands to play
          |
-         |x | - | -
-         |- | - | -
-         |- | - | -
+         |x - -
+         |- - -
+         |- - -
          |
          |Bye bye Luke!
          |""".stripMargin

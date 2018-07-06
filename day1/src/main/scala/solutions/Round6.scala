@@ -171,7 +171,7 @@ object Round6 {
           .get(world)
           .updated(x.get(world), playerRow)
 
-        enter + updated.map(_.mkString(" | ")).mkString(enter) + enter
+        enter + updated.map(_.mkString(" ")).mkString(enter) + enter
       }
 
       def end: Option[GameWorld]                        = None

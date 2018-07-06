@@ -133,7 +133,7 @@ object Round3 {
         val grid    = world.field.grid
         val updated = grid.updated(x, grid(x).updated(y, "x"))
 
-        enter + updated.map(_.mkString(" | ")).mkString(enter) + enter
+        enter + updated.map(_.mkString(" ")).mkString(enter) + enter
       }
 
       def end: Option[Unit]      = None
