@@ -8,12 +8,7 @@ object Round2 {
 
     object Domain {
 
-      case class Player(name: String, var x: Int, var y: Int) {
-        def move(delta: (Int, Int)): Unit = {
-          x += delta._1
-          y += delta._2
-        }
-      }
+      case class Player(name: String, var x: Int, var y: Int)
 
       object Player {
         def begin(name: String) = Player(name, 0, 0)
@@ -82,10 +77,10 @@ object Round2 {
                 println("Missing direction")
               else {
                 words(1) match {
-                  case "up"    => world.player.move((-1, 0))
-                  case "down"  => world.player.move((1, 0))
-                  case "right" => world.player.move((0, 1))
-                  case "left"  => world.player.move((0, -1))
+                  case "up"    => move((-1, 0))
+                  case "down"  => move((1, 0))
+                  case "right" => move((0, 1))
+                  case "left"  => move((0, -1))
                   case _       => println("Unknown direction")
                 }
               }
@@ -105,6 +100,11 @@ object Round2 {
           }
         } else
           continue
+      }
+
+      def move(delta: (Int, Int)): Unit = {
+        world.player.x += delta._1
+        world.player.y += delta._2
       }
 
       def printWorld(): Unit =

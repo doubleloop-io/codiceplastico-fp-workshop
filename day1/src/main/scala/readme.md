@@ -17,6 +17,7 @@
     - pass the world as parameter
     - from class field to local var
     - inline local
+- use lens to manipulate (get, set, modify, …) immutable objects
 - enforce correctness through types
     - remove primitive
     - don't reuse similar types for different needs

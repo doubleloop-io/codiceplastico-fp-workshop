@@ -8,13 +8,7 @@ object Round4 {
 
     object Domain {
 
-      case class Player(name: String, x: Int, y: Int) {
-        def move(delta: (Int, Int)): Player = {
-          val newX = x + delta._1
-          val newY = y + delta._2
-          copy(x = newX, y = newY)
-        }
-      }
+      case class Player(name: String, x: Int, y: Int)
 
       object Player {
         def begin(name: String) = Player(name, 0, 0)
@@ -83,10 +77,10 @@ object Round4 {
                 world
               } else {
                 words(1) match {
-                  case "up"    => world.copy(player = world.player.move((-1, 0)))
-                  case "down"  => world.copy(player = world.player.move((1, 0)))
-                  case "right" => world.copy(player = world.player.move((0, 1)))
-                  case "left"  => world.copy(player = world.player.move((0, -1)))
+                  case "up"    => move(world, (-1, 0))
+                  case "down"  => move(world, (1, 0))
+                  case "right" => move(world, (0, 1))
+                  case "left"  => move(world, (0, -1))
                   case _ => {
                     println("Unknown direction")
                     world
@@ -109,6 +103,12 @@ object Round4 {
           }
         } else
           continue(world)
+      }
+
+      def move(world: GameWorld, delta: (Int, Int)): GameWorld = {
+        val newX = world.player.x + delta._1
+        val newY = world.player.y + delta._2
+        world.copy(player = world.player.copy(x = newX, y = newY))
       }
 
       def printWorld(world: GameWorld): Unit =

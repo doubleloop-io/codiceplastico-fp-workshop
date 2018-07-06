@@ -8,13 +8,7 @@ object Round3 {
 
     object Domain {
 
-      case class Player(name: String, x: Int, y: Int) {
-        def move(delta: (Int, Int)): Player = {
-          val newX = x + delta._1
-          val newY = y + delta._2
-          copy(x = newX, y = newY)
-        }
-      }
+      case class Player(name: String, x: Int, y: Int)
 
       object Player {
         def begin(name: String) = Player(name, 0, 0)
@@ -83,10 +77,10 @@ object Round3 {
                 println("Missing direction")
               else {
                 words(1) match {
-                  case "up"    => world = world.copy(player = world.player.move((-1, 0)))
-                  case "down"  => world = world.copy(player = world.player.move((1, 0)))
-                  case "right" => world = world.copy(player = world.player.move((0, 1)))
-                  case "left"  => world = world.copy(player = world.player.move((0, -1)))
+                  case "up"    => move((-1, 0))
+                  case "down"  => move((1, 0))
+                  case "right" => move((0, 1))
+                  case "left"  => move((0, -1))
                   case _       => println("Unknown direction")
                 }
               }
@@ -106,6 +100,12 @@ object Round3 {
           }
         } else
           continue
+      }
+
+      def move(delta: (Int, Int)): Unit = {
+        val newX = world.player.x + delta._1
+        val newY = world.player.y + delta._2
+        world = world.copy(player = world.player.copy(x = newX, y = newY))
       }
 
       def printWorld(): Unit =
