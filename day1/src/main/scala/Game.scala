@@ -10,7 +10,7 @@ class Game {
     case class Position(var x: Int, var y: Int)
 
     object Position {
-      val start = Position(0, 0)
+      val origin = Position(0, 0)
     }
 
     case class Player(name: String, position: Position) {
@@ -21,17 +21,17 @@ class Game {
     }
 
     object Player {
-      def begin(name: String) = Player(name, Position.start)
+      def begin(name: String) = Player(name, Position.origin)
     }
 
-    case class Land(grid: Vector[Vector[Unit]])
+    case class Land(grid: Vector[Vector[String]])
 
     object Land {
       def mk3x3 = Land(
         Vector(
-          Vector((), (), ()),
-          Vector((), (), ()),
-          Vector((), (), ())
+          Vector("-", "-", "-"),
+          Vector("-", "-", "-"),
+          Vector("-", "-", "-")
         )
       )
     }
@@ -127,15 +127,12 @@ class Game {
 
     def render: String = {
 
-      def renderField =
-        world.land.grid.map(_.map(_ => "-"))
-
-      def renderPlayer(field: Vector[Vector[String]]) = {
+      def putPlayer(field: Vector[Vector[String]]) = {
         val row = field(world.player.position.x)
         field.updated(world.player.position.x, row.updated(world.player.position.y, "x"))
       }
 
-      val field = renderPlayer(renderField)
+      val field = putPlayer(world.land.grid)
       enter + field.map(_.mkString(" | ")).mkString(enter) + enter
     }
   }
