@@ -5,6 +5,7 @@
 - remove mutable var world in Game
 - remove mutable var executing in Game
 - split command parsing from execution
+    - separate "program" construction from evaluation
 - handle side effect with IO monad
 
 ## Features TODO
