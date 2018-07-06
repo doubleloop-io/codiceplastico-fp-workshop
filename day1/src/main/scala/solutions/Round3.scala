@@ -8,25 +8,16 @@ object Round3 {
 
     object Domain {
 
-      case class Position(x: Int, y: Int) {
-        def shift(delta: Position): Position = {
-          val newx = x + delta.x
-          val newy = y + delta.y
-          copy(x = newx, y = newy)
+      case class Player(name: String, x: Int, y: Int) {
+        def move(delta: (Int, Int)): Player = {
+          val newX = x + delta._1
+          val newY = y + delta._2
+          copy(x = newX, y = newY)
         }
       }
 
-      object Position {
-        val origin = Position(0, 0)
-      }
-
-      case class Player(name: String, position: Position) {
-        def move(delta: Position): Player =
-          copy(position = position.shift(delta))
-      }
-
       object Player {
-        def begin(name: String) = Player(name, Position.origin)
+        def begin(name: String) = Player(name, 0, 0)
       }
 
       case class Field(grid: Vector[Vector[String]])
@@ -92,10 +83,10 @@ object Round3 {
                 println("Missing direction")
               else {
                 words(1) match {
-                  case "up"    => world = world.copy(player = world.player.move(Position(-1, 0)))
-                  case "down"  => world = world.copy(player = world.player.move(Position(1, 0)))
-                  case "right" => world = world.copy(player = world.player.move(Position(0, 1)))
-                  case "left"  => world = world.copy(player = world.player.move(Position(0, -1)))
+                  case "up"    => world = world.copy(player = world.player.move((-1, 0)))
+                  case "down"  => world = world.copy(player = world.player.move((1, 0)))
+                  case "right" => world = world.copy(player = world.player.move((0, 1)))
+                  case "left"  => world = world.copy(player = world.player.move((0, -1)))
                   case _       => println("Unknown direction")
                 }
               }
@@ -137,7 +128,8 @@ object Round3 {
       }
 
       def render: String = {
-        val (x, y)  = Position.unapply(world.player.position).get
+        val x       = world.player.x
+        val y       = world.player.y
         val grid    = world.field.grid
         val updated = grid.updated(x, grid(x).updated(y, "x"))
 

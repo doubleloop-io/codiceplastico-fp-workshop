@@ -17,6 +17,10 @@
     - pass the world as parameter
     - from class field to local var
     - inline local
+- enforce correctness through types
+    - remove primitive
+    - don't reuse similar types for different needs
+    - making illegal states unrepresentable
 - split command parsing from execution
     - separate "program" construction from evaluation
 - handle side effect with IO monad
