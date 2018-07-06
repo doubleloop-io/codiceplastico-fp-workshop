@@ -17,13 +17,8 @@ object Round4 {
       case class Field(grid: Vector[Vector[String]])
 
       object Field {
-        def mk3x3 = Field(
-          Vector(
-            Vector("-", "-", "-"),
-            Vector("-", "-", "-"),
-            Vector("-", "-", "-")
-          )
-        )
+        def mk20x20 =
+          Field(Vector.fill(20, 20)("-"))
       }
 
       case class GameWorld(player: Player, field: Field)
@@ -35,7 +30,7 @@ object Round4 {
       val enter = System.getProperty("line.separator")
 
       def initWorld(): GameWorld = {
-        val world = GameWorld(Player.begin(askName()), Field.mk3x3)
+        val world = GameWorld(Player.begin(askName()), Field.mk20x20)
         println("Use commands to play")
         world
       }

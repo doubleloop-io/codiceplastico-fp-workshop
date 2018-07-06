@@ -45,13 +45,8 @@ object Round6 {
 
         val grid: Lens[Field, Vector[Vector[String]]] = Lens(_.grid, (s, v) => s.copy(grid = v))
 
-        def mk3x3 = Field(
-          Vector(
-            Vector("-", "-", "-"),
-            Vector("-", "-", "-"),
-            Vector("-", "-", "-")
-          )
-        )
+        def mk20x20 =
+          Field(Vector.fill(20, 20)("-"))
       }
 
       case class GameWorld(player: Player, field: Field)
@@ -70,7 +65,7 @@ object Round6 {
       val enter = System.getProperty("line.separator")
 
       def initWorld(): GameWorld = {
-        val world = GameWorld(Player.begin(askName()), Field.mk3x3)
+        val world = GameWorld(Player.begin(askName()), Field.mk20x20)
         println("Use commands to play")
         world
       }
