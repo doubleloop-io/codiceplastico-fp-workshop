@@ -7,7 +7,7 @@ import java.io.StringReader
 
 import day1.solutions.Round3._
 
-object Game3Tests extends SimpleTestSuite {
+object Round3Tests extends SimpleTestSuite {
 
   test("enter then quit") {
     val result = execute(input("Luke"), input("quit"))
