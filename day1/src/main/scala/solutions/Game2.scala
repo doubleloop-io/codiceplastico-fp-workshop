@@ -2,22 +2,27 @@ package day1.solutions
 
 import scala.io.StdIn._
 
-object Round4 {
+object Round2 {
   class Game {
     import Domain._
 
     object Domain {
 
-      case class Player(name: String, x: Int, y: Int) {
-        def move(delta: (Int, Int)): Player = {
-          val newX = x + delta._1
-          val newY = y + delta._2
-          copy(x = newX, y = newY)
+      case class Position(var x: Int, var y: Int)
+
+      object Position {
+        val origin = Position(0, 0)
+      }
+
+      case class Player(name: String, position: Position) {
+        def move(delta: Position): Unit = {
+          position.x += delta.x
+          position.y += delta.y
         }
       }
 
       object Player {
-        def begin(name: String) = Player(name, 0, 0)
+        def begin(name: String) = Player(name, Position.origin)
       }
 
       case class Field(grid: Vector[Vector[String]])
@@ -40,10 +45,11 @@ object Round4 {
 
       val enter = System.getProperty("line.separator")
 
-      def initWorld(): GameWorld = {
-        val world = GameWorld(Player.begin(askName()), Field.mk3x3)
+      var world: GameWorld = null
+
+      def initWorld(): Unit = {
+        world = GameWorld(Player.begin(askName()), Field.mk3x3)
         println("Use commands to play")
-        world
       }
 
       def askName(): String = {
@@ -53,14 +59,14 @@ object Round4 {
         name
       }
 
-      def gameLoop(world: GameWorld): Unit = {
-        gameStep(world) match {
-          case Some(w) => gameLoop(w)
+      def gameLoop(): Unit = {
+        gameStep match {
+          case Some(_) => gameLoop()
           case None    => ()
         }
       }
 
-      def gameStep(world: GameWorld): Option[GameWorld] = {
+      def gameStep(): Option[Unit] = {
         val line = readLine()
 
         if (line.length > 0) {
@@ -69,52 +75,48 @@ object Round4 {
 
             case "help" => {
               printHelp()
-              continue(world)
+              continue
             }
 
             case "show" => {
-              printWorld(world)
-              continue(world)
+              printWorld()
+              continue
             }
 
             case "move" => {
-              val newWorld = if (words.length < 2) {
+              if (words.length < 2)
                 println("Missing direction")
-                world
-              } else {
+              else {
                 words(1) match {
-                  case "up"    => world.copy(player = world.player.move((-1, 0)))
-                  case "down"  => world.copy(player = world.player.move((1, 0)))
-                  case "right" => world.copy(player = world.player.move((0, 1)))
-                  case "left"  => world.copy(player = world.player.move((0, -1)))
-                  case _ => {
-                    println("Unknown direction")
-                    world
-                  }
+                  case "up"    => world.player.move(Position(-1, 0))
+                  case "down"  => world.player.move(Position(1, 0))
+                  case "right" => world.player.move(Position(0, 1))
+                  case "left"  => world.player.move(Position(0, -1))
+                  case _       => println("Unknown direction")
                 }
               }
-              continue(newWorld)
+              continue
             }
 
             case "quit" => {
-              printQuit(world)
+              printQuit()
               end
             }
 
             case _ => {
               println("Unknown command")
-              continue(world)
+              continue
             }
 
           }
         } else
-          continue(world)
+          continue
       }
 
-      def printWorld(world: GameWorld): Unit =
-        println(render(world))
+      def printWorld(): Unit =
+        println(render)
 
-      def printQuit(world: GameWorld): Unit =
+      def printQuit(): Unit =
         println(s"Bye bye ${world.player.name}!")
 
       def printHelp(): Unit = {
@@ -130,23 +132,22 @@ object Round4 {
         println(expected)
       }
 
-      def render(world: GameWorld): String = {
-        val x       = world.player.x
-        val y       = world.player.y
+      def render: String = {
+        val (x, y)  = Position.unapply(world.player.position).get
         val grid    = world.field.grid
         val updated = grid.updated(x, grid(x).updated(y, "x"))
 
         enter + updated.map(_.mkString(" | ")).mkString(enter) + enter
       }
 
-      def end: Option[GameWorld]                        = None
-      def continue(world: GameWorld): Option[GameWorld] = Some(world)
+      def end: Option[Unit]      = None
+      def continue: Option[Unit] = Some(())
     }
 
     import Logic._
     def run(): Unit = {
-      val world = initWorld()
-      gameLoop(world)
+      initWorld()
+      gameLoop()
     }
   }
 }

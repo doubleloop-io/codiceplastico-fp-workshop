@@ -31,7 +31,7 @@ object Round0 {
         )
       }
 
-      case class GameWorld(player: Player, field: Field) {}
+      case class GameWorld(player: Player, field: Field)
     }
 
     object Logic {
