@@ -1,5 +1,3 @@
-import Dependencies._
-
 lazy val global = project
   .in(file("."))
   .settings(settings)
@@ -59,9 +57,13 @@ lazy val resolversSettings = Seq(
   Resolver.sonatypeRepo("releases")
 )
 
+lazy val monocleVersion = "1.5.0-cats"
+
 lazy val libsSettings = Seq(
-  catsCore,
-  catsEffect,
-  catsMtl,
-  miniTest % Test
+  "org.typelevel"              %% "cats-core"     % "1.1.0",
+  "org.typelevel"              %% "cats-effect"   % "1.0.0-RC2",
+  "org.typelevel"              %% "cats-mtl-core" % "0.3.0",
+  "com.github.julien-truffaut" %% "monocle-core"  % monocleVersion,
+  "com.github.julien-truffaut" %% "monocle-macro" % monocleVersion,
+  "io.monix"                   %% "minitest"      % "2.1.1" % Test
 )
