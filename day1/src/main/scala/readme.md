@@ -32,6 +32,11 @@
     - separate "program" construction from evaluation
 - split final action generation from execution
     - more, separate "program" construction from evaluation
+- handle side effect with IO monad
+    - I/O operations are side-effect
+    - lazy capture the I/O operation
+    - execute "later" on specific request
+    - "later" means in the main
 
 
 
@@ -40,7 +45,6 @@
     - remove world parameter from all functions
     - express state changes in a declarative way
     - compose logic with map and flatMap
-- handle side effect with IO monad
 
 ## Features TODO
 - every cell can be land or sea
