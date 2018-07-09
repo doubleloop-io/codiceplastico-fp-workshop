@@ -27,6 +27,10 @@
     - making illegal states unrepresentable
 - split command parsing from execution
     - separate "program" construction from evaluation
+- use the state monad to pass the game world through the funtions
+    - remove world parameter from all functions
+    - express state changes in a declarative way
+    - compose logic with map and flatMap
 - handle side effect with IO monad
 
 ## Features TODO
