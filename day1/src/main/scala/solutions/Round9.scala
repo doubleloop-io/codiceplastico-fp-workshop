@@ -70,6 +70,7 @@ object Round9 {
       case class Move(direction: Direction) extends Command
       case object NoOp                      extends Command
       case object Quit                      extends Command
+      case class Bad(message: String)       extends Command
 
       trait HandleResult
       case class Continue(world: GameWorld, message: Option[String]) extends HandleResult
@@ -95,46 +96,40 @@ object Round9 {
         }
 
       def gameStep(world: GameWorld): Option[GameWorld] =
-        parse(readLine())
-          .map(dispatch(world, _))
-          .map(handle(_))
-          .fold(m => {
-            println(m)
-            continue(world)
-          }, identity)
+        handle(dispatch(world, parse(readLine())))
 
-      def parse(line: String): Either[String, Command] =
+      def parse(line: String): Command =
         if (line.length > 0) {
           val words = line.trim.toLowerCase.split("\\s+")
           words(0) match {
-            case "help" => Right(Help)
-            case "show" => Right(Show)
+            case "help" => Help
+            case "show" => Show
             case "move" =>
               if (words.length < 2) {
-                Left("Missing direction")
+                Bad("Missing direction")
               } else {
                 words(1) match {
-                  case "up"    => Right(Move(Upward()))
-                  case "down"  => Right(Move(Downward()))
-                  case "right" => Right(Move(Rightward()))
-                  case "left"  => Right(Move(Leftward()))
-                  case _       => Left("Unknown direction")
+                  case "up"    => Move(Upward())
+                  case "down"  => Move(Downward())
+                  case "right" => Move(Rightward())
+                  case "left"  => Move(Leftward())
+                  case _       => Bad("Unknown direction")
                 }
               }
-            case "quit" => Right(Quit)
-            case _      => Left("Unknown command")
+            case "quit" => Quit
+            case _      => Bad("Unknown command")
           }
-        } else Right(NoOp)
+        } else NoOp
 
       def dispatch(world: GameWorld, command: Command): HandleResult =
         command match {
           case Help => Continue(world, Some(renderHelp()))
           case Show => Continue(world, Some(renderWorld(world)))
           case Move(direction) =>
-            move(world, direction)
-              .fold(m => Continue(world, Some(m)), Continue(_, None))
-          case NoOp => Continue(world, None)
-          case Quit => End(renderQuit(world))
+            move(world, direction).fold(m => Continue(world, Some(m)), Continue(_, None))
+          case NoOp         => Continue(world, None)
+          case Bad(message) => Continue(world, Some(message))
+          case Quit         => End(renderQuit(world))
         }
 
       def handle(result: HandleResult): Option[GameWorld] =

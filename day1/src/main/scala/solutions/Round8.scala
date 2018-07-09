@@ -70,6 +70,7 @@ object Round8 {
       case class Move(direction: Direction) extends Command
       case object NoOp                      extends Command
       case object Quit                      extends Command
+      case class Bad(message: String)       extends Command
 
       def initWorld(): GameWorld = {
         val world = GameWorld(Player.begin(askName()), Field.mk20x20)
@@ -91,35 +92,30 @@ object Round8 {
         }
 
       def gameStep(world: GameWorld): Option[GameWorld] =
-        parse(readLine())
-          .map(handle(world, _))
-          .fold(m => {
-            println(m)
-            continue(world)
-          }, identity)
+        handle(world, parse(readLine()))
 
-      def parse(line: String): Either[String, Command] =
+      def parse(line: String): Command =
         if (line.length > 0) {
           val words = line.trim.toLowerCase.split("\\s+")
           words(0) match {
-            case "help" => Right(Help)
-            case "show" => Right(Show)
+            case "help" => Help
+            case "show" => Show
             case "move" =>
               if (words.length < 2) {
-                Left("Missing direction")
+                Bad("Missing direction")
               } else {
                 words(1) match {
-                  case "up"    => Right(Move(Upward()))
-                  case "down"  => Right(Move(Downward()))
-                  case "right" => Right(Move(Rightward()))
-                  case "left"  => Right(Move(Leftward()))
-                  case _       => Left("Unknown direction")
+                  case "up"    => Move(Upward())
+                  case "down"  => Move(Downward())
+                  case "right" => Move(Rightward())
+                  case "left"  => Move(Leftward())
+                  case _       => Bad("Unknown direction")
                 }
               }
-            case "quit" => Right(Quit)
-            case _      => Left("Unknown command")
+            case "quit" => Quit
+            case _      => Bad("Unknown command")
           }
-        } else Right(NoOp)
+        } else NoOp
 
       def handle(world: GameWorld, command: Command): Option[GameWorld] =
         command match {
@@ -143,6 +139,10 @@ object Round8 {
           case Quit => {
             printQuit(world)
             end
+          }
+          case Bad(message) => {
+            println(message)
+            continue(world)
           }
         }
 
