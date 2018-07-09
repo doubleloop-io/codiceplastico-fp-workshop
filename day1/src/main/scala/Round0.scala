@@ -5,6 +5,7 @@ import scala.io.StdIn._
 object Round0 {
   class Game {
     import Domain._
+    import Logic._
 
     object Domain {
 
@@ -138,7 +139,6 @@ object Round0 {
       }
     }
 
-    import Logic._
     def run(): Unit = {
       initWorld()
       gameLoop()

@@ -5,6 +5,7 @@ import scala.io.StdIn._
 object Round3 {
   class Game {
     import Domain._
+    import Logic._
 
     object Domain {
 
@@ -145,7 +146,6 @@ object Round3 {
       def continue: Option[Unit] = Some(())
     }
 
-    import Logic._
     def run(): Unit = {
       initWorld()
       gameLoop()

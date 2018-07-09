@@ -6,6 +6,7 @@ object Round10 {
   class Game {
     import day1.std._
     import Domain._
+    import Logic._
 
     object Domain {
 
@@ -207,7 +208,6 @@ object Round10 {
         IO(println(s))
     }
 
-    import Logic._
     def safeRun(): IO[Unit] =
       initWorld()
         .flatMap(world => IO(gameLoop(world)))

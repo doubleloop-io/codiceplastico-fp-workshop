@@ -6,6 +6,7 @@ object Round6 {
   class Game {
     import day1.std._
     import Domain._
+    import Logic._
 
     object Domain {
 
@@ -203,7 +204,6 @@ object Round6 {
         GameWorld.field |-> Field.grid
     }
 
-    import Logic._
     def run(): Unit = {
       val world = initWorld()
       gameLoop(world)
