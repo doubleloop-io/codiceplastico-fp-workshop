@@ -121,7 +121,7 @@ object Round4 {
       }
 
       def printWorld(world: GameWorld): Unit =
-        println(render(world))
+        println(renderWorld(world))
 
       def printQuit(world: GameWorld): Unit =
         println(s"Bye bye ${world.player.name}!")
@@ -139,7 +139,7 @@ object Round4 {
         println(expected)
       }
 
-      def render(world: GameWorld): String = {
+      def renderWorld(world: GameWorld): String = {
         val x       = world.player.x
         val y       = world.player.y
         val grid    = world.field.grid

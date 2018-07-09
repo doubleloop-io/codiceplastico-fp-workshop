@@ -164,7 +164,7 @@ object Round8 {
           .flatMap(_.lift(position.y))
 
       def printWorld(world: GameWorld): Unit =
-        println(render(world))
+        println(renderWorld(world))
 
       def printQuit(world: GameWorld): Unit =
         println(s"Bye bye ${name.get(world)}!")
@@ -182,7 +182,7 @@ object Round8 {
         println(expected)
       }
 
-      def render(world: GameWorld): String = {
+      def renderWorld(world: GameWorld): String = {
         val playerRow = grid
           .get(world)(x.get(world))
           .updated(y.get(world), "x")
