@@ -122,7 +122,7 @@ object Round2 {
         println(s"Bye bye ${world.player.name}!")
 
       def printHelp(): Unit = {
-        val expected =
+        val value =
           s"""|
          |Valid commands:
          |
@@ -131,7 +131,7 @@ object Round2 {
          | move <up|down|left|right>
          | quit
          |""".stripMargin
-        println(expected)
+        println(value)
       }
 
       def renderWorld: String = {
