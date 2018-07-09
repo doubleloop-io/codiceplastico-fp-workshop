@@ -77,12 +77,11 @@ object Round7 {
         name
       }
 
-      def gameLoop(world: GameWorld): Unit = {
+      def gameLoop(world: GameWorld): Unit =
         gameStep(world) match {
           case Some(w) => gameLoop(w)
           case None    => ()
         }
-      }
 
       def gameStep(world: GameWorld): Option[GameWorld] = {
         val line = readLine()

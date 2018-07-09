@@ -43,10 +43,9 @@ object Round1 {
         name
       }
 
-      def gameLoop(): Unit = {
+      def gameLoop(): Unit =
         if (gameStep())
           gameLoop()
-      }
 
       def gameStep(): Boolean = {
         val line = readLine()
