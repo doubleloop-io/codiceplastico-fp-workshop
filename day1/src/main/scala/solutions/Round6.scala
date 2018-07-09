@@ -14,10 +14,10 @@ object Round6 {
       sealed trait Direction {
         val delta: Delta
       }
-      case class Up(delta: Delta = Delta(-1, 0))   extends Direction
-      case class Down(delta: Delta = Delta(1, 0))  extends Direction
-      case class Right(delta: Delta = Delta(0, 1)) extends Direction
-      case class Left(delta: Delta = Delta(0, -1)) extends Direction
+      case class Upward(delta: Delta = Delta(-1, 0))   extends Direction
+      case class Downward(delta: Delta = Delta(1, 0))  extends Direction
+      case class Rightward(delta: Delta = Delta(0, 1)) extends Direction
+      case class Leftward(delta: Delta = Delta(0, -1)) extends Direction
 
       case class Position(x: Int, y: Int)
 
@@ -108,10 +108,10 @@ object Round6 {
               } else {
                 try {
                   words(1) match {
-                    case "up"    => move(world, Up())
-                    case "down"  => move(world, Down())
-                    case "right" => move(world, Right())
-                    case "left"  => move(world, Left())
+                    case "up"    => move(world, Upward())
+                    case "down"  => move(world, Downward())
+                    case "right" => move(world, Rightward())
+                    case "left"  => move(world, Leftward())
                     case _ => {
                       println("Unknown direction")
                       world
