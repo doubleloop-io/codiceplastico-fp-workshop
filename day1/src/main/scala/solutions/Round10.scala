@@ -208,12 +208,12 @@ object Round10 {
         IO(println(s))
     }
 
-    def safeRun(): IO[Unit] =
+    def safeApp(): IO[Unit] =
       initWorld()
         .flatMap(world => IO(gameLoop(world)))
 
     def run(): Unit =
-      safeRun()
-        .unsafeRun()
+      safeApp()
+        .unsafePerformIO()
   }
 }
