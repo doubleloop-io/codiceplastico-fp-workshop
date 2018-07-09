@@ -1,16 +1,12 @@
 package day1.std
 
-case class Lens[S, A](get: S => A, set: (S, A) => S) {
+case class Lens[S, A](get: S => A, set: (A, S) => S) {
 
   def |->[B](that: Lens[A, B]): Lens[S, B] =
     composeLens(that)
 
   def composeLens[B](that: Lens[A, B]): Lens[S, B] = Lens(
     get = that.get.compose(get),
-    set = (s, b) => set(s, that.set(get(s), b))
+    set = (b, s) => set(that.set(b, get(s)), s)
   )
-
-  def modify(f: A => A): S => S = { s =>
-    set(s, f(get(s)))
-  }
 }

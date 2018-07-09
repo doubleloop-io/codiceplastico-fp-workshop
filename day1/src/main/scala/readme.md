@@ -25,8 +25,17 @@
     - remove primitive
     - don't reuse similar types for different needs
     - making illegal states unrepresentable
+- remove throws
+    - from exception to effect
+    - transform a "crazy goto" into a value
 - split command parsing from execution
     - separate "program" construction from evaluation
+- split final action generation from execution
+    - more, separate "program" construction from evaluation
+
+
+
+
 - use the state monad to pass the game world through the funtions
     - remove world parameter from all functions
     - express state changes in a declarative way

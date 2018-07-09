@@ -71,13 +71,20 @@ object Round4 {
                 println("Missing direction")
                 world
               } else {
-                words(1) match {
-                  case "up"    => move(world, (-1, 0))
-                  case "down"  => move(world, (1, 0))
-                  case "right" => move(world, (0, 1))
-                  case "left"  => move(world, (0, -1))
-                  case _ => {
-                    println("Unknown direction")
+                try {
+                  words(1) match {
+                    case "up"    => move(world, (-1, 0))
+                    case "down"  => move(world, (1, 0))
+                    case "right" => move(world, (0, 1))
+                    case "left"  => move(world, (0, -1))
+                    case _ => {
+                      println("Unknown direction")
+                      world
+                    }
+                  }
+                } catch {
+                  case e: Exception => {
+                    println(e.getMessage)
                     world
                   }
                 }
@@ -103,6 +110,13 @@ object Round4 {
       def move(world: GameWorld, delta: (Int, Int)): GameWorld = {
         val newX = world.player.x + delta._1
         val newY = world.player.y + delta._2
+
+        val size = world.field.grid.size - 1
+        if (newX < 0
+            || newY < 0
+            || newX > size
+            || newY > size) throw new Exception("Invalid direction")
+
         world.copy(player = world.player.copy(x = newX, y = newY))
       }
 

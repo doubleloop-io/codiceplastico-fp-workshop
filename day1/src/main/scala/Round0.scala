@@ -68,12 +68,16 @@ object Round0 {
               if (words.length < 2)
                 println("Missing direction")
               else {
-                words(1) match {
-                  case "up"    => move((-1, 0))
-                  case "down"  => move((1, 0))
-                  case "right" => move((0, 1))
-                  case "left"  => move((0, -1))
-                  case _       => println("Unknown direction")
+                try {
+                  words(1) match {
+                    case "up"    => move((-1, 0))
+                    case "down"  => move((1, 0))
+                    case "right" => move((0, 1))
+                    case "left"  => move((0, -1))
+                    case _       => println("Unknown direction")
+                  }
+                } catch {
+                  case e: Exception => println(e.getMessage)
                 }
               }
             }
@@ -92,8 +96,17 @@ object Round0 {
       }
 
       def move(delta: (Int, Int)): Unit = {
-        world.player.x += delta._1
-        world.player.y += delta._2
+        val newX = world.player.x + delta._1
+        val newY = world.player.y + delta._2
+
+        val size = world.field.grid.size - 1
+        if (newX < 0
+            || newY < 0
+            || newX > size
+            || newY > size) throw new Exception("Invalid direction")
+
+        world.player.x = newX
+        world.player.y = newY
       }
 
       def printWorld(): Unit =

@@ -13,9 +13,9 @@ object Round5 {
 
       object Player {
 
-        val name: Lens[Player, String] = Lens(_.name, (s, v) => s.copy(name = v))
-        val x: Lens[Player, Int]       = Lens(_.x, (s, v) => s.copy(x = v))
-        val y: Lens[Player, Int]       = Lens(_.y, (s, v) => s.copy(y = v))
+        val name: Lens[Player, String] = Lens(_.name, (v, s) => s.copy(name = v))
+        val x: Lens[Player, Int]       = Lens(_.x, (v, s) => s.copy(x = v))
+        val y: Lens[Player, Int]       = Lens(_.y, (v, s) => s.copy(y = v))
 
         def begin(name: String) = Player(name, 0, 0)
       }
@@ -24,7 +24,7 @@ object Round5 {
 
       object Field {
 
-        val grid: Lens[Field, Vector[Vector[String]]] = Lens(_.grid, (s, v) => s.copy(grid = v))
+        val grid: Lens[Field, Vector[Vector[String]]] = Lens(_.grid, (v, s) => s.copy(grid = v))
 
         def mk20x20 =
           Field(Vector.fill(20, 20)("-"))
@@ -34,8 +34,8 @@ object Round5 {
 
       object GameWorld {
 
-        val player: Lens[GameWorld, Player] = Lens(_.player, (s, v) => s.copy(player = v))
-        val field: Lens[GameWorld, Field]   = Lens(_.field, (s, v) => s.copy(field = v))
+        val player: Lens[GameWorld, Player] = Lens(_.player, (v, s) => s.copy(player = v))
+        val field: Lens[GameWorld, Field]   = Lens(_.field, (v, s) => s.copy(field = v))
 
       }
     }
@@ -87,13 +87,20 @@ object Round5 {
                 println("Missing direction")
                 world
               } else {
-                words(1) match {
-                  case "up"    => move((-1, 0))(world)
-                  case "down"  => move((1, 0))(world)
-                  case "right" => move((0, 1))(world)
-                  case "left"  => move((0, -1))(world)
-                  case _ => {
-                    println("Unknown direction")
+                try {
+                  words(1) match {
+                    case "up"    => move(world, (-1, 0))
+                    case "down"  => move(world, (1, 0))
+                    case "right" => move(world, (0, 1))
+                    case "left"  => move(world, (0, -1))
+                    case _ => {
+                      println("Unknown direction")
+                      world
+                    }
+                  }
+                } catch {
+                  case e: Exception => {
+                    println(e.getMessage)
                     world
                   }
                 }
@@ -116,9 +123,18 @@ object Round5 {
           continue(world)
       }
 
-      def move(delta: (Int, Int)): GameWorld => GameWorld =
-        x.modify(_ + delta._1)
-          .andThen(y.modify(_ + delta._2))
+      def move(world: GameWorld, delta: (Int, Int)): GameWorld = {
+        val newX = x.get(world) + delta._1
+        val newY = y.get(world) + delta._2
+
+        val size = grid.get(world).size - 1
+        if (newX < 0
+            || newY < 0
+            || newX > size
+            || newY > size) throw new Exception("Invalid direction")
+
+        x.set(newX, y.set(newY, world))
+      }
 
       def printWorld(world: GameWorld): Unit =
         println(render(world))
