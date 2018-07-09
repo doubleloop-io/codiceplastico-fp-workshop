@@ -2,9 +2,15 @@ package day1.solutions
 
 import scala.io.StdIn._
 
+import cats._
+import cats.data._
+import cats.implicits._
+
+import monocle.Lens
+import monocle.macros.GenLens
+
 object Round5 {
   class Game {
-    import day1.std._
     import Domain._
     import Logic._
 
@@ -14,9 +20,9 @@ object Round5 {
 
       object Player {
 
-        val name: Lens[Player, String] = Lens(_.name, (v, s) => s.copy(name = v))
-        val x: Lens[Player, Int]       = Lens(_.x, (v, s) => s.copy(x = v))
-        val y: Lens[Player, Int]       = Lens(_.y, (v, s) => s.copy(y = v))
+        val name = GenLens[Player](_.name)
+        val x    = GenLens[Player](_.x)
+        val y    = GenLens[Player](_.y)
 
         def begin(name: String) = Player(name, 0, 0)
       }
@@ -25,7 +31,7 @@ object Round5 {
 
       object Field {
 
-        val grid: Lens[Field, Vector[Vector[String]]] = Lens(_.grid, (v, s) => s.copy(grid = v))
+        val grid = GenLens[Field](_.grid)
 
         def mk20x20 =
           Field(Vector.fill(20, 20)("-"))
@@ -35,8 +41,8 @@ object Round5 {
 
       object GameWorld {
 
-        val player: Lens[GameWorld, Player] = Lens(_.player, (v, s) => s.copy(player = v))
-        val field: Lens[GameWorld, Field]   = Lens(_.field, (v, s) => s.copy(field = v))
+        val player = GenLens[GameWorld](_.player)
+        val field  = GenLens[GameWorld](_.field)
 
       }
     }
@@ -133,7 +139,7 @@ object Round5 {
             || newX > size
             || newY > size) throw new Exception("Invalid direction")
 
-        x.set(newX, y.set(newY, world))
+        x.set(newX)(y.set(newY)(world))
       }
 
       def printWorld(world: GameWorld): Unit =
@@ -170,16 +176,16 @@ object Round5 {
       def continue(world: GameWorld): Option[GameWorld] = Some(world)
 
       def name: Lens[GameWorld, String] =
-        GameWorld.player |-> Player.name
+        GameWorld.player.composeLens(Player.name)
 
       def x: Lens[GameWorld, Int] =
-        GameWorld.player |-> Player.x
+        GameWorld.player.composeLens(Player.x)
 
       def y: Lens[GameWorld, Int] =
-        GameWorld.player |-> Player.y
+        GameWorld.player.composeLens(Player.y)
 
       def grid: Lens[GameWorld, Vector[Vector[String]]] =
-        GameWorld.field |-> Field.grid
+        GameWorld.field.composeLens(Field.grid)
     }
 
     def run(): Unit = {
