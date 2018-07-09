@@ -147,18 +147,21 @@ object Round8 {
         }
 
       def move(world: GameWorld, direction: Direction): Either[String, GameWorld] = {
-        val newX = x.get(world) + direction.delta.x
-        val newY = y.get(world) + direction.delta.y
+        val newPosition = Position(
+          x.get(world) + direction.delta.x,
+          y.get(world) + direction.delta.y
+        )
 
-        val size = grid.get(world).size - 1
-        if (newX < 0
-            || newY < 0
-            || newX > size
-            || newY > size)
-          Left("Invalid direction")
-        else
-          Right(x.set(newX, y.set(newY, world)))
+        cell(world, newPosition)
+          .map(_ => position.set(newPosition, world))
+          .toRight("Invalid direction")
       }
+
+      def cell(world: GameWorld, position: Position): Option[String] =
+        grid
+          .get(world)
+          .lift(position.x)
+          .flatMap(_.lift(position.y))
 
       def printWorld(world: GameWorld): Unit =
         println(render(world))
@@ -195,6 +198,9 @@ object Round8 {
 
       def name: Lens[GameWorld, String] =
         GameWorld.player |-> Player.name
+
+      def position: Lens[GameWorld, Position] =
+        GameWorld.player |-> Player.position
 
       def x: Lens[GameWorld, Int] =
         GameWorld.player |-> Player.position |-> Position.x

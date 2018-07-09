@@ -191,6 +191,9 @@ object Round6 {
       def name: Lens[GameWorld, String] =
         GameWorld.player |-> Player.name
 
+      def position: Lens[GameWorld, Position] =
+        GameWorld.player |-> Player.position
+
       def x: Lens[GameWorld, Int] =
         GameWorld.player |-> Player.position |-> Position.x
 
