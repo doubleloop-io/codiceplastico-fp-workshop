@@ -85,14 +85,17 @@ object Round10 {
           .flatMap(_ => getLine().map(_.trim))
           .flatMap(name => putLine(s"Hello, $name, welcome to the game!").map(_ => name))
 
-      def gameLoop(world: GameWorld): Unit =
-        gameStep(world) match {
+      def gameLoop(world: GameWorld): IO[Unit] =
+        gameStep(world).flatMap {
           case Some(w) => gameLoop(w)
-          case None    => ()
+          case None    => IO.unit()
         }
 
-      def gameStep(world: GameWorld): Option[GameWorld] =
-        handle(dispatch(world, parse(readLine())))
+      def gameStep(world: GameWorld): IO[Option[GameWorld]] =
+        getLine()
+          .map(parse)
+          .map(dispatch(world, _))
+          .flatMap(handle)
 
       def parse(line: String): Command =
         if (line.length > 0) {
@@ -128,16 +131,15 @@ object Round10 {
           case Quit         => End(renderQuit(world))
         }
 
-      def handle(result: HandleResult): Option[GameWorld] =
+      def handle(result: HandleResult): IO[Option[GameWorld]] =
         result match {
-          case Continue(world, messageOpt) => {
-            messageOpt.fold(())(println(_))
-            continue(world)
-          }
-          case End(message) => {
-            println(message)
-            end
-          }
+          case Continue(world, messageOpt) =>
+            messageOpt
+              .fold(IO.unit())(putLine)
+              .map(_ => continue(world))
+          case End(message) =>
+            putLine(message)
+              .map(_ => end)
         }
 
       def move(world: GameWorld, direction: Direction): Either[String, GameWorld] =
@@ -207,7 +209,7 @@ object Round10 {
 
     def safeApp(): IO[Unit] =
       initWorld()
-        .flatMap(world => IO(gameLoop(world)))
+        .flatMap(world => gameLoop(world))
 
     def run(): Unit =
       safeApp()
