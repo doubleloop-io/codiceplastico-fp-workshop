@@ -129,17 +129,11 @@ object Round9 {
         }
 
       def handle(result: HandleResult): Option[GameWorld] =
-        result match {
-          case Ior.Both(world, message) => {
-            println(message)
-            continue(world)
-          }
-          case Ior.Left(world) => continue(world)
-          case Ior.Right(message) => {
-            println(message)
-            end
-          }
-        }
+        result.fold(
+          world => continue(world),
+          message => { println(message); end },
+          (world, message) => { println(message); continue(world) }
+        )
 
       def move(world: GameWorld, direction: Direction): Either[String, GameWorld] =
         position
