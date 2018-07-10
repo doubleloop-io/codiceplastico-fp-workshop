@@ -2,9 +2,11 @@ package day1.solutions
 
 import scala.io.StdIn._
 
+import monocle.Lens
+import monocle.macros.GenLens
+
 object Round6 {
   class Game {
-    import day1.std._
     import Domain._
     import Logic._
 
@@ -23,9 +25,8 @@ object Round6 {
       case class Position(x: Int, y: Int)
 
       object Position {
-
-        val x: Lens[Position, Int] = Lens(_.x, (v, s) => s.copy(x = v))
-        val y: Lens[Position, Int] = Lens(_.y, (v, s) => s.copy(y = v))
+        val x = GenLens[Position](_.x)
+        val y = GenLens[Position](_.y)
 
         val origin: Position = Position(0, 0)
       }
@@ -33,9 +34,8 @@ object Round6 {
       case class Player(name: String, position: Position)
 
       object Player {
-
-        val name: Lens[Player, String]       = Lens(_.name, (v, s) => s.copy(name = v))
-        val position: Lens[Player, Position] = Lens(_.position, (v, s) => s.copy(position = v))
+        val name     = GenLens[Player](_.name)
+        val position = GenLens[Player](_.position)
 
         def begin(name: String) = Player(name, Position.origin)
       }
@@ -43,8 +43,7 @@ object Round6 {
       case class Field(grid: Vector[Vector[String]])
 
       object Field {
-
-        val grid: Lens[Field, Vector[Vector[String]]] = Lens(_.grid, (v, s) => s.copy(grid = v))
+        val grid = GenLens[Field](_.grid)
 
         def mk20x20 =
           Field(Vector.fill(20, 20)("-"))
@@ -53,10 +52,8 @@ object Round6 {
       case class GameWorld(player: Player, field: Field)
 
       object GameWorld {
-
-        val player: Lens[GameWorld, Player] = Lens(_.player, (v, s) => s.copy(player = v))
-        val field: Lens[GameWorld, Field]   = Lens(_.field, (v, s) => s.copy(field = v))
-
+        val player = GenLens[GameWorld](_.player)
+        val field  = GenLens[GameWorld](_.field)
       }
     }
 
@@ -152,7 +149,7 @@ object Round6 {
             || newX > size
             || newY > size) throw new Exception("Invalid direction")
 
-        x.set(newX, y.set(newY, world))
+        x.set(newX)(y.set(newY)(world))
       }
 
       def printWorld(world: GameWorld): Unit =
@@ -189,19 +186,19 @@ object Round6 {
       def continue(world: GameWorld): Option[GameWorld] = Some(world)
 
       def name: Lens[GameWorld, String] =
-        GameWorld.player |-> Player.name
+        GameWorld.player.composeLens(Player.name)
 
       def position: Lens[GameWorld, Position] =
-        GameWorld.player |-> Player.position
+        GameWorld.player.composeLens(Player.position)
 
       def x: Lens[GameWorld, Int] =
-        GameWorld.player |-> Player.position |-> Position.x
+        GameWorld.player.composeLens(Player.position).composeLens(Position.x)
 
       def y: Lens[GameWorld, Int] =
-        GameWorld.player |-> Player.position |-> Position.y
+        GameWorld.player.composeLens(Player.position).composeLens(Position.y)
 
       def grid: Lens[GameWorld, Vector[Vector[String]]] =
-        GameWorld.field |-> Field.grid
+        GameWorld.field.composeLens(Field.grid)
     }
 
     def run(): Unit = {

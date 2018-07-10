@@ -2,10 +2,6 @@ package day1.solutions
 
 import scala.io.StdIn._
 
-import cats._
-import cats.data._
-import cats.implicits._
-
 import monocle.Lens
 import monocle.macros.GenLens
 
@@ -19,6 +15,11 @@ object Round5 {
       case class Player(name: String, x: Int, y: Int)
 
       object Player {
+        object ExpandedStyle {
+          val _name = Lens[Player, String](_.name)(v => s => s.copy(name = v))
+          val _x    = Lens[Player, Int](_.x)(v => s => s.copy(x = v))
+          val _y    = Lens[Player, Int](_.y)(v => s => s.copy(y = v))
+        }
 
         val name = GenLens[Player](_.name)
         val x    = GenLens[Player](_.x)
@@ -30,7 +31,6 @@ object Round5 {
       case class Field(grid: Vector[Vector[String]])
 
       object Field {
-
         val grid = GenLens[Field](_.grid)
 
         def mk20x20 =
@@ -40,10 +40,8 @@ object Round5 {
       case class GameWorld(player: Player, field: Field)
 
       object GameWorld {
-
         val player = GenLens[GameWorld](_.player)
         val field  = GenLens[GameWorld](_.field)
-
       }
     }
 
