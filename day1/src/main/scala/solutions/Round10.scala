@@ -2,12 +2,12 @@ package day1.solutions
 
 import scala.io.StdIn._
 import cats.implicits._
+import cats.effect.IO
 import monocle.Lens
 import monocle.macros.GenLens
 
 object Round10 {
   class Game {
-    import day1.std._
     import Domain._
     import Logic._
 
@@ -78,17 +78,17 @@ object Round10 {
       def initWorld(): IO[GameWorld] =
         askName()
           .map(name => GameWorld(Player.begin(name), Field.mk20x20))
-          .flatMap(world => putLine("Use commands to play").map(_ => world))
+          .flatMap(world => putLine("Use commands to play") *> IO.pure(world))
 
       def askName(): IO[String] =
         putLine("What is your name?")
           .flatMap(_ => getLine().map(_.trim))
-          .flatMap(name => putLine(s"Hello, $name, welcome to the game!").map(_ => name))
+          .flatMap(name => putLine(s"Hello, $name, welcome to the game!") *> IO.pure(name))
 
       def gameLoop(world: GameWorld): IO[Unit] =
         gameStep(world).flatMap {
           case Some(w) => gameLoop(w)
-          case None    => IO.unit()
+          case None    => IO.unit
         }
 
       def gameStep(world: GameWorld): IO[Option[GameWorld]] =
@@ -133,13 +133,11 @@ object Round10 {
 
       def handle(result: HandleResult): IO[Option[GameWorld]] =
         result match {
-          case Continue(world, messageOpt) =>
-            messageOpt
-              .fold(IO.unit())(putLine)
-              .map(_ => continue(world))
+          case Continue(world, message) =>
+            message
+              .fold(IO.unit)(putLine) *> IO.pure(continue(world))
           case End(message) =>
-            putLine(message)
-              .map(_ => end)
+            putLine(message) *> IO.pure(end)
         }
 
       def move(world: GameWorld, direction: Direction): Either[String, GameWorld] =
@@ -149,7 +147,7 @@ object Round10 {
 
       def newPosition(world: GameWorld, delta: Delta, current: Position): Option[Position] = {
         val next = Position(current.x + delta.x, current.y + delta.y)
-        cell(world, next).map(_ => next)
+        cell(world, next) *> Some(next)
       }
 
       def cell(world: GameWorld, position: Position): Option[String] =
@@ -213,6 +211,6 @@ object Round10 {
 
     def run(): Unit =
       safeApp()
-        .unsafePerformIO()
+        .unsafeRunSync()
   }
 }

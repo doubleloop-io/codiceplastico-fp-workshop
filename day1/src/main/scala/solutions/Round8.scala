@@ -151,7 +151,7 @@ object Round8 {
 
       def newPosition(world: GameWorld, delta: Delta, current: Position): Option[Position] = {
         val next = Position(current.x + delta.x, current.y + delta.y)
-        cell(world, next).map(_ => next)
+        cell(world, next) *> Some(next)
       }
 
       def cell(world: GameWorld, position: Position): Option[String] =

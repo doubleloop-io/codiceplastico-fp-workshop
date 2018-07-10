@@ -132,8 +132,8 @@ object Round9 {
 
       def handle(result: HandleResult): Option[GameWorld] =
         result match {
-          case Continue(world, messageOpt) => {
-            messageOpt.fold(())(println(_))
+          case Continue(world, message) => {
+            message.fold(())(println(_))
             continue(world)
           }
           case End(message) => {
@@ -149,7 +149,7 @@ object Round9 {
 
       def newPosition(world: GameWorld, delta: Delta, current: Position): Option[Position] = {
         val next = Position(current.x + delta.x, current.y + delta.y)
-        cell(world, next).map(_ => next)
+        cell(world, next) *> Some(next)
       }
 
       def cell(world: GameWorld, position: Position): Option[String] =
