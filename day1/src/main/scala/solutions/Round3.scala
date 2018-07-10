@@ -26,7 +26,6 @@ object Round3 {
     }
 
     object Logic {
-      import Domain._
 
       val enter = System.getProperty("line.separator")
 
