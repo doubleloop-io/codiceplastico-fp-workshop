@@ -1,6 +1,7 @@
 package day1.solutions
 
 import scala.io.StdIn._
+import cats.data._
 import cats.implicits._
 import monocle.Lens
 import monocle.macros.GenLens
@@ -69,9 +70,8 @@ object Round9 {
       case object Quit                      extends Command
       case class Bad(message: String)       extends Command
 
-      trait HandleResult
-      case class Continue(world: GameWorld, message: Option[String]) extends HandleResult
-      case class End(essage: String)                                 extends HandleResult
+      type Message      = String
+      type HandleResult = GameWorld Ior Message
 
       def initWorld(): GameWorld = {
         val world = GameWorld(Player.begin(askName()), Field.mk20x20)
@@ -120,22 +120,22 @@ object Round9 {
 
       def dispatch(world: GameWorld, command: Command): HandleResult =
         command match {
-          case Help => Continue(world, Some(renderHelp()))
-          case Show => Continue(world, Some(renderWorld(world)))
-          case Move(direction) =>
-            move(world, direction).fold(m => Continue(world, Some(m)), Continue(_, None))
-          case NoOp         => Continue(world, None)
-          case Bad(message) => Continue(world, Some(message))
-          case Quit         => End(renderQuit(world))
+          case Help            => Ior.both(world, renderHelp())
+          case Show            => Ior.both(world, renderWorld(world))
+          case Move(direction) => move(world, direction).fold(Ior.both(world, _), Ior.left(_))
+          case NoOp            => Ior.left(world)
+          case Bad(message)    => Ior.both(world, message)
+          case Quit            => Ior.right(renderQuit(world))
         }
 
       def handle(result: HandleResult): Option[GameWorld] =
         result match {
-          case Continue(world, message) => {
-            message.fold(())(println(_))
+          case Ior.Both(world, message) => {
+            println(message)
             continue(world)
           }
-          case End(message) => {
+          case Ior.Left(world) => continue(world)
+          case Ior.Right(message) => {
             println(message)
             end
           }

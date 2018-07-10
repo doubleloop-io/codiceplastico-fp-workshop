@@ -1,6 +1,7 @@
 package day1.solutions
 
 import scala.io.StdIn._
+import cats.data._
 import cats.implicits._
 import cats.effect.IO
 import monocle.Lens
@@ -70,9 +71,8 @@ object Round10 {
       case object Quit                      extends Command
       case class Bad(message: String)       extends Command
 
-      trait HandleResult
-      case class Continue(world: GameWorld, message: Option[String]) extends HandleResult
-      case class End(essage: String)                                 extends HandleResult
+      type Message      = String
+      type HandleResult = GameWorld Ior Message
 
       def initWorld(): IO[GameWorld] =
         askName()
@@ -121,22 +121,19 @@ object Round10 {
 
       def dispatch(world: GameWorld, command: Command): HandleResult =
         command match {
-          case Help => Continue(world, Some(renderHelp()))
-          case Show => Continue(world, Some(renderWorld(world)))
-          case Move(direction) =>
-            move(world, direction).fold(m => Continue(world, Some(m)), Continue(_, None))
-          case NoOp         => Continue(world, None)
-          case Bad(message) => Continue(world, Some(message))
-          case Quit         => End(renderQuit(world))
+          case Help            => Ior.both(world, renderHelp())
+          case Show            => Ior.both(world, renderWorld(world))
+          case Move(direction) => move(world, direction).fold(Ior.both(world, _), Ior.left(_))
+          case NoOp            => Ior.left(world)
+          case Bad(message)    => Ior.both(world, message)
+          case Quit            => Ior.right(renderQuit(world))
         }
 
       def handle(result: HandleResult): IO[Option[GameWorld]] =
         result match {
-          case Continue(world, message) =>
-            message
-              .fold(IO.unit)(putLine) *> IO.pure(continue(world))
-          case End(message) =>
-            putLine(message) *> IO.pure(end)
+          case Ior.Both(world, message) => putLine(message) *> continue(world)
+          case Ior.Left(world)          => continue(world)
+          case Ior.Right(message)       => putLine(message) *> end
         }
 
       def move(world: GameWorld, direction: Direction): Either[String, GameWorld] =
@@ -179,8 +176,8 @@ object Round10 {
         enter + updated.map(_.mkString(" ")).mkString(enter) + enter
       }
 
-      def end: Option[GameWorld]                        = None
-      def continue(world: GameWorld): Option[GameWorld] = Some(world)
+      def end: IO[Option[GameWorld]]                        = IO.pure(None)
+      def continue(world: GameWorld): IO[Option[GameWorld]] = IO.pure(Some(world))
 
       def name: Lens[GameWorld, String] =
         GameWorld.player.composeLens(Player.name)
