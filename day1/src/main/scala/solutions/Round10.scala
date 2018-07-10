@@ -1,7 +1,7 @@
 package day1.solutions
 
 import scala.io.StdIn._
-
+import cats.implicits._
 import monocle.Lens
 import monocle.macros.GenLens
 
@@ -140,15 +140,14 @@ object Round10 {
           }
         }
 
-      def move(world: GameWorld, direction: Direction): Either[String, GameWorld] = {
-        val newPosition = Position(
-          x.get(world) + direction.delta.x,
-          y.get(world) + direction.delta.y
-        )
-
-        cell(world, newPosition)
-          .map(_ => position.set(newPosition)(world))
+      def move(world: GameWorld, direction: Direction): Either[String, GameWorld] =
+        position
+          .modifyF(newPosition(world, direction.delta, _))(world)
           .toRight("Invalid direction")
+
+      def newPosition(world: GameWorld, delta: Delta, current: Position): Option[Position] = {
+        val next = Position(current.x + delta.x, current.y + delta.y)
+        cell(world, next).map(_ => next)
       }
 
       def cell(world: GameWorld, position: Position): Option[String] =

@@ -1,7 +1,6 @@
 package day1.solutions
 
 import scala.io.StdIn._
-
 import monocle.Lens
 import monocle.macros.GenLens
 
@@ -149,7 +148,8 @@ object Round6 {
             || newX > size
             || newY > size) throw new Exception("Invalid direction")
 
-        x.set(newX)(y.set(newY)(world))
+        x.set(newX)
+          .andThen(y.set(newY))(world)
       }
 
       def printWorld(world: GameWorld): Unit =
