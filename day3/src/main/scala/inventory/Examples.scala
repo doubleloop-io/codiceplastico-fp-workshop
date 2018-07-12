@@ -9,7 +9,7 @@ import ItemService._
 
 object Examples {
 
-  def demo[F[_]: Monad: RandomId: Console: ItemService]: F[Unit] =
+  def demoOk[F[_]: Monad: RandomId: Console: ItemService]: F[Unit] =
     for {
       id <- nextUUID()
       _  <- putLine(id.toString)
@@ -28,5 +28,15 @@ object Examples {
 
       item4 <- deactivate(id)
       _     <- putLine(item4.toString)
+    } yield ()
+
+  def demoBadName[F[_]: Monad: RandomId: Console: ItemService]: F[Unit] =
+    for {
+      id <- nextUUID()
+      _  <- putLine(id.toString)
+
+      item0 <- create2(id, "books!", 5)
+      _     <- putLine(item0.toString)
+
     } yield ()
 }

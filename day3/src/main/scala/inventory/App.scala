@@ -8,5 +8,6 @@ import interpreter.itemservice._
 
 object App {
   def run(): IO[Unit] =
-    Examples.demo[IO]
+    // Examples.demoOk[IO]
+    Examples.demoBadName[IO]
 }

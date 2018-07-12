@@ -1,10 +1,12 @@
 package day3.inventory.interpreter
 
 import cats._
+import cats.data._
 import cats.implicits._
 import cats.effect.Sync
 import java.util.UUID
 
+import day3.inventory._
 import day3.inventory.Models._
 import day3.inventory.ItemRepository
 import day3.inventory.ItemService
@@ -17,6 +19,12 @@ trait ItemServiceInstances extends ItemRepositoryInstances {
       val item = Item(id, name, 0, true)
       repo.save(id, item) *> Sync[F].pure(item)
     }
+
+    def create2(id: UUID, name: String, count: Int): F[ValidationResult[Item]] =
+      Item
+        .create(id, name, count)
+        .map(item => repo.save(id, item) *> Sync[F].pure(item))
+        .sequence
 
     def deactivate(id: UUID): F[Item] =
       modify(id, i => i.copy(activated = false))

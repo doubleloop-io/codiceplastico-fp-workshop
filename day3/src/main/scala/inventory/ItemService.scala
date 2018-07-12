@@ -5,6 +5,7 @@ import Models._
 
 trait ItemService[F[_]] {
   def create(id: UUID, name: String, count: Int): F[Item]
+  def create2(id: UUID, name: String, count: Int): F[ValidationResult[Item]]
   def deactivate(id: UUID): F[Item]
   def checkout(id: UUID, count: Int): F[Item]
   def checkin(id: UUID, count: Int): F[Item]
@@ -14,6 +15,9 @@ trait ItemService[F[_]] {
 object ItemService {
   def create[F[_]](id: UUID, name: String, count: Int)(implicit S: ItemService[F]): F[Item] =
     S.create(id, name, count)
+
+  def create2[F[_]](id: UUID, name: String, count: Int)(implicit S: ItemService[F]): F[ValidationResult[Item]] =
+    S.create2(id, name, count)
 
   def deactivate[F[_]](id: UUID)(implicit S: ItemService[F]): F[Item] =
     S.deactivate(id)
