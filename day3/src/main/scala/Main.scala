@@ -1,5 +1,7 @@
-package fpworkshop
+package day3
+
+import inventory._
 
 object Main extends App {
-  println("Hello from DAY3")
+  App.run().unsafeRunSync()
 }
