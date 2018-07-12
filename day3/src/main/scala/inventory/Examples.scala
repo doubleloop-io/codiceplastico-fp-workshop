@@ -14,7 +14,7 @@ object Examples {
       id <- nextUUID()
       _  <- putLine(id.toString)
 
-      item0 <- create(id, "books")
+      item0 <- create(id, "books", 5)
       _     <- putLine(item0.toString)
 
       item1 <- checkin(id, 10)
