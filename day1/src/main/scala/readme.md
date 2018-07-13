@@ -38,14 +38,6 @@
     - execute "later" on specific request
     - "later" means in the main
 
-
-
-
-- use the state monad to pass the game world through the funtions
-    - remove world parameter from all functions
-    - express state changes in a declarative way
-    - compose logic with map and flatMap
-
 ## Features TODO
 - every cell can be land or sea
 - if the player ends up in the sea, he dies and the game ends
