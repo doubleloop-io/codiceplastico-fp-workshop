@@ -18,10 +18,10 @@ object Models {
 
     def create(id: UUID, name: String, count: Int): ValidationResult[Item] =
       (
-        passthru(id),
+        valid(id),
         validateName(name),
         validateCount(count),
-        passthru(true)
+        valid(true)
       ).mapN(Item.apply)
 
     def validateName(name: String): ValidationResult[String] =

@@ -39,7 +39,7 @@ package object inventory {
 
   object Checkers {
 
-    def passthru[A](value: A): ValidationResult[A] =
+    def valid[A](value: A): ValidationResult[A] =
       value.validNel
 
     def checkNotEmpty(value: String, fieldName: String): ValidationResult[String] =
