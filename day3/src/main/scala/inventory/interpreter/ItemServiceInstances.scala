@@ -20,10 +20,7 @@ trait ItemServiceInstances extends ItemRepositoryInstances {
   ): ItemService[F] = new ItemService[F] {
 
     def create(id: UUID, name: String, count: Int): F[Item] =
-      S.flatMap(Item.createF(id, name, count))(item => saveX(id, item))
-
-    private def saveX(id: UUID, item: Item): F[Item] =
-      S.map(repo.save(id, item))(_ => item)
+      S.flatMap(Item.createF(id, name, count))(item => repo.save(id, item))
 
     def deactivate(id: UUID): F[Item] =
       modify(id, i => i.copy(activated = false))
@@ -38,9 +35,7 @@ trait ItemServiceInstances extends ItemRepositoryInstances {
       modify(id, i => i.copy(name = name))
 
     private def modify(id: UUID, f: Item => Item): F[Item] =
-      S.flatMap(repo.load(id)) { item =>
-        S.map(repo.save(id, f(item)))(_ => item)
-      }
+      S.flatMap(repo.load(id))(item => repo.save(id, f(item)))
   }
 }
 

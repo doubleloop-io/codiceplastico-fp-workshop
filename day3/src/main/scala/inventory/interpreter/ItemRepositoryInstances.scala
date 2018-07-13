@@ -17,9 +17,9 @@ trait ItemRepositoryInstances {
         .get(id)
         .fold(Sync[F].raiseError[Item](new Exception(s"Duplicated item: $id")))(Sync[F].pure)
 
-    def save(id: UUID, item: Item): F[Unit] = {
+    def save(id: UUID, item: Item): F[Item] = {
       storage = storage + (id -> item)
-      Sync[F].unit
+      Sync[F].pure(item)
     }
   }
 }

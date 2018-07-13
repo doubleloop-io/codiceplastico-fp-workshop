@@ -5,13 +5,13 @@ import Models._
 
 trait ItemRepository[F[_]] {
   def load(id: UUID): F[Item]
-  def save(id: UUID, item: Item): F[Unit]
+  def save(id: UUID, item: Item): F[Item]
 }
 
 object ItemRepository {
   def load[F[_]](id: UUID)(implicit R: ItemRepository[F]): F[Item] =
     R.load(id)
 
-  def save[F[_]](id: UUID, item: Item)(implicit R: ItemRepository[F]): F[Unit] =
+  def save[F[_]](id: UUID, item: Item)(implicit R: ItemRepository[F]): F[Item] =
     R.save(id, item)
 }
