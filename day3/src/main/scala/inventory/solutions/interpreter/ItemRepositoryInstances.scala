@@ -10,14 +10,17 @@ trait ItemRepositoryInstances {
 
   implicit def itemRepository[F[_]: Sync]: ItemRepository[F] = new ItemRepository[F] {
 
+    private val S = Sync[F]
+    import S._
+
     private var storage = Map.empty[UUID, Item]
 
     def load(id: UUID): F[Item] =
-      Sync[F].pure(storage(id))
+      delay(storage(id))
 
-    def save(id: UUID, item: Item): F[Item] = {
+    def save(id: UUID, item: Item): F[Item] = delay {
       storage = storage + (id -> item)
-      Sync[F].pure(item)
+      item
     }
   }
 }
