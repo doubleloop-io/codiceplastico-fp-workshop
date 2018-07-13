@@ -13,7 +13,7 @@ object Models {
 
   object Item {
 
-    def createF[F[_]](id: UUID, name: String, count: Int)(implicit ME: MonadError[F, ValidationError]): F[Item] =
+    def createF[F[_]](id: UUID, name: String, count: Int)(implicit ME: MonadError[F, Throwable]): F[Item] =
       create(id, name, count).toMonadError[F]
 
     def create(id: UUID, name: String, count: Int): ValidationResult[Item] =

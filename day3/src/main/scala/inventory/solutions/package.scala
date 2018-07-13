@@ -9,22 +9,23 @@ package object inventory {
 
   lazy val enter = System.getProperty("line.separator")
 
-  type Result[A] = EitherT[IO, ValidationError, A]
-
+  type Result[A]           = IO[A]
   type ValidationResult[A] = ValidatedNel[ValidationError, A]
 
   implicit class ValidationResultOps[A](actual: ValidationResult[A]) {
 
-    def toMonadError[F[_]](implicit ME: MonadError[F, ValidationError]): F[A] =
-      actual.fold(e => ME.raiseError(ErrorList(e.toList: _*)), v => ME.pure(v))
+    def toMonadError[F[_]](implicit ME: MonadError[F, Throwable]): F[A] =
+      actual.fold(
+        e => ME.raiseError(ValidationErrorException(e.toList: _*)),
+        v => ME.pure(v)
+      )
   }
+
+  final case class ValidationErrorException(errors: ValidationError*)
+      extends Exception("Error list:" + enter + errors.map("- " + _.errorMessage).mkString(enter))
 
   sealed trait ValidationError {
     def errorMessage: String
-  }
-
-  case class ErrorList(errors: ValidationError*) extends ValidationError {
-    def errorMessage: String = errors.mkString(enter)
   }
 
   case class EmptyString(fieldName: String) extends ValidationError {

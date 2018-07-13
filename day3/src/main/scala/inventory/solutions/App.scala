@@ -23,21 +23,14 @@ object App {
     val prog2 = Examples.demoBad[Result]
     val prog3 = Examples.demoNotFound[Result]
 
-    prog1.value
-      .flatMap(handleVR(_))
-      .flatMap(_ => prog2.value.flatMap(handleVR(_)))
-      .flatMap(_ => prog3.value.flatMap(handleVR(_)))
+    prog1
+      .flatMap(_ => prog2)
+      .flatMap(_ => prog3)
       .attempt
-      .flatMap(handleET(_))
+      .flatMap(handle(_))
   }
 
-  def handleVR[A](either: Either[ValidationError, A]): IO[Unit] =
-    either.fold(
-      e => putLine[IO](s"${RED}${e.errorMessage}${RESET}"),
-      a => putLine[IO](s"${GREEN}Final result: ${a}${RESET}")
-    )
-
-  def handleET[A](either: Either[Throwable, A]): IO[Unit] =
+  def handle[A](either: Either[Throwable, A]): IO[Unit] =
     either.fold(
       e => putLine[IO](s"${RED}${e.getMessage}${RESET}"),
       a => putLine[IO](s"${GREEN}Final result: ${a}${RESET}")
