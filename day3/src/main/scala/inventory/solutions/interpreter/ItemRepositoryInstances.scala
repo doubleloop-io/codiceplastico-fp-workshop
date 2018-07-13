@@ -25,4 +25,4 @@ trait ItemRepositoryInstances {
   }
 }
 
-object itemrepository extends ItemServiceInstances
+object itemrepository extends ItemRepositoryInstances
