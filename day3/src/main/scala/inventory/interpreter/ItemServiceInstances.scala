@@ -1,9 +1,8 @@
 package day3.inventory.interpreter
 
 import cats._
-import cats.data._
-import cats.implicits._
-import cats.effect.Sync
+import cats.effect._
+
 import java.util.UUID
 
 import day3.inventory._
@@ -13,18 +12,18 @@ import day3.inventory.ItemService
 
 trait ItemServiceInstances extends ItemRepositoryInstances {
 
-  implicit def itemService[F[_]: Sync](implicit repo: ItemRepository[F]): ItemService[F] = new ItemService[F] {
+  implicit def itemService[F[_]](
+      implicit
+      repo: ItemRepository[F],
+      ME: MonadError[F, ValidationError],
+      S: Sync[F]
+  ): ItemService[F] = new ItemService[F] {
 
-    def create(id: UUID, name: String, count: Int): F[Item] = {
-      val item = Item(id, name, 0, true)
-      repo.save(id, item) *> Sync[F].pure(item)
-    }
+    def create(id: UUID, name: String, count: Int): F[Item] =
+      S.flatMap(Item.createF(id, name, count))(item => saveX(id, item))
 
-    def create2(id: UUID, name: String, count: Int): F[ValidationResult[Item]] =
-      Item
-        .create(id, name, count)
-        .map(item => repo.save(id, item) *> Sync[F].pure(item))
-        .sequence
+    private def saveX(id: UUID, item: Item): F[Item] =
+      S.map(repo.save(id, item))(_ => item)
 
     def deactivate(id: UUID): F[Item] =
       modify(id, i => i.copy(activated = false))
@@ -39,11 +38,9 @@ trait ItemServiceInstances extends ItemRepositoryInstances {
       modify(id, i => i.copy(name = name))
 
     private def modify(id: UUID, f: Item => Item): F[Item] =
-      for {
-        item    <- repo.load(id)
-        updated = f(item)
-        _       <- repo.save(id, updated)
-      } yield updated
+      S.flatMap(repo.load(id)) { item =>
+        S.map(repo.save(id, f(item)))(_ => item)
+      }
   }
 }
 

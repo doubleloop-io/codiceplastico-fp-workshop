@@ -3,13 +3,28 @@ package day3
 import cats._
 import cats.data._
 import cats.implicits._
+import cats.effect._
 
 package object inventory {
 
+  lazy val enter = System.getProperty("line.separator")
+
+  type Result[A] = EitherT[IO, ValidationError, A]
+
   type ValidationResult[A] = ValidatedNel[ValidationError, A]
+
+  implicit class ValidationResultOps[A](actual: ValidationResult[A]) {
+
+    def toMonadError[F[_]](implicit ME: MonadError[F, ValidationError]): F[A] =
+      actual.fold(e => ME.raiseError(ErrorList(e.toList: _*)), v => ME.pure(v))
+  }
 
   sealed trait ValidationError {
     def errorMessage: String
+  }
+
+  case class ErrorList(errors: ValidationError*) extends ValidationError {
+    def errorMessage: String = errors.mkString(enter)
   }
 
   case class EmptyString(fieldName: String) extends ValidationError {

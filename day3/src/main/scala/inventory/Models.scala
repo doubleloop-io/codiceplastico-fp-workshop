@@ -3,7 +3,6 @@ package day3.inventory
 import java.util.UUID
 
 import cats._
-import cats.data._
 import cats.implicits._
 
 import Checkers._
@@ -13,6 +12,9 @@ object Models {
   case class Item(id: UUID, name: String, count: Int, activated: Boolean)
 
   object Item {
+
+    def createF[F[_]](id: UUID, name: String, count: Int)(implicit ME: MonadError[F, ValidationError]): F[Item] =
+      create(id, name, count).toMonadError[F]
 
     def create(id: UUID, name: String, count: Int): ValidationResult[Item] =
       (

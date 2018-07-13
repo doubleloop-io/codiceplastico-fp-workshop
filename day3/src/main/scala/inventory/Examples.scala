@@ -35,7 +35,7 @@ object Examples {
       id <- nextUUID()
       _  <- putLine(id.toString)
 
-      item0 <- create2(id, "books!", 5)
+      item0 <- create(id, "books!", 5)
       _     <- putLine(item0.toString)
 
     } yield ()
