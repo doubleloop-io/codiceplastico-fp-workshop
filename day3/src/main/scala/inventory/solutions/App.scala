@@ -19,18 +19,19 @@ import Console._
 object App {
 
   def run(): IO[Unit] = {
-    val prog1 = Examples.demoOk[Result]
-    val prog2 = Examples.demoBad[Result]
-    val prog3 = Examples.demoNotFound[Result]
+    val prog1 = run(Examples.demoOk[Result])
+    val prog2 = run(Examples.demoBad[Result])
+    val prog3 = run(Examples.demoNotFound[Result])
 
-    prog1
-      .flatMap(_ => prog2)
-      .flatMap(_ => prog3)
-      .attempt
-      .flatMap(handle(_))
+    val progs = Applicative[IO].tuple3(prog1, prog2, prog3)
+
+    progs *> IO.unit
   }
 
-  def handle[A](either: Either[Throwable, A]): IO[Unit] =
+  def run[A](prog: Result[A]): Result[Unit] =
+    prog.attempt.flatMap(handle(_))
+
+  def handle[A](either: Either[Throwable, A]): Result[Unit] =
     either.fold(
       e => putLine[IO](s"${RED}${e.getMessage}${RESET}"),
       a => putLine[IO](s"${GREEN}Final result: ${a}${RESET}")
