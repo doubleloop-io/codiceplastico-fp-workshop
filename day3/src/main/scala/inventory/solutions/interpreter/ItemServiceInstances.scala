@@ -10,7 +10,7 @@ import day3.solutions.inventory.Models._
 import day3.solutions.inventory.ItemRepository
 import day3.solutions.inventory.ItemService
 
-trait ItemServiceInstances extends ItemRepositoryInstances {
+trait ItemServiceInstances {
 
   implicit def itemService[F[_]: Monad](
       implicit repo: ItemRepository[F],

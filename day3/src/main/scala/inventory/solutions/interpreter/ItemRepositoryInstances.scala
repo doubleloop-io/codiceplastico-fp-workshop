@@ -27,58 +27,60 @@ trait ItemRepositoryInstances {
     }
   }
 
-  def redisItemRepository[F[_]: Sync]: ItemRepository[F] = new ItemRepository[F] {
+  object redis {
+    implicit def redisItemRepository[F[_]: Sync]: ItemRepository[F] = new ItemRepository[F] {
 
-    private val S = Sync[F]
-    import S._
+      private val S = Sync[F]
+      import S._
 
-    import com.redis._
-    import com.redis._
-    import serialization._
-    import Parse.Implicits.parseByteArray
+      import com.redis._
+      import com.redis._
+      import serialization._
+      import Parse.Implicits.parseByteArray
 
-    val r = new RedisClient("localhost", 6379)
+      val r = new RedisClient("localhost", 6379)
 
-    def load(id: UUID): F[Item] = {
-      val foi = delay {
-        val obs = r.get[Array[Byte]](formatId(id))
-        obs.map(bs => Serializer.deserialize[Item](bs))
+      def load(id: UUID): F[Item] = {
+        val foi = delay {
+          val obs = r.get[Array[Byte]](formatId(id))
+          obs.map(bs => Serializer.deserialize[Item](bs))
+        }
+
+        flatMap(foi)(_.fold(raiseError[Item](new ItemNotFoundException(id)))(pure))
       }
 
-      flatMap(foi)(_.fold(raiseError[Item](new ItemNotFoundException(id)))(pure))
-    }
+      def save(id: UUID, item: Item): F[Item] = {
+        val fb = delay {
+          val bs = Serializer.serialize(item)
+          r.set(formatId(id), bs)
+        }
 
-    def save(id: UUID, item: Item): F[Item] = {
-      val fb = delay {
-        val bs = Serializer.serialize(item)
-        r.set(formatId(id), bs)
+        map(fb)(_ => item)
       }
 
-      map(fb)(_ => item)
-    }
+      private def formatId(id: UUID): String =
+        id.toString.replace("-", "")
 
-    private def formatId(id: UUID): String =
-      id.toString.replace("-", "")
+      object Serializer {
+        import java.io._
 
-    object Serializer {
-      import java.io._
+        def serialize[T <: Serializable](obj: T): Array[Byte] = {
+          val byteOut = new ByteArrayOutputStream()
+          val objOut  = new ObjectOutputStream(byteOut)
+          objOut.writeObject(obj)
+          objOut.close()
+          byteOut.close()
+          byteOut.toByteArray
+        }
 
-      def serialize[T <: Serializable](obj: T): Array[Byte] = {
-        val byteOut = new ByteArrayOutputStream()
-        val objOut  = new ObjectOutputStream(byteOut)
-        objOut.writeObject(obj)
-        objOut.close()
-        byteOut.close()
-        byteOut.toByteArray
-      }
-
-      def deserialize[T <: Serializable](bytes: Array[Byte]): T = {
-        val byteIn = new ByteArrayInputStream(bytes)
-        val objIn  = new ObjectInputStream(byteIn)
-        val obj    = objIn.readObject().asInstanceOf[T]
-        byteIn.close()
-        objIn.close()
-        obj
+        def deserialize[T <: Serializable](bytes: Array[Byte]): T = {
+          val byteIn = new ByteArrayInputStream(bytes)
+          val objIn  = new ObjectInputStream(byteIn)
+          val obj    = objIn.readObject().asInstanceOf[T]
+          byteIn.close()
+          objIn.close()
+          obj
+        }
       }
     }
   }
