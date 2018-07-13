@@ -13,9 +13,7 @@ trait ItemRepositoryInstances {
     private var storage = Map.empty[UUID, Item]
 
     def load(id: UUID): F[Item] =
-      storage
-        .get(id)
-        .fold(Sync[F].raiseError[Item](new Exception(s"Duplicated item: $id")))(Sync[F].pure)
+      Sync[F].pure(storage(id))
 
     def save(id: UUID, item: Item): F[Item] = {
       storage = storage + (id -> item)
