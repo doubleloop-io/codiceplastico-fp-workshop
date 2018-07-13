@@ -17,7 +17,7 @@ object App {
 
   def run(): IO[Unit] = {
     val prog1 = Examples.demoOk[Result]
-    val prog2 = Examples.demoBadName[Result]
+    val prog2 = Examples.demoBad[Result]
 
     prog1.value
       .flatMap(handle(_))

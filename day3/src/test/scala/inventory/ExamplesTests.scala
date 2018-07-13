@@ -13,12 +13,12 @@ object ExamplesTests extends InventorySuite {
   implicit val console        = fakeConsole()
   implicit val itemRepository = fakeItemRepository()
 
-  test("demo ok") {
-    val id   = UUID.randomUUID()
-    val init = TestState(id)
+  val id   = UUID.randomUUID()
+  val init = TestState(id)
 
-    val prog1  = Examples.demoOk[TestResult]
-    val result = runTestResult(prog1, init)
+  test("demo ok") {
+    val program = Examples.demoOk[TestResult]
+    val result  = runTestResult(program, init)
 
     assertRight(result) { ts =>
       assertEquals(ts.output.size, 6)
@@ -27,14 +27,17 @@ object ExamplesTests extends InventorySuite {
   }
 
   test("demo bad name") {
-    val id   = UUID.randomUUID()
-    val init = TestState(id)
-
-    val prog1  = Examples.demoBadName[TestResult]
-    val result = runTestResult(prog1, init)
+    val program = Examples.demoBad[TestResult]
+    val result  = runTestResult(program, init)
 
     assertLeft(result) { vr =>
-      assertEquals(vr, ErrorList(InvalidCharsString("name", "@books!")))
+      assertEquals(
+        vr,
+        ErrorList(
+          InvalidCharsString("name", "@books!"),
+          NegativeNumber("count", -5)
+        )
+      )
     }
   }
 }
