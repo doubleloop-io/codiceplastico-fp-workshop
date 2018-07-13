@@ -30,10 +30,10 @@ object ExamplesTests extends InventorySuite {
     val program = Examples.demoBad[TestResult]
     val result  = runTestResult(program, init)
 
-    assertLeft(result) { vr =>
+    assertLeft(result) { ex =>
       assertEquals(
-        vr,
-        ErrorList(
+        ex,
+        ValidationErrorException(
           InvalidCharsString("name", "@books!"),
           NegativeNumber("count", -5)
         )

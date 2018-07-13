@@ -19,20 +19,20 @@ trait InventorySuite extends SimpleTestSuite {
   )
 
   type Test[A]       = State[TestState, A]
-  type TestResult[A] = EitherT[Test, ValidationError, A]
+  type TestResult[A] = EitherT[Test, Throwable, A]
 
-  def runTestResult[A](tr: TestResult[A], init: TestState): Either[ValidationError, TestState] = {
+  def runTestResult[A](tr: TestResult[A], init: TestState): Either[Throwable, TestState] = {
     val (ts, result) = tr.value.run(init).value
     result.map(_ => ts)
   }
 
-  def assertRight(value: Either[ValidationError, TestState])(assert: TestState => Unit) =
+  def assertRight(value: Either[Throwable, TestState])(assert: TestState => Unit) =
     value match {
       case Right(ts) => assert(ts)
-      case Left(ve)  => fail("assertRight gets a Left: " + ve.errorMessage)
+      case Left(ex)  => fail("assertRight gets a Left: " + enter + ex.getMessage)
     }
 
-  def assertLeft(value: Either[ValidationError, TestState])(assert: ValidationError => Unit) =
+  def assertLeft(value: Either[Throwable, TestState])(assert: Throwable => Unit) =
     value match {
       case Right(ts) => fail("assertLeft gets a Right: " + ts.toString)
       case Left(ve)  => assert(ve)
