@@ -40,4 +40,12 @@ object ExamplesTests extends InventorySuite {
       )
     }
   }
+
+  test("demo not found") {
+    val program = Examples.demoNotFound[TestResult]
+
+    intercept[NoSuchElementException] {
+      val result = runTestResult(program, init)
+    }
+  }
 }

@@ -6,6 +6,7 @@ import cats.implicits._
 import RandomId._
 import Console._
 import ItemService._
+import ItemRepository._
 import Models._
 
 object Examples {
@@ -42,4 +43,15 @@ object Examples {
       item1 <- checkin(id, 10)
       _     <- putLine(item1.toString)
     } yield item1
+
+  def demoNotFound[F[_]: Monad: RandomId: Console: ItemRepository]: F[Item] =
+    for {
+      id <- nextUUID()
+      _  <- putLine(id.toString)
+
+      item0 <- load(id)
+      _     <- putLine(item0.toString)
+
+    } yield item0
+
 }
