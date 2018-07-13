@@ -1,7 +1,6 @@
 package day3.solutions.inventory.interpreter
 
 import cats._
-import cats.effect._
 
 import java.util.UUID
 
@@ -15,12 +14,11 @@ trait ItemServiceInstances extends ItemRepositoryInstances {
   implicit def itemService[F[_]](
       implicit
       repo: ItemRepository[F],
-      ME: MonadError[F, ValidationError],
-      S: Sync[F]
+      ME: MonadError[F, ValidationError]
   ): ItemService[F] = new ItemService[F] {
 
     def create(id: UUID, name: String, count: Int): F[Item] =
-      S.flatMap(Item.createF(id, name, count))(item => repo.save(id, item))
+      ME.flatMap(Item.createF(id, name, count))(item => repo.save(id, item))
 
     def deactivate(id: UUID): F[Item] =
       modify(id, i => i.copy(activated = false))
@@ -35,7 +33,7 @@ trait ItemServiceInstances extends ItemRepositoryInstances {
       modify(id, i => i.copy(name = name))
 
     private def modify(id: UUID, f: Item => Item): F[Item] =
-      S.flatMap(repo.load(id))(item => repo.save(id, f(item)))
+      ME.flatMap(repo.load(id))(item => repo.save(id, f(item)))
   }
 }
 
