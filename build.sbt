@@ -65,5 +65,6 @@ lazy val libsSettings = Seq(
   "org.typelevel"              %% "cats-mtl-core" % "0.3.0",
   "com.github.julien-truffaut" %% "monocle-core"  % monocleVersion,
   "com.github.julien-truffaut" %% "monocle-macro" % monocleVersion,
+  "net.debasishg"              %% "redisclient"   % "3.7",
   "io.monix"                   %% "minitest"      % "2.1.1" % Test
 )
