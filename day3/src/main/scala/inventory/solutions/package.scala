@@ -9,7 +9,9 @@ package object inventory {
 
   lazy val enter = System.getProperty("line.separator")
 
-  type Result[A]           = IO[A]
+  case class Config(redisHost: String, redisPort: Int)
+
+  type Result[A]           = ReaderT[IO, Config, A]
   type ValidationResult[A] = ValidatedNel[ValidationError, A]
 
   implicit class ValidationResultOps[A](actual: ValidationResult[A]) {
