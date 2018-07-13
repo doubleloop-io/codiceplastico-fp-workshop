@@ -1,14 +1,14 @@
-package day3.inventory.interpreter
+package day3.solutions.inventory.interpreter
 
 import cats._
 import cats.effect._
 
 import java.util.UUID
 
-import day3.inventory._
-import day3.inventory.Models._
-import day3.inventory.ItemRepository
-import day3.inventory.ItemService
+import day3.solutions.inventory._
+import day3.solutions.inventory.Models._
+import day3.solutions.inventory.ItemRepository
+import day3.solutions.inventory.ItemService
 
 trait ItemServiceInstances extends ItemRepositoryInstances {
 

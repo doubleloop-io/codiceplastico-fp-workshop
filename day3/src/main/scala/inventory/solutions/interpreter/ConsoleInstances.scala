@@ -1,8 +1,8 @@
-package day3.inventory.interpreter
+package day3.solutions.inventory.interpreter
 
 import cats.effect.Sync
 
-import day3.inventory.Console
+import day3.solutions.inventory.Console
 
 trait ConsoleInstances {
 

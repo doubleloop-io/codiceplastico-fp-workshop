@@ -1,6 +1,6 @@
 package day3
 
-import inventory._
+import solutions.inventory.App
 
 object Main extends App {
   App.run().unsafeRunSync()

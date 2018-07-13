@@ -1,4 +1,4 @@
-package day3.inventory
+package day3.solutions.inventory
 
 import cats.effect._
 

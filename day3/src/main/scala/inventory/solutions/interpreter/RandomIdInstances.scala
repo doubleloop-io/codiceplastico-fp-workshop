@@ -1,9 +1,9 @@
-package day3.inventory.interpreter
+package day3.solutions.inventory.interpreter
 
 import cats.effect.Sync
 import java.util.UUID
 
-import day3.inventory.RandomId
+import day3.solutions.inventory.RandomId
 
 trait RandomInstances {
 

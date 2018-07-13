@@ -1,4 +1,4 @@
-package day3
+package day3.solutions
 
 import cats._
 import cats.data._

@@ -1,4 +1,4 @@
-package day3.inventory
+package day3.solutions.inventory
 
 trait Console[F[_]] {
   def getLine(): F[String]
