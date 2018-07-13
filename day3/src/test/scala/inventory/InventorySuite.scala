@@ -9,6 +9,7 @@ import cats.implicits._
 
 import day3.solutions.inventory._
 import day3.solutions.inventory.Models._
+import day3.solutions.inventory.ItemRepository.ItemNotFoundException
 
 trait InventorySuite extends SimpleTestSuite {
 
@@ -45,7 +46,7 @@ trait InventorySuite extends SimpleTestSuite {
 
   def fakeConsole(): Console[TestResult] = new Console[TestResult] {
     def getLine(): TestResult[String] =
-      EitherT.right(State.pure(""))
+      EitherT.leftT(new Exception("Why you call the getLine function?"))
 
     def putLine(line: String): TestResult[Unit] =
       EitherT.right(State.modify(s => s.copy(output = s.output :+ line)))
@@ -62,5 +63,14 @@ trait InventorySuite extends SimpleTestSuite {
           .modify[TestState](s => s.copy(items = s.items + (id -> item)))
           .flatMap(_ => State.pure(item))
       )
+  }
+
+  def fakeItemRepository_ItemNotFoundException(): ItemRepository[TestResult] = new ItemRepository[TestResult] {
+
+    def load(id: UUID): TestResult[Item] =
+      EitherT.leftT(ItemNotFoundException(id))
+
+    def save(id: UUID, item: Item): TestResult[Item] =
+      EitherT.leftT(new Exception("Why you call the save function?"))
   }
 }

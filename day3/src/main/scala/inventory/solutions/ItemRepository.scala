@@ -9,6 +9,9 @@ trait ItemRepository[F[_]] {
 }
 
 object ItemRepository {
+
+  final case class ItemNotFoundException(id: UUID) extends Exception(s"Can't load item: $id")
+
   def load[F[_]](id: UUID)(implicit R: ItemRepository[F]): F[Item] =
     R.load(id)
 

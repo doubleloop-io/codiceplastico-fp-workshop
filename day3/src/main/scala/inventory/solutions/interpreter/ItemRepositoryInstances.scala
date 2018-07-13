@@ -5,6 +5,7 @@ import java.util.UUID
 
 import day3.solutions.inventory.Models._
 import day3.solutions.inventory.ItemRepository
+import day3.solutions.inventory.ItemRepository.ItemNotFoundException
 
 trait ItemRepositoryInstances {
 
@@ -16,7 +17,9 @@ trait ItemRepositoryInstances {
     private var storage = Map.empty[UUID, Item]
 
     def load(id: UUID): F[Item] =
-      delay(storage(id))
+      storage
+        .get(id)
+        .fold(raiseError[Item](new ItemNotFoundException(id)))(pure)
 
     def save(id: UUID, item: Item): F[Item] = delay {
       storage = storage + (id -> item)

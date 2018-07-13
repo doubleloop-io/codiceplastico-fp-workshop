@@ -44,12 +44,12 @@ object Examples {
       _     <- putLine(item1.toString)
     } yield item1
 
-  def demoNotFound[F[_]: Monad: RandomId: Console: ItemRepository]: F[Item] =
+  def demoNotFound[F[_]: Monad: RandomId: Console: ItemService]: F[Item] =
     for {
       id <- nextUUID()
       _  <- putLine(id.toString)
 
-      item0 <- load(id)
+      item0 <- checkin(id, 10)
       _     <- putLine(item0.toString)
 
     } yield item0
