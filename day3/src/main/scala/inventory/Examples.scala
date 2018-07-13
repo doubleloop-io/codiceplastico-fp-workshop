@@ -6,10 +6,11 @@ import cats.implicits._
 import RandomId._
 import Console._
 import ItemService._
+import Models._
 
 object Examples {
 
-  def demoOk[F[_]: Monad: RandomId: Console: ItemService]: F[Unit] =
+  def demoOk[F[_]: Monad: RandomId: Console: ItemService]: F[Item] =
     for {
       id <- nextUUID()
       _  <- putLine(id.toString)
@@ -28,9 +29,9 @@ object Examples {
 
       item4 <- deactivate(id)
       _     <- putLine(item4.toString)
-    } yield ()
+    } yield item4
 
-  def demoBadName[F[_]: Monad: RandomId: Console: ItemService]: F[Unit] =
+  def demoBadName[F[_]: Monad: RandomId: Console: ItemService]: F[Item] =
     for {
       id <- nextUUID()
       _  <- putLine(id.toString)
@@ -38,5 +39,7 @@ object Examples {
       item0 <- create(id, "books!", 5)
       _     <- putLine(item0.toString)
 
-    } yield ()
+      item1 <- checkin(id, 10)
+      _     <- putLine(item1.toString)
+    } yield item1
 }
