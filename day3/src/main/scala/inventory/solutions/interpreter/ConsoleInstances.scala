@@ -7,8 +7,12 @@ import day3.solutions.inventory.Console
 trait ConsoleInstances {
 
   implicit def console[F[_]: Sync]: Console[F] = new Console[F] {
-    def getLine(): F[String]           = Sync[F].delay(io.StdIn.readLine())
-    def putLine(line: String): F[Unit] = Sync[F].delay(println(line))
+
+    private val S = Sync[F]
+    import S._
+
+    def getLine(): F[String]           = delay(io.StdIn.readLine())
+    def putLine(line: String): F[Unit] = delay(println(line))
   }
 
 }

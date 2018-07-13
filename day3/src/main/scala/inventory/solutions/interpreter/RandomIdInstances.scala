@@ -8,7 +8,11 @@ import day3.solutions.inventory.RandomId
 trait RandomInstances {
 
   implicit def randomId[F[_]: Sync]: RandomId[F] = new RandomId[F] {
-    def nextUUID(): F[UUID] = Sync[F].delay(UUID.randomUUID())
+
+    private val S = Sync[F]
+    import S._
+
+    def nextUUID(): F[UUID] = delay(UUID.randomUUID())
   }
 
 }
