@@ -1,5 +1,9 @@
 package day2.http
 
+import cats._
+import cats.data._
+import cats.implicits._
+
 object Round4 {
   // GOAL: Re-introduce fallback route as cross-cutting combinator
 
@@ -13,9 +17,8 @@ object Round4 {
     def of(pf: PartialFunction[Request, Response]): HttpRoutes = pf.lift
   }
 
-  def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = { req =>
-    first(req).orElse(second(req))
-  }
+  def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes =
+    req => first(req) <+> second(req)
 
   // TODO: Implements the combinator that attach
   // at the end of the routes a fallback route

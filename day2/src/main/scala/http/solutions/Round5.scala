@@ -3,6 +3,10 @@ package day2.http.solutions
 import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
 
+import cats._
+import cats.data._
+import cats.implicits._
+
 import day2.http._
 
 object Round5 {
@@ -15,9 +19,8 @@ object Round5 {
     def of(pf: PartialFunction[Request, Future[Response]]): HttpRoutes = pf.lift
   }
 
-  def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = { req =>
-    first(req).orElse(second(req))
-  }
+  def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes =
+    req => first(req) <+> second(req)
 
   def seal(routes: HttpRoutes): HttpApp =
     routes.andThen(_.getOrElse(Future.successful(Response(NotFound))))

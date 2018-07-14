@@ -29,9 +29,8 @@ object Round8 {
   }
 
   // TODO: Fix me
-  def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = { req =>
-    first(req).orElse(second(req))
-  }
+  def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes =
+    req => first(req) <+> second(req)
 
   // TODO: Fix me
   def seal(routes: HttpRoutes): HttpApp =

@@ -1,5 +1,9 @@
 package day2.http.solutions
 
+import cats._
+import cats.data._
+import cats.implicits._
+
 import day2.http._
 
 object Round3 {
@@ -11,9 +15,8 @@ object Round3 {
     def of(pf: PartialFunction[Request, Response]): HttpApp = pf.lift
   }
 
-  def combine(first: HttpApp, second: HttpApp): HttpApp = { req =>
-    first(req).orElse(second(req))
-  }
+  def combine(first: HttpApp, second: HttpApp): HttpApp =
+    req => first(req) <+> second(req)
 
   val hello: HttpApp = HttpApp.of {
     case Request(POST, Uri("/hello"), name) =>

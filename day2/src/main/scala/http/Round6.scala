@@ -3,6 +3,10 @@ package day2.http
 import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
 
+import cats._
+import cats.data._
+import cats.implicits._
+
 import day2.http._
 
 object Round6 {
@@ -23,9 +27,8 @@ object Round6 {
   }
 
   // TODO: Fix me
-  def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = { req =>
-    first(req).orElse(second(req))
-  }
+  def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes =
+    req => first(req) <+> second(req)
 
   // TODO: Fix me
   def seal(routes: HttpRoutes): HttpApp =

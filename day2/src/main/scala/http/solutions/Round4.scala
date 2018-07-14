@@ -1,5 +1,9 @@
 package day2.http.solutions
 
+import cats._
+import cats.data._
+import cats.implicits._
+
 import day2.http._
 
 object Round4 {
@@ -12,9 +16,8 @@ object Round4 {
     def of(pf: PartialFunction[Request, Response]): HttpRoutes = pf.lift
   }
 
-  def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = { req =>
-    first(req).orElse(second(req))
-  }
+  def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes =
+    req => first(req) <+> second(req)
 
   def seal(routes: HttpRoutes): HttpApp =
     routes.andThen(_.getOrElse(Response(NotFound)))

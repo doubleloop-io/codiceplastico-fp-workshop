@@ -21,9 +21,8 @@ object Round6 {
     }
   }
 
-  def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes = { req =>
-    first(req).orElse(second(req))
-  }
+  def combine(first: HttpRoutes, second: HttpRoutes): HttpRoutes =
+    req => first(req) <+> second(req)
 
   def seal(routes: HttpRoutes): HttpApp =
     routes.andThen(_.getOrElseF(Future.successful(Response(NotFound))))
