@@ -23,7 +23,7 @@ object App {
 
   val conf = Config("localhost", 6379)
 
-  type Result[A] = ReaderT[StateT[IO, AppState, ?], Config, A]
+  type Result[A] = ReaderT[StateT[IO, ItemRepositoryState, ?], Config, A]
 
   def run(): IO[Unit] = {
     val prog1 = run(Examples.demoOk[Result])
@@ -38,7 +38,7 @@ object App {
   def run[A](prog: Result[A]): IO[Unit] =
     prog
       .run(conf)
-      .runS(AppState(Map.empty))
+      .runS(ItemRepositoryState(Map.empty))
       .attempt
       .flatMap(handle(_))
 

@@ -1,7 +1,12 @@
 package day3.solutions.inventory.interpreter
 
-import cats.effect.Sync
 import java.util.UUID
+
+import cats._
+import cats.data._
+import cats.implicits._
+import cats.effect._
+import cats.mtl._
 
 import day3.solutions.inventory.Config
 import day3.solutions.inventory.Models._
@@ -9,6 +14,14 @@ import day3.solutions.inventory.ItemRepository
 import day3.solutions.inventory.ItemRepository.ItemNotFoundException
 
 trait ItemRepositoryInstances {
+
+  case class ItemRepositoryState(items: Map[ItemId, Item])
+
+  type Stateful[F[_]] = MonadState[F, ItemRepositoryState]
+
+  object Stateful {
+    def apply[F[_]](implicit S: Stateful[F]): Stateful[F] = S
+  }
 
   implicit def itemRepository[F[_]: Sync: Stateful]: ItemRepository[F] = new ItemRepository[F] {
 

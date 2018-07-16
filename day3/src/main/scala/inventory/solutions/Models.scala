@@ -5,15 +5,10 @@ import java.util.UUID
 import cats._
 import cats.data._
 import cats.implicits._
-import cats.mtl._
 
 import Validation._
 
 object Models {
-
-  case class AppState(items: Map[ItemId, Item])
-  type Stateful[F[_]] = MonadState[F, AppState]
-  def Stateful[F[_]](implicit t: Stateful[F]): Stateful[F] = t
 
   case class ItemId(value: UUID)
 
