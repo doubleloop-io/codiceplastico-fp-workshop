@@ -10,5 +10,5 @@ Vagrant.configure("2") do |config|
         vb.memory = 1024
     end
 
-    config.vm.provision "docker", images: ["redis"]
+    config.vm.provision "shell", path: "provision.sh"
 end
