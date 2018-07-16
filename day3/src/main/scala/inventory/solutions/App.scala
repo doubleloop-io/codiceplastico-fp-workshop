@@ -23,6 +23,8 @@ object App {
 
   val conf = Config("localhost", 6379)
 
+  type Result[A] = ReaderT[IO, Config, A]
+
   def run(): IO[Unit] = {
     val prog1 = run(Examples.demoOk[Result])
     val prog2 = run(Examples.demoBad[Result])

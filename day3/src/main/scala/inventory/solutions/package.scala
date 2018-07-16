@@ -1,5 +1,7 @@
 package day3.solutions
 
+import java.util.UUID
+
 import cats._
 import cats.data._
 import cats.implicits._
@@ -11,7 +13,6 @@ package object inventory {
 
   case class Config(redisHost: String, redisPort: Int)
 
-  type Result[A]           = ReaderT[IO, Config, A]
   type ValidationResult[A] = ValidatedNel[ValidationError, A]
 
   type Throwing[F[_]] = MonadError[F, Throwable]
