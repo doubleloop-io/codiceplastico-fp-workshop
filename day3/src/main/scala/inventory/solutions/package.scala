@@ -23,22 +23,21 @@ package object inventory {
       )
   }
 
+  implicit val validationErrorShow = new Show[ValidationError] {
+    def show(value: ValidationError): String = value match {
+      case EmptyString(fieldName)               => s"The $fieldName cannot be empty."
+      case InvalidCharsString(fieldName, value) => s"The $fieldName cannot contain special characters: $value."
+      case NegativeNumber(fieldName, value)     => s"The $fieldName cannot be negative: $value."
+    }
+  }
+
   final case class ValidationErrorException(errors: ValidationError*)
-      extends Exception("Error list:" + enter + errors.map("- " + _.errorMessage).mkString(enter))
+      extends Exception("Error list:" + enter + errors.map("- " + _.show).mkString(enter))
 
-  sealed trait ValidationError {
-    def errorMessage: String
-  }
-
-  case class EmptyString(fieldName: String) extends ValidationError {
-    def errorMessage: String = s"The $fieldName cannot be empty."
-  }
-  case class InvalidCharsString(fieldName: String, value: String) extends ValidationError {
-    def errorMessage: String = s"The $fieldName cannot contain special characters: $value."
-  }
-  case class NegativeNumber(fieldName: String, value: Int) extends ValidationError {
-    def errorMessage: String = s"The $fieldName cannot be negative: $value."
-  }
+  sealed trait ValidationError
+  case class EmptyString(fieldName: String)                       extends ValidationError
+  case class InvalidCharsString(fieldName: String, value: String) extends ValidationError
+  case class NegativeNumber(fieldName: String, value: Int)        extends ValidationError
 
   object Checkers {
 
