@@ -8,6 +8,9 @@ trait RandomId[F[_]] {
 }
 
 object RandomId {
+
+  def apply[F[_]]()(implicit R: RandomId[F]): RandomId[F] = R
+
   def nextUUID[F[_]]()(implicit R: RandomId[F]): F[UUID] =
     R.nextUUID()
 }

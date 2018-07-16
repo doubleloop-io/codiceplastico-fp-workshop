@@ -6,6 +6,9 @@ trait Console[F[_]] {
 }
 
 object Console {
+
+  def apply[F[_]](implicit C: Console[F]): Console[F] = C
+
   def getLine[F[_]]()(implicit C: Console[F]): F[String] =
     C.getLine()
 

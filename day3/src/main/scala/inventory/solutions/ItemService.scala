@@ -12,6 +12,9 @@ trait ItemService[F[_]] {
 }
 
 object ItemService {
+
+  def apply[F[_]](implicit S: ItemService[F]): ItemService[F] = S
+
   def create[F[_]](id: ItemId, name: String, count: Int)(implicit S: ItemService[F]): F[Item] =
     S.create(id, name, count)
 

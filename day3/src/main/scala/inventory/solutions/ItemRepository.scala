@@ -12,6 +12,8 @@ object ItemRepository {
 
   final case class ItemNotFoundException(id: ItemId) extends Exception(s"Can't load item: $id")
 
+  def apply[F[_]](implicit R: ItemRepository[F]): ItemRepository[F] = R
+
   def load[F[_]](id: ItemId)(implicit R: ItemRepository[F]): F[Item] =
     R.load(id)
 
