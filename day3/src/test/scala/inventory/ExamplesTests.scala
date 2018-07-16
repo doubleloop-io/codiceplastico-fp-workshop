@@ -5,6 +5,7 @@ import minitest._
 
 import day3.solutions.inventory._
 import day3.solutions.inventory.Models._
+import day3.solutions.inventory.Validation._
 import day3.solutions.inventory.interpreter.itemservice._
 import day3.solutions.inventory.ItemRepository.ItemNotFoundException
 

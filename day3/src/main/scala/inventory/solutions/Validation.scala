@@ -7,8 +7,6 @@ import cats.effect._
 
 object Validation {
 
-  lazy val enter = System.getProperty("line.separator")
-
   type ValidationResult[A] = ValidatedNel[ValidationError, A]
 
   implicit class ValidatedOps[A](actual: Validated[Throwable, A]) {
