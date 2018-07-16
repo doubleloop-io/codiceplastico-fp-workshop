@@ -5,9 +5,9 @@ import minitest._
 import java.io.ByteArrayOutputStream
 import java.io.StringReader
 
-import day1.solutions.Round2._
+import day1._
 
-object Round2Tests extends SimpleTestSuite {
+object GameTests extends SimpleTestSuite {
 
   test("enter then quit") {
     val result = execute(input("Luke"), input("quit"))
