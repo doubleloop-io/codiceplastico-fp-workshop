@@ -18,10 +18,10 @@ trait ItemRepositoryInstances {
     private val SF = Stateful[F]
     import SF._
 
-    def load(id: UUID): F[Item] =
+    def load(id: ItemId): F[Item] =
       flatMap(get)(s => s.items.get(id).fold(raiseError[Item](new ItemNotFoundException(id)))(pure))
 
-    def save(id: UUID, item: Item): F[Item] =
+    def save(id: ItemId, item: Item): F[Item] =
       map(modify(s => s.copy(items = s.items + (id -> item))))(_ => item)
   }
 
@@ -41,7 +41,7 @@ trait ItemRepositoryInstances {
 
         private lazy val client: F[RedisClient] = mkClient()
 
-        def load(id: UUID): F[Item] =
+        def load(id: ItemId): F[Item] =
           flatMap(client) { cli =>
             cli
               .get[Array[Byte]](formatId(id))
@@ -49,13 +49,13 @@ trait ItemRepositoryInstances {
               .fold(raiseError[Item](new ItemNotFoundException(id)))(pure)
           }
 
-        def save(id: UUID, item: Item): F[Item] =
+        def save(id: ItemId, item: Item): F[Item] =
           flatMap(client) { cli =>
             val isOK = cli.set(formatId(id), Serializer.serialize(item))
             if (isOK) pure(item) else raiseError[Item](new Exception(s"Can't write to redis: $item"))
           }
 
-        private def formatId(id: UUID): String =
+        private def formatId(id: ItemId): String =
           id.toString.replace("-", "")
 
         private def mkClient(): F[RedisClient] =

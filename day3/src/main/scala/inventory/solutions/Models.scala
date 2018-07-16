@@ -11,20 +11,22 @@ import Checkers._
 
 object Models {
 
-  case class AppState(items: Map[UUID, Item] = Map.empty)
+  case class AppState(items: Map[ItemId, Item])
   type Stateful[F[_]] = MonadState[F, AppState]
   def Stateful[F[_]](implicit t: Stateful[F]): Stateful[F] = t
 
-  case class Item(id: UUID, name: String, count: Int, activated: Boolean)
+  final case class ItemId(id: UUID) extends AnyVal
+
+  case class Item(id: ItemId, name: String, count: Int, activated: Boolean)
 
   object Item {
 
-    def createF[F[_]: Throwing](id: UUID, name: String, count: Int): F[Item] =
+    def createF[F[_]: Throwing](id: ItemId, name: String, count: Int): F[Item] =
       create(id, name, count)
         .leftMap(nel => ValidationErrorException(nel.toList: _*))
         .toThrowing[F]
 
-    def create(id: UUID, name: String, count: Int): ValidationResult[Item] =
+    def create(id: ItemId, name: String, count: Int): ValidationResult[Item] =
       (
         valid(id),
         validateName(name),

@@ -38,7 +38,7 @@ object App {
   def run[A](prog: Result[A]): IO[Unit] =
     prog
       .run(conf)
-      .runS(AppState())
+      .runS(AppState(Map.empty))
       .attempt
       .flatMap(handle(_))
 

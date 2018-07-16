@@ -13,8 +13,9 @@ object Examples {
 
   def demoOk[F[_]: Monad: RandomId: Console: ItemService]: F[Item] =
     for {
-      id <- nextUUID()
-      _  <- putLine(id.toString)
+      uuid <- nextUUID()
+      id   = ItemId(uuid)
+      _    <- putLine(id.toString)
 
       item0 <- create(id, "books", 5)
       _     <- putLine(item0.toString)
@@ -34,8 +35,9 @@ object Examples {
 
   def demoBad[F[_]: Monad: RandomId: Console: ItemService]: F[Item] =
     for {
-      id <- nextUUID()
-      _  <- putLine(id.toString)
+      uuid <- nextUUID()
+      id   = ItemId(uuid)
+      _    <- putLine(id.toString)
 
       item0 <- create(id, "@books!", -5)
       _     <- putLine(item0.toString)
@@ -46,8 +48,9 @@ object Examples {
 
   def demoNotFound[F[_]: Monad: RandomId: Console: ItemService]: F[Item] =
     for {
-      id <- nextUUID()
-      _  <- putLine(id.toString)
+      uuid <- nextUUID()
+      id   = ItemId(uuid)
+      _    <- putLine(id.toString)
 
       item0 <- checkin(id, 10)
       _     <- putLine(item0.toString)
