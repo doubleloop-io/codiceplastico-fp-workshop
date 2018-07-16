@@ -28,6 +28,11 @@ object Round7Tests extends SimpleTestSuite {
     assertEquals(checkNumber("ciao"), Fail(List(NotInteger)))
   }
 
+  test("check filed") {
+    assertEquals(checkField("foo")(Map("foo" -> "bar")), Success("bar"))
+    assertEquals(checkField("foo")(Map("yo"  -> "bar")), Fail(List(MissingField)))
+  }
+
   test("check person") {
     assertEquals(checkPerson(Map("name" -> "Matteo", "age" -> "18")), Success(Person("Matteo", 18)))
     assertEquals(checkPerson(Map("name" -> "", "age"       -> "18")), Fail(List(Empty)))
