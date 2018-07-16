@@ -14,10 +14,10 @@ object Models {
 
   object Item {
 
-    def createF[F[_]](id: UUID, name: String, count: Int)(implicit ME: MonadError[F, Throwable]): F[Item] =
+    def createF[F[_]: Throwing](id: UUID, name: String, count: Int): F[Item] =
       create(id, name, count)
         .leftMap(nel => ValidationErrorException(nel.toList: _*))
-        .toMonadError[F]
+        .toThrowing[F]
 
     def create(id: UUID, name: String, count: Int): ValidationResult[Item] =
       (

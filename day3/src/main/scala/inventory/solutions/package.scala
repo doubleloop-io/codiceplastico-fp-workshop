@@ -14,10 +14,14 @@ package object inventory {
   type Result[A]           = ReaderT[IO, Config, A]
   type ValidationResult[A] = ValidatedNel[ValidationError, A]
 
+  type Throwing[F[_]] = MonadError[F, Throwable]
+
+  def Throwing[F[_]](implicit t: Throwing[F]): Throwing[F] = t
+
   implicit class ValidatedOps[A](actual: Validated[Throwable, A]) {
 
-    def toMonadError[F[_]](implicit ME: MonadError[F, Throwable]): F[A] =
-      actual.fold(ME.raiseError, ME.pure)
+    def toThrowing[F[_]: Throwing]: F[A] =
+      actual.fold(Throwing[F].raiseError, Throwing[F].pure)
   }
 
   implicit val validationErrorShow = new Show[ValidationError] {
@@ -56,5 +60,4 @@ package object inventory {
         .cond(value >= 0, value, NegativeNumber(fieldName, value))
         .toValidatedNel
   }
-
 }

@@ -12,32 +12,29 @@ import day3.solutions.inventory.ItemService
 
 trait ItemServiceInstances {
 
-  implicit def itemService[F[_]: Monad](
-      implicit repo: ItemRepository[F],
-      ME: MonadError[F, Throwable]
-  ): ItemService[F] =
-    new ItemService[F] {
+  implicit def itemService[F[_]: Throwing](implicit repo: ItemRepository[F]): ItemService[F] = new ItemService[F] {
 
-      import ME._
+    val TH = Throwing[F]
+    import TH._
 
-      def create(id: UUID, name: String, count: Int): F[Item] =
-        flatMap(Item.createF(id, name, count))(item => repo.save(id, item))
+    def create(id: UUID, name: String, count: Int): F[Item] =
+      flatMap(Item.createF(id, name, count))(item => repo.save(id, item))
 
-      def deactivate(id: UUID): F[Item] =
-        modify(id, i => i.copy(activated = false))
+    def deactivate(id: UUID): F[Item] =
+      modify(id, i => i.copy(activated = false))
 
-      def checkout(id: UUID, count: Int): F[Item] =
-        modify(id, i => i.copy(count = i.count - count))
+    def checkout(id: UUID, count: Int): F[Item] =
+      modify(id, i => i.copy(count = i.count - count))
 
-      def checkin(id: UUID, count: Int): F[Item] =
-        modify(id, i => i.copy(count = i.count + count))
+    def checkin(id: UUID, count: Int): F[Item] =
+      modify(id, i => i.copy(count = i.count + count))
 
-      def rename(id: UUID, name: String): F[Item] =
-        modify(id, i => i.copy(name = name))
+    def rename(id: UUID, name: String): F[Item] =
+      modify(id, i => i.copy(name = name))
 
-      private def modify(id: UUID, f: Item => Item): F[Item] =
-        flatMap(repo.load(id))(item => repo.save(id, f(item)))
-    }
+    private def modify(id: UUID, f: Item => Item): F[Item] =
+      flatMap(repo.load(id))(item => repo.save(id, f(item)))
+  }
 }
 
 object itemservice extends ItemServiceInstances
