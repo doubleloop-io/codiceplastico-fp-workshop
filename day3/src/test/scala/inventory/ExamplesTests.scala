@@ -10,8 +10,8 @@ import day3.solutions.inventory.ItemRepository.ItemNotFoundException
 
 object ExamplesTests extends InventorySuite {
 
-  val id   = UUID.randomUUID()
-  val init = TestState(id)
+  val id   = ItemId(UUID.randomUUID())
+  val init = TestState(id.value)
 
   test("demo ok") {
     implicit val rndId          = fakeRandomId()

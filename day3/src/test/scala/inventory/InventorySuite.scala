@@ -16,7 +16,7 @@ trait InventorySuite extends SimpleTestSuite {
   case class TestState(
       generatedId: UUID,
       output: List[String] = List(),
-      items: Map[UUID, Item] = Map()
+      items: Map[ItemId, Item] = Map()
   )
 
   type Test[A]       = State[TestState, A]
@@ -54,10 +54,10 @@ trait InventorySuite extends SimpleTestSuite {
 
   def fakeItemRepository(): ItemRepository[TestResult] = new ItemRepository[TestResult] {
 
-    def load(id: UUID): TestResult[Item] =
+    def load(id: ItemId): TestResult[Item] =
       EitherT.right(State.get.map(s => s.items(id)))
 
-    def save(id: UUID, item: Item): TestResult[Item] =
+    def save(id: ItemId, item: Item): TestResult[Item] =
       EitherT.right(
         State
           .modify[TestState](s => s.copy(items = s.items + (id -> item)))
@@ -67,10 +67,10 @@ trait InventorySuite extends SimpleTestSuite {
 
   def fakeItemRepository_ItemNotFoundException(): ItemRepository[TestResult] = new ItemRepository[TestResult] {
 
-    def load(id: UUID): TestResult[Item] =
+    def load(id: ItemId): TestResult[Item] =
       EitherT.leftT(ItemNotFoundException(id))
 
-    def save(id: UUID, item: Item): TestResult[Item] =
+    def save(id: ItemId, item: Item): TestResult[Item] =
       EitherT.leftT(new Exception("Why you call the save function?"))
   }
 }
