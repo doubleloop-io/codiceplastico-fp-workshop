@@ -4,6 +4,7 @@ object FpStructuresDemo {
 
   // Functor
   // sequential static computations
+  // An effectful function + a plain function
   trait Functor[F[_]] {
     // All instances of the `Functor` type-class must satisfy two laws.
     // These laws are not checked by the compiler. These laws are given as:
@@ -18,6 +19,7 @@ object FpStructuresDemo {
 
   // Monad
   // sequential dynamic computations
+  // An effectful function + another effectful function
   trait Monad[F[_]] extends Applicative[F] {
     // All instances of the `Monad` type/class must satisfy one law.
     // This law is not checked by the compiler. This law is given as:
@@ -34,10 +36,11 @@ object FpStructuresDemo {
 
     override def ap[A, B](fa: F[A])(ff: F[A ⇒ B]): F[B] =
       flatMap(fa)(a => map(ff)(f => f(a)))
-
   }
 
+  // Applicative
   // indipendent computations
+  // An effectful function + a plain function that takes two parameters
   trait Applicative[F[_]] extends Functor[F] {
     // All instances of the `Applicative` type/class must satisfy three laws.
     // These laws are not checked by the compiler. These laws are given as:

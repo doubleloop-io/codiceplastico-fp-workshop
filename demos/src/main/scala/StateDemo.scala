@@ -14,7 +14,7 @@ object StateDemo {
     def runS(s: S): S =
       run(s)._1
 
-    def runV(s: S): A =
+    def runA(s: S): A =
       run(s)._2
   }
 
@@ -30,5 +30,41 @@ object StateDemo {
 
     def modify[S](f: S => S): State[S, Unit] =
       get.map(f).flatMap(set)
+  }
+
+  case class Player(health: Int)
+
+  def fight(damage: Int): State[Player, Int] = State { player =>
+    val newHealth = player.health - damage
+    val newPlayer = player.copy(health = newHealth)
+    (newPlayer, newHealth)
+  }
+
+  def elixir(life: Int): State[Player, Int] =
+    for {
+      player    <- State.get
+      newHealth = player.health + life
+      newPlayer = player.copy(health = newHealth)
+      _         <- State.set(newPlayer)
+    } yield newHealth
+
+  def bomb(power: Int): State[Player, Int] =
+    State
+      .modify[Player](s => s.copy(health = s.health - (power * 100)))
+      .flatMap(_ => State.get.map(_.health))
+
+  val program: State[Player, Int] = for {
+    _      <- fight(20)
+    _      <- elixir(50)
+    health <- bomb(10)
+  } yield health
+
+  def run = {
+
+    val init = Player(100)
+    println(program.run(init))
+    println(program.runS(init))
+    println(program.runA(init))
+
   }
 }

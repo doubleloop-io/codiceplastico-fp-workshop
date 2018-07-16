@@ -29,4 +29,31 @@ object IODemo {
       IO(throw e)
   }
 
+  def getLine(): IO[String]           = IO(io.StdIn.readLine())
+  def putLine(line: String): IO[Unit] = IO(println(line))
+
+  val askName: IO[String] =
+    for {
+      _    <- IO(println("Name?"))
+      name <- IO(io.StdIn.readLine())
+    } yield name
+
+  def greetings(name: String): IO[Unit] =
+    IO(println(s"Hi $name!"))
+
+  val genSecret: IO[Int] =
+    for {
+      secret <- IO(new util.Random().nextInt.abs)
+      _      <- IO(println(s"Your secret number is: $secret"))
+    } yield secret
+
+  val program: IO[Unit] =
+    askName
+      .flatMap(greetings)
+      .flatMap(_ => genSecret)
+      .flatMap(_ => IO.unit)
+
+  def run() =
+    program.unsafePerformIO()
+
 }
