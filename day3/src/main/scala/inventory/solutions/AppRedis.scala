@@ -12,16 +12,17 @@ import scala.Console.RESET
 
 import interpreter.console._
 import interpreter.randomid._
-import interpreter.itemrepository._
-// import interpreter.itemrepository.redis._
+import interpreter.itemrepository.redis._
 import interpreter.itemservice._
 
 import Models._
 import Console._
 
-object App {
+object AppRedis {
 
-  type Result[A] = StateT[IO, ItemRepositoryState, A]
+  val conf = Config("localhost", 6379)
+
+  type Result[A] = ReaderT[IO, Config, A]
 
   def run(): IO[Unit] = {
     val prog1 = run(Examples.demoOk[Result])
@@ -35,7 +36,7 @@ object App {
 
   def run[A](prog: Result[A]): IO[Unit] =
     prog
-      .runS(ItemRepositoryState(Map.empty))
+      .run(conf)
       .attempt
       .flatMap(handle(_))
 

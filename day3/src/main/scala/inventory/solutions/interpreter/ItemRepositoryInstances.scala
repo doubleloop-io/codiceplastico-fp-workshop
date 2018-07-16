@@ -8,7 +8,6 @@ import cats.implicits._
 import cats.effect._
 import cats.mtl._
 
-import day3.solutions.inventory.Config
 import day3.solutions.inventory.Models._
 import day3.solutions.inventory.ItemRepository
 import day3.solutions.inventory.ItemRepository.ItemNotFoundException
@@ -40,6 +39,8 @@ trait ItemRepositoryInstances {
 
   object redis {
     import cats.mtl._
+
+    case class Config(redisHost: String, redisPort: Int)
 
     implicit def redisItemRepository[F[_]: Sync](implicit AA: ApplicativeAsk[F, Config]): ItemRepository[F] =
       new ItemRepository[F] {
