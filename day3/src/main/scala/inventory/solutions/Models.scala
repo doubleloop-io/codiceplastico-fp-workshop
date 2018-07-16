@@ -7,7 +7,7 @@ import cats.data._
 import cats.implicits._
 import cats.mtl._
 
-import Checkers._
+import Validation._
 
 object Models {
 
@@ -15,7 +15,7 @@ object Models {
   type Stateful[F[_]] = MonadState[F, AppState]
   def Stateful[F[_]](implicit t: Stateful[F]): Stateful[F] = t
 
-  final case class ItemId(value: UUID) extends AnyVal
+  case class ItemId(value: UUID)
 
   case class Item(id: ItemId, name: String, count: Int, activated: Boolean)
 
