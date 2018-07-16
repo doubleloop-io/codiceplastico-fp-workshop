@@ -5,6 +5,9 @@ import scala.util.Try
 object Round3 {
   // GOAL: build derived combinators
 
+  type FormData = Map[String, String]
+  case class Person(name: String, age: Int)
+
   sealed trait ValidationError
   final case object Empty      extends ValidationError
   final case object TooSmall   extends ValidationError
@@ -35,8 +38,6 @@ object Round3 {
 
   // TODO: the string must be a positive integer
   val checkNumber: Rule[String, Int] = ???
-
-  case class Person(name: String, age: Int)
 
   // TODO: not empty name and positive age
   val checkPerson: Rule[(String, String), Person] = ???

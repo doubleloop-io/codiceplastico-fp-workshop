@@ -9,6 +9,9 @@ import cats.implicits._
 object Round5 {
   // GOAL: Override applicative map2 combinator
 
+  type FormData = Map[String, String]
+  case class Person(name: String, age: Int)
+
   sealed trait ValidationError
   final case object Empty      extends ValidationError
   final case object TooSmall   extends ValidationError
@@ -59,8 +62,6 @@ object Round5 {
 
   val checkNumber: Rule[String, Int] =
     value => checkInt(value).flatMap(checkGtZero(_))
-
-  case class Person(name: String, age: Int)
 
   val checkPerson: Rule[(String, String), Person] = {
     case (nameRaw, ageRaw) =>

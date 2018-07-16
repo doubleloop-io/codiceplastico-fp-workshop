@@ -9,6 +9,9 @@ import cats.implicits._
 object Round4 {
   // GOAL: Implement custom effect
 
+  type FormData = Map[String, String]
+  case class Person(name: String, age: Int)
+
   sealed trait ValidationError
   final case object Empty      extends ValidationError
   final case object TooSmall   extends ValidationError
@@ -50,8 +53,6 @@ object Round4 {
 
   val checkNumber: Rule[String, Int] =
     value => checkInt(value).flatMap(checkGtZero(_))
-
-  case class Person(name: String, age: Int)
 
   val checkPerson: Rule[(String, String), Person] = {
     case (nameRaw, ageRaw) =>

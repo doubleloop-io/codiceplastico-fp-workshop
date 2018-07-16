@@ -6,6 +6,9 @@ object Round2 {
 
   // GOAL: Build basic combinators
 
+  type FormData = Map[String, String]
+  case class Person(name: String, age: Int)
+
   sealed trait ValidationError
   final case object Empty      extends ValidationError
   final case object TooSmall   extends ValidationError
