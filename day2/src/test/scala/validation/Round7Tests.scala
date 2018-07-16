@@ -29,15 +29,18 @@ object Round7Tests extends SimpleTestSuite {
   }
 
   test("check person") {
-    assertEquals(checkPerson(Map(("Matteo" -> "18"))), Success(Person("Matteo", 18)))
-    assertEquals(checkPerson(Map((""       -> "18"))), Fail(List(Empty)))
-    assertEquals(checkPerson(Map(("Matteo" -> "-18"))), Fail(List(TooSmall)))
-    assertEquals(checkPerson(Map(("Matteo" -> "abc"))), Fail(List(NotInteger)))
+    assertEquals(checkPerson(Map("name" -> "Matteo", "age" -> "18")), Success(Person("Matteo", 18)))
+    assertEquals(checkPerson(Map("name" -> "", "age"       -> "18")), Fail(List(Empty)))
+    assertEquals(checkPerson(Map("name" -> "Matteo", "age" -> "-18")), Fail(List(TooSmall)))
+    assertEquals(checkPerson(Map("name" -> "Matteo", "age" -> "abc")), Fail(List(NotInteger)))
+    assertEquals(checkPerson(Map(""     -> "Matteo", "age" -> "18")), Fail(List(MissingField)))
+    assertEquals(checkPerson(Map("name" -> "Matteo", ""    -> "18")), Fail(List(MissingField)))
   }
 
   test("check person (many error)") {
-    assertEquals(checkPerson(Map(("" -> "-18"))), Fail(List(Empty, TooSmall)))
-    assertEquals(checkPerson(Map(("" -> "abc"))), Fail(List(Empty, NotInteger)))
+    assertEquals(checkPerson(Map("name" -> "", "age"       -> "-18")), Fail(List(Empty, TooSmall)))
+    assertEquals(checkPerson(Map("name" -> "", "age"       -> "abc")), Fail(List(Empty, NotInteger)))
+    assertEquals(checkPerson(Map(""     -> "Matteo", "age" -> "abc")), Fail(List(MissingField, NotInteger)))
   }
 
 }
