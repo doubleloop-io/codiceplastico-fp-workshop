@@ -1,5 +1,4 @@
 # Scala and SBT
-
 dist/*
 target/
 lib_managed/
@@ -11,6 +10,9 @@ project/plugins/project/
 .lib/
 *.class
 *.log
+
+# IntelliJ
+.idea
 
 # Vagrant
 .vagrant
