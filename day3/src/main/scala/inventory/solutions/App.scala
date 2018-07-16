@@ -13,7 +13,6 @@ import scala.Console.RESET
 import interpreter.console._
 import interpreter.randomid._
 import interpreter.itemrepository._
-// import interpreter.itemrepository.redis._
 import interpreter.itemservice._
 
 import Models._

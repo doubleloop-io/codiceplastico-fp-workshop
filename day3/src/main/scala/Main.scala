@@ -1,7 +1,6 @@
 package day3
 
-import solutions.inventory.App._
-// import solutions.inventory.AppRedis._
+import inventory.App._
 
 object Main extends App {
   run().unsafeRunSync()
