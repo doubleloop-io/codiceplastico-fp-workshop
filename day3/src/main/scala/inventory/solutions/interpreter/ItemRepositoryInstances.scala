@@ -10,22 +10,19 @@ import day3.solutions.inventory.ItemRepository.ItemNotFoundException
 
 trait ItemRepositoryInstances {
 
-  implicit def itemRepository[F[_]: Sync]: ItemRepository[F] = new ItemRepository[F] {
+  implicit def itemRepository[F[_]: Sync: Stateful]: ItemRepository[F] = new ItemRepository[F] {
 
     private val S = Sync[F]
     import S._
 
-    private var storage = Map.empty[UUID, Item]
+    private val SF = Stateful[F]
+    import SF._
 
     def load(id: UUID): F[Item] =
-      storage
-        .get(id)
-        .fold(raiseError[Item](new ItemNotFoundException(id)))(pure)
+      flatMap(get)(s => s.items.get(id).fold(raiseError[Item](new ItemNotFoundException(id)))(pure))
 
-    def save(id: UUID, item: Item): F[Item] = delay {
-      storage = storage + (id -> item)
-      item
-    }
+    def save(id: UUID, item: Item): F[Item] =
+      map(modify(s => s.copy(items = s.items + (id -> item))))(_ => item)
   }
 
   object redis {
