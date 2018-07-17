@@ -75,51 +75,51 @@ object GameTests extends SimpleTestSuite {
     assertEquals(result, expected)
   }
 
-  // test("move downx2, rightx2, upx2, leftx2") {
-  //   val result = execute(
-  //     input("Luke"),
-  //     input("move down"),
-  //     input("move down"),
-  //     input("move right"),
-  //     input("move right"),
-  //     input("move up"),
-  //     input("move up"),
-  //     input("move left"),
-  //     input("move left"),
-  //     input("show"),
-  //     input("quit")
-  //   )
+  test("move downx2, rightx2, upx2, leftx2") {
+    val result = execute(
+      input("Luke"),
+      input("move down"),
+      input("move down"),
+      input("move right"),
+      input("move right"),
+      input("move up"),
+      input("move up"),
+      input("move left"),
+      input("move left"),
+      input("show"),
+      input("quit")
+    )
 
-  //   val expected =
-  //     "What is your name?
-  //        "Hello, Luke, welcome to the game!
-  //        "Use commands to play
-  //        "
-  //        "x - - - - - - - - - - - - - - - - - - -
-  //        "- - - - - - - - - - - - - - - - - - - -
-  //        "- - - - - - - - - - - - - - - - - - - -
-  //        "- - - - - - - - - - - - - - - - - - - -
-  //        "- - - - - - - - - - - - - - - - - - - -
-  //        "- - - - - - - - - - - - - - - - - - - -
-  //        "- - - - - - - - - - - - - - - - - - - -
-  //        "- - - - - - - - - - - - - - - - - - - -
-  //        "- - - - - - - - - - - - - - - - - - - -
-  //        "- - - - - - - - - - - - - - - - - - - -
-  //        "- - - - - - - - - - - - - - - - - - - -
-  //        "- - - - - - - - - - - - - - - - - - - -
-  //        "- - - - - - - - - - - - - - - - - - - -
-  //        "- - - - - - - - - - - - - - - - - - - -
-  //        "- - - - - - - - - - - - - - - - - - - -
-  //        "- - - - - - - - - - - - - - - - - - - -
-  //        "- - - - - - - - - - - - - - - - - - - -
-  //        "- - - - - - - - - - - - - - - - - - - -
-  //        "- - - - - - - - - - - - - - - - - - - -
-  //        "- - - - - - - - - - - - - - - - - - - -
-  //        "
-  //        "Bye bye Luke!
+    val expected =
+      "What is your name?" + enter +
+        "Hello, Luke, welcome to the game!" + enter +
+        "Use commands to play" + enter +
+        "" + enter +
+        "x - - - - - - - - - - - - - - - - - - -" + enter +
+        "- - - - - - - - - - - - - - - - - - - -" + enter +
+        "- - - - - - - - - - - - - - - - - - - -" + enter +
+        "- - - - - - - - - - - - - - - - - - - -" + enter +
+        "- - - - - - - - - - - - - - - - - - - -" + enter +
+        "- - - - - - - - - - - - - - - - - - - -" + enter +
+        "- - - - - - - - - - - - - - - - - - - -" + enter +
+        "- - - - - - - - - - - - - - - - - - - -" + enter +
+        "- - - - - - - - - - - - - - - - - - - -" + enter +
+        "- - - - - - - - - - - - - - - - - - - -" + enter +
+        "- - - - - - - - - - - - - - - - - - - -" + enter +
+        "- - - - - - - - - - - - - - - - - - - -" + enter +
+        "- - - - - - - - - - - - - - - - - - - -" + enter +
+        "- - - - - - - - - - - - - - - - - - - -" + enter +
+        "- - - - - - - - - - - - - - - - - - - -" + enter +
+        "- - - - - - - - - - - - - - - - - - - -" + enter +
+        "- - - - - - - - - - - - - - - - - - - -" + enter +
+        "- - - - - - - - - - - - - - - - - - - -" + enter +
+        "- - - - - - - - - - - - - - - - - - - -" + enter +
+        "- - - - - - - - - - - - - - - - - - - -" + enter +
+        "" + enter +
+        "Bye bye Luke!" + enter
 
-  //   assertEquals(result, expected)
-  // }
+    assertEquals(result, expected)
+  }
 
   test("move without direction") {
     val result = execute(
