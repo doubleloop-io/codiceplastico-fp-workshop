@@ -71,8 +71,8 @@ object Round10 {
       case object Quit                      extends Command
       case class Bad(message: String)       extends Command
 
-      type Message      = String
-      type HandleResult = GameWorld Ior Message
+      type Message        = String
+      type DispatchResult = GameWorld Ior Message
 
       def initWorld(): IO[GameWorld] =
         askName()
@@ -119,7 +119,7 @@ object Round10 {
           }
         } else NoOp
 
-      def dispatch(world: GameWorld, command: Command): HandleResult =
+      def dispatch(world: GameWorld, command: Command): DispatchResult =
         command match {
           case Help            => Ior.both(world, renderHelp())
           case Show            => Ior.both(world, renderWorld(world))
@@ -129,7 +129,7 @@ object Round10 {
           case Quit            => Ior.right(renderQuit(world))
         }
 
-      def handle(result: HandleResult): IO[Option[GameWorld]] =
+      def handle(result: DispatchResult): IO[Option[GameWorld]] =
         result.fold(
           world => continue(world),
           message => putLine(message) *> end,

@@ -89,7 +89,7 @@ object Round8 {
         }
 
       def gameStep(world: GameWorld): Option[GameWorld] =
-        handle(world, parse(readLine()))
+        dispatch(world, parse(readLine()))
 
       def parse(line: String): Command =
         if (line.length > 0) {
@@ -114,7 +114,7 @@ object Round8 {
           }
         } else NoOp
 
-      def handle(world: GameWorld, command: Command): Option[GameWorld] =
+      def dispatch(world: GameWorld, command: Command): Option[GameWorld] =
         command match {
           case Help => {
             printHelp()
