@@ -139,20 +139,20 @@ object GameTests extends SimpleTestSuite {
     assertEquals(result, expected)
   }
 
-  // test("move out of grid (down)") {
-  //   val down20times = Array.fill(20)(input("move down"))
-  //   val all         = input("Luke") +: down20times :+ input("quit")
-  //   val result      = execute(all: _*)
+  test("move out of grid (down)") {
+    val down20times = Array.fill(20)(input("move down"))
+    val all         = input("Luke") +: down20times :+ input("quit")
+    val result      = execute(all: _*)
 
-  //   val expected =
-  //     "What is your name?
-  //        "Hello, Luke, welcome to the game!
-  //        "Use commands to play
-  //        "Invalid direction
-  //        "Bye bye Luke!
+    val expected =
+      "What is your name?" + enter +
+        "Hello, Luke, welcome to the game!" + enter +
+        "Use commands to play" + enter +
+        "Invalid direction" + enter +
+        "Bye bye Luke!" + enter
 
-  //   assertEquals(result, expected)
-  // }
+    assertEquals(result, expected)
+  }
 
   test("move out of grid (up)") {
     val result = execute(
@@ -171,38 +171,37 @@ object GameTests extends SimpleTestSuite {
     assertEquals(result, expected)
   }
 
-  // test("move out of grid (left)") {
-  //   val result = execute(
-  //     input("Luke"),
-  //     input("move left"),
-  //     input("quit")
-  //   )
+  test("move out of grid (left)") {
+    val result = execute(
+      input("Luke"),
+      input("move left"),
+      input("quit")
+    )
 
-  //   val expected =
-  //     "What is your name?
-  //        "Hello, Luke, welcome to the game!
-  //        "Use commands to play
-  //        "Invalid direction
-  //        "Bye bye Luke!
+    val expected =
+      "What is your name?" + enter +
+        "Hello, Luke, welcome to the game!" + enter +
+        "Use commands to play" + enter +
+        "Invalid direction" + enter +
+        "Bye bye Luke!" + enter
 
-  //   assertEquals(result, expected)
-  // }
+    assertEquals(result, expected)
+  }
 
-  // test("move out of grid (right)") {
-  //   val right20times = Array.fill(20)(input("move right"))
-  //   val all          = input("Luke") +: right20times :+ input("quit")
-  //   val result       = execute(all: _*)
+  test("move out of grid (right)") {
+    val right20times = Array.fill(20)(input("move right"))
+    val all          = input("Luke") +: right20times :+ input("quit")
+    val result       = execute(all: _*)
 
-  //   val expected =
-  //     "What is your name?
-  //        "Hello, Luke, welcome to the game!
-  //        "Use commands to play
-  //        "Invalid direction
-  //        "Bye bye Luke!
-  //        """".stripMargin
+    val expected =
+      "What is your name?" + enter +
+        "Hello, Luke, welcome to the game!" + enter +
+        "Use commands to play" + enter +
+        "Invalid direction" + enter +
+        "Bye bye Luke!" + enter
 
-  //   assertEquals(result, expected)
-  // }
+    assertEquals(result, expected)
+  }
 
   test("unknown command") {
     val result = execute(
