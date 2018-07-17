@@ -38,38 +38,34 @@ object MonadTransformersDemo {
       else IO.pure(None)
 
     def findAddressByUserId(id: Long): IO[Option[Address]] =
-      findUserById(id).flatMap {
-        case Some(user) => findAddressByUser(user)
-        case None       => IO.pure(None)
+      findUserById(id).flatMap { opt =>
+        opt.fold(IO.pure(None: Option[Address])) { user =>
+          findAddressByUser(user)
+        }
       }
 
     def run() =
       findAddressByUserId(42)
-        .flatMap {
-          case Some(address) => IO(println(s"Found address: $address"))
-          case None          => IO(println("Missing address or user."))
+        .flatMap { opt =>
+          opt.fold(IO(println("Missing address or user."))) { address =>
+            IO(println(s"Found address: $address"))
+          }
         }
         .unsafeRunSync()
   }
 
   object FlattenedEffects {
 
-    final case class OptionT[F[_]: Monad, A](value: F[Option[A]]) {
+    final case class OptionT[F[_], A](value: F[Option[A]]) {
 
-      def map[B](f: A => B): OptionT[F, B] =
-        OptionT(Monad[F].map(value)(_.map(f)))
+      def map[B](f: A => B)(implicit F: Functor[F]): OptionT[F, B] =
+        OptionT(F.map(value)(_.map(f)))
 
-      def flatMap[B](f: A => OptionT[F, B]): OptionT[F, B] =
-        OptionT(
-          Monad[F]
-            .flatMap(value)(_.fold(Monad[F].pure[Option[B]](None))(a => f(a).value))
-        )
+      def flatMap[B](f: A => OptionT[F, B])(implicit M: Monad[F]): OptionT[F, B] =
+        OptionT(M.flatMap(value)(_.fold(M.pure[Option[B]](None))(a => f(a).value)))
 
-      def getOrElse[B >: A](default: => B): F[B] =
-        Monad[F].map(value)(_.getOrElse(default))
-
-      def getOrElseF[B >: A](default: => F[B]): F[B] =
-        Monad[F].flatMap(value)(_.fold(default)(Monad[F].pure))
+      def fold[B](default: => B)(f: A => B)(implicit F: Functor[F]): F[B] =
+        F.map(value)(_.fold(default)(f))
     }
 
     object OptionT {
@@ -77,7 +73,7 @@ object MonadTransformersDemo {
         OptionT(Applicative[F].pure(Option(a)))
 
       def none[F[_]: Monad, A]: OptionT[F, A] =
-        OptionT(Applicative[F].pure(None.asInstanceOf[Option[A]]))
+        OptionT(Applicative[F].pure(None: Option[A]))
     }
 
     def findUserById(id: Long): OptionT[IO, User] =
@@ -96,8 +92,8 @@ object MonadTransformersDemo {
 
     def run() =
       findAddressByUserId(42)
-        .getOrElseF(IO(println("Missing address or user.")))
-        .flatMap(address => IO(println(s"Found address: $address")))
+        .fold("Missing address or user")(address => s"Found address: $address")
+        .flatMap(message => IO(println(message)))
         .unsafeRunSync()
   }
 }
