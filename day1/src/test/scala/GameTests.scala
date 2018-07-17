@@ -117,7 +117,6 @@ object GameTests extends SimpleTestSuite {
   //        "- - - - - - - - - - - - - - - - - - - -
   //        "
   //        "Bye bye Luke!
-  //        """".stripMargin
 
   //   assertEquals(result, expected)
   // }
