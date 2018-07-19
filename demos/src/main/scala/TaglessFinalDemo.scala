@@ -45,7 +45,7 @@ object TaglessFinalDemo {
 
   def taglessRun: Int = taglessProgram(TaglessIntEval)
 
-  // Tagless final (higher order)
+  // Tagless final (high order)
 
   trait ExpF[F[_]] {
     def num(value: Int): F[Int]

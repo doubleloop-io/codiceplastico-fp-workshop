@@ -1,4 +1,4 @@
-package day3.inventory
+package day3.inventory.solutions
 
 import java.util.UUID
 import minitest._

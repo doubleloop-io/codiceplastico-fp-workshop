@@ -7,7 +7,7 @@ object KindsDemo {
   // examples: String, Int
 
   // Type constructor
-  // A type which accept a proper types and return types.
+  // A type which accept a proper types and return  proper types.
   // examples: List[A], Option[A]
 
   // Higher Kinds Type
