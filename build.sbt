@@ -37,18 +37,27 @@ lazy val settings = Seq(
   scalafmtOnCompile := true,
   testFrameworks += new TestFramework("minitest.runner.Framework"),
   addCompilerPlugin("com.olegpy"     %% "better-monadic-for" % "0.2.4"),
-  addCompilerPlugin("org.spire-math" %% "kind-projector"     % "0.9.7")
+  addCompilerPlugin("org.spire-math" %% "kind-projector"     % "0.9.7"),
+  addCompilerPlugin(scalafixSemanticdb)
 )
 
 lazy val scalacSettings = Seq(
   "-encoding",
-  "UTF-8", // source files are in UTF-8
-  "-deprecation", // warn about use of deprecated APIs
-  "-unchecked", // warn about unchecked type parameters
-  "-feature", // warn about misused language features
-  "-language:existentials", // Existential types (besides wildcard types) can be written and inferred
-  "-language:higherKinds", // allow higher kinded types without `import scala.language.higherKinds`
-  "-Ypartial-unification" // allow the compiler to unify type constructors of different arities
+  "UTF-8",
+  "-deprecation",
+  "-unchecked",
+  "-feature",
+  "-language:existentials",
+  "-language:higherKinds",
+  "-Ypartial-unification",
+  "-Yrangepos",
+  "-Xlint",
+  "-Yno-adapted-args",       
+  "-Ywarn-dead-code",
+  "-Ywarn-numeric-widen",   
+  "-Ywarn-value-discard",
+  "-Xfuture",
+  "-Ywarn-unused-import"
 )
 
 lazy val resolversSettings = Seq(
