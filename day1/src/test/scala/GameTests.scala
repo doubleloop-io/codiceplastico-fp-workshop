@@ -5,8 +5,6 @@ import minitest._
 import java.io.ByteArrayOutputStream
 import java.io.StringReader
 
-import day1._
-
 object GameTests extends SimpleTestSuite {
 
   test("enter then quit") {
