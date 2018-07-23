@@ -117,13 +117,13 @@ class Game {
     def printHelp(): Unit = {
       val value =
         s"""|
-         |Valid commands:
-         |
-         | help
-         | show
-         | move <up|down|left|right>
-         | quit
-         |""".stripMargin
+            |Valid commands:
+            |
+            | help
+            | show
+            | move <up|down|left|right>
+            | quit
+            |""".stripMargin
       println(value)
     }
 

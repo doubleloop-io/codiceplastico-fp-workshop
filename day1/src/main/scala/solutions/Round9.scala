@@ -156,13 +156,13 @@ object Round9 {
 
       def renderHelp(): String =
         s"""|
-         |Valid commands:
-         |
-         | help
-         | show
-         | move <up|down|left|right>
-         | quit
-         |""".stripMargin
+            |Valid commands:
+            |
+            | help
+            | show
+            | move <up|down|left|right>
+            | quit
+            |""".stripMargin
 
       def renderWorld(world: GameWorld): String = {
         val playerRow = grid
