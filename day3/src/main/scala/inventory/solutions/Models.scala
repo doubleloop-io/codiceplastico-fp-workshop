@@ -18,7 +18,7 @@ object Models {
 
     def createF[F[_]: Throwing](id: ItemId, name: String, count: Int): F[Item] =
       create(id, name, count)
-        .leftMap(nel => ValidationErrorException(nel.toList: _*))
+        .leftMap(ValidationErrorException.apply)
         .toThrowing[F]
 
     def create(id: ItemId, name: String, count: Int): ValidationResult[Item] =

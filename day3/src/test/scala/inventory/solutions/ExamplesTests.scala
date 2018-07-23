@@ -3,6 +3,8 @@ package day3.inventory.solutions
 import java.util.UUID
 import minitest._
 
+import cats.data._
+
 import day3.solutions.inventory._
 import day3.solutions.inventory.Models._
 import day3.solutions.inventory.Validation._
@@ -40,8 +42,10 @@ object ExamplesTests extends InventorySuite {
       assertEquals(
         ex,
         ValidationErrorException(
-          InvalidCharsString("name", "@books!"),
-          NegativeNumber("count", -5)
+          NonEmptyList(
+            InvalidCharsString("name", "@books!"),
+            List(NegativeNumber("count", -5))
+          )
         )
       )
     }

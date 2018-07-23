@@ -23,8 +23,8 @@ object Validation {
     }
   }
 
-  final case class ValidationErrorException(errors: ValidationError*)
-      extends Exception("Error list:" + enter + errors.map("- " + _.show).mkString(enter))
+  final case class ValidationErrorException(errors: NonEmptyList[ValidationError])
+      extends Exception("Error list:" + enter + errors.map("- " + _.show).toList.mkString(enter))
 
   sealed trait ValidationError
   case class EmptyString(fieldName: String)                       extends ValidationError

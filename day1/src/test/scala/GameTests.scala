@@ -252,7 +252,7 @@ object GameTests extends SimpleTestSuite {
         |""".stripMargin
 
   private def execute(inputs: String*): String = {
-    val input = new StringReader(inputs.mkString())
+    val input = new StringReader(inputs.mkString(""))
     val out   = new ByteArrayOutputStream
     Console.withIn(input) {
       Console.withOut(out) {
