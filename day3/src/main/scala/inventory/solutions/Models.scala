@@ -11,19 +11,17 @@ import Validation._
 object Models {
 
   case class ItemId(value: UUID)
-
-  case class Item(id: ItemId, name: String, count: Int, activated: Boolean)
+  case class Item(name: String, count: Int, activated: Boolean)
 
   object Item {
 
-    def createF[F[_]: Throwing](id: ItemId, name: String, count: Int): F[Item] =
-      create(id, name, count)
+    def createF[F[_]: Throwing](name: String, count: Int): F[Item] =
+      create(name, count)
         .leftMap(ValidationErrorException.apply)
         .toThrowing[F]
 
-    def create(id: ItemId, name: String, count: Int): ValidationResult[Item] =
+    def create(name: String, count: Int): ValidationResult[Item] =
       (
-        valid(id),
         validateName(name),
         validateCount(count),
         valid(true)

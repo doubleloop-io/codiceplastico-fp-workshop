@@ -26,7 +26,7 @@ object ExamplesTests extends InventorySuite {
 
     assertRight(result) { ts =>
       assertEquals(ts.output.size, 6)
-      assertEquals(ts.items(id), Item(id, "pens", 12, false))
+      assertEquals(ts.items(id), Item("pens", 12, false))
     }
   }
 

@@ -18,7 +18,7 @@ trait ItemServiceInstances {
     import TH._
 
     def create(id: ItemId, name: String, count: Int): F[Item] =
-      flatMap(Item.createF(id, name, count))(item => repo.save(id, item))
+      flatMap(Item.createF(name, count))(item => repo.save(id, item))
 
     def deactivate(id: ItemId): F[Item] =
       modify(id, i => i.copy(activated = false))
