@@ -13,64 +13,67 @@ object GameTests extends SimpleTestSuite {
     val result = execute(input("Luke"), input("quit"))
 
     val expected =
-      "What is your name?" + enter +
-        "Hello, Luke, welcome to the game!" + enter +
-        "Use commands to play" + enter +
-        "Bye bye Luke!" + enter
+      s"""|What is your name?
+          |Hello, Luke, welcome to the game!
+          |Use commands to play
+          |Bye bye Luke!
+          |""".stripMargin
 
     assertEquals(result, expected)
   }
 
-  // test("invoke help") {
-  //   val result = execute(input("Luke"), input("help"), input("quit"))
+  test("invoke help") {
+    val result = execute(input("Luke"), input("help"), input("quit"))
 
-  //   val expected =
-  //     "What is your name?" + enter +
-  //        "Hello, Luke, welcome to the game!" + enter +
-  //        "Use commands to play" + enter +
-  //        "" + enter +
-  //        "Valid commands:" + enter +
-  //        "" + enter +
-  //        " help" + enter +
-  //        " show" + enter +
-  //        " move <up"down"left"right>" + enter +
-  //        " quit" + enter +
-  //        "" + enter +
-  //        "Bye bye Luke!" + enter
+    val expected =
+      s"""|What is your name?
+          |Hello, Luke, welcome to the game!
+          |Use commands to play
+          |
+          |Valid commands:
+          |
+          | help
+          | show
+          | move <up|down|left|right>
+          | quit
+          |
+          |Bye bye Luke!
+          |""".stripMargin
 
-  //   assertEquals(result, expected)
-  // }
+    assertEquals(result, expected)
+  }
 
   test("invoke show") {
     val result = execute(input("Luke"), input("show"), input("quit"))
 
     val expected =
-      "What is your name?" + enter +
-        "Hello, Luke, welcome to the game!" + enter +
-        "Use commands to play" + enter +
-        "" + enter +
-        "x - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "" + enter +
-        "Bye bye Luke!" + enter
+      s"""|What is your name?
+          |Hello, Luke, welcome to the game!
+          |Use commands to play
+          |
+          |x - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |
+          |Bye bye Luke!
+          |""".stripMargin
 
     assertEquals(result, expected)
   }
@@ -91,32 +94,33 @@ object GameTests extends SimpleTestSuite {
     )
 
     val expected =
-      "What is your name?" + enter +
-        "Hello, Luke, welcome to the game!" + enter +
-        "Use commands to play" + enter +
-        "" + enter +
-        "x - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "- - - - - - - - - - - - - - - - - - - -" + enter +
-        "" + enter +
-        "Bye bye Luke!" + enter
+      s"""|What is your name?
+          |Hello, Luke, welcome to the game!
+          |Use commands to play
+          |
+          |x - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |- - - - - - - - - - - - - - - - - - - -
+          |
+          |Bye bye Luke!
+          |""".stripMargin
 
     assertEquals(result, expected)
   }
@@ -129,11 +133,12 @@ object GameTests extends SimpleTestSuite {
     )
 
     val expected =
-      "What is your name?" + enter +
-        "Hello, Luke, welcome to the game!" + enter +
-        "Use commands to play" + enter +
-        "Missing direction" + enter +
-        "Bye bye Luke!" + enter
+      s"""|What is your name?
+          |Hello, Luke, welcome to the game!
+          |Use commands to play
+          |Missing direction
+          |Bye bye Luke!
+          |""".stripMargin
 
     assertEquals(result, expected)
   }
@@ -144,11 +149,12 @@ object GameTests extends SimpleTestSuite {
     val result      = execute(all: _*)
 
     val expected =
-      "What is your name?" + enter +
-        "Hello, Luke, welcome to the game!" + enter +
-        "Use commands to play" + enter +
-        "Invalid direction" + enter +
-        "Bye bye Luke!" + enter
+      s"""|What is your name?
+          |Hello, Luke, welcome to the game!
+          |Use commands to play
+          |Invalid direction
+          |Bye bye Luke!
+          |""".stripMargin
 
     assertEquals(result, expected)
   }
@@ -161,11 +167,12 @@ object GameTests extends SimpleTestSuite {
     )
 
     val expected =
-      "What is your name?" + enter +
-        "Hello, Luke, welcome to the game!" + enter +
-        "Use commands to play" + enter +
-        "Invalid direction" + enter +
-        "Bye bye Luke!" + enter
+      s"""|What is your name?
+          |Hello, Luke, welcome to the game!
+          |Use commands to play
+          |Invalid direction
+          |Bye bye Luke!
+          |""".stripMargin
 
     assertEquals(result, expected)
   }
@@ -178,11 +185,12 @@ object GameTests extends SimpleTestSuite {
     )
 
     val expected =
-      "What is your name?" + enter +
-        "Hello, Luke, welcome to the game!" + enter +
-        "Use commands to play" + enter +
-        "Invalid direction" + enter +
-        "Bye bye Luke!" + enter
+      s"""|What is your name?
+          |Hello, Luke, welcome to the game!
+          |Use commands to play
+          |Invalid direction
+          |Bye bye Luke!
+          |""".stripMargin
 
     assertEquals(result, expected)
   }
@@ -193,11 +201,12 @@ object GameTests extends SimpleTestSuite {
     val result       = execute(all: _*)
 
     val expected =
-      "What is your name?" + enter +
-        "Hello, Luke, welcome to the game!" + enter +
-        "Use commands to play" + enter +
-        "Invalid direction" + enter +
-        "Bye bye Luke!" + enter
+      s"""|What is your name?
+          |Hello, Luke, welcome to the game!
+          |Use commands to play
+          |Invalid direction
+          |Bye bye Luke!
+          |""".stripMargin
 
     assertEquals(result, expected)
   }
@@ -210,11 +219,12 @@ object GameTests extends SimpleTestSuite {
     )
 
     val expected =
-      "What is your name?" + enter +
-        "Hello, Luke, welcome to the game!" + enter +
-        "Use commands to play" + enter +
-        "Unknown command" + enter +
-        "Bye bye Luke!" + enter
+      s"""|What is your name?
+          |Hello, Luke, welcome to the game!
+          |Use commands to play
+          |Unknown command
+          |Bye bye Luke!
+          |""".stripMargin
 
     assertEquals(result, expected)
   }
@@ -227,20 +237,22 @@ object GameTests extends SimpleTestSuite {
     )
 
     val expected =
-      "What is your name?" + enter +
-        "Hello, Luke, welcome to the game!" + enter +
-        "Use commands to play" + enter +
-        "Unknown direction" + enter +
-        "Bye bye Luke!" + enter
+      s"""|What is your name?
+          |Hello, Luke, welcome to the game!
+          |Use commands to play
+          |Unknown direction
+          |Bye bye Luke!
+          |""".stripMargin
 
     assertEquals(result, expected)
   }
 
   private def input(value: String): String =
-    value + enter
+    s"""|$value
+        |""".stripMargin
 
   private def execute(inputs: String*): String = {
-    val input = new StringReader(inputs.mkString(""))
+    val input = new StringReader(inputs.mkString())
     val out   = new ByteArrayOutputStream
     Console.withIn(input) {
       Console.withOut(out) {
@@ -249,6 +261,4 @@ object GameTests extends SimpleTestSuite {
     }
     out.toString
   }
-
-  private val enter: String = System.getProperty("line.separator")
 }
