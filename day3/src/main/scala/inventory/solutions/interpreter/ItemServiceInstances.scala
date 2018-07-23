@@ -17,20 +17,20 @@ trait ItemServiceInstances {
     val TH = Throwing[F]
     import TH._
 
-    def create(id: ItemId, name: String, count: Int): F[Item] =
-      flatMap(Item.createF(name, count))(item => repo.save(id, item))
+    def create(id: UUID, name: String, count: Int): F[Item] =
+      flatMap(Item.createF(name, count))(item => repo.save(ItemId(id), item))
 
-    def deactivate(id: ItemId): F[Item] =
-      modify(id, i => i.copy(activated = false))
+    def deactivate(id: UUID): F[Item] =
+      modify(ItemId(id), i => i.copy(activated = false))
 
-    def checkout(id: ItemId, count: Int): F[Item] =
-      modify(id, i => i.copy(count = i.count - count))
+    def checkout(id: UUID, count: Int): F[Item] =
+      modify(ItemId(id), i => i.copy(count = i.count - count))
 
-    def checkin(id: ItemId, count: Int): F[Item] =
-      modify(id, i => i.copy(count = i.count + count))
+    def checkin(id: UUID, count: Int): F[Item] =
+      modify(ItemId(id), i => i.copy(count = i.count + count))
 
-    def rename(id: ItemId, name: String): F[Item] =
-      modify(id, i => i.copy(name = name))
+    def rename(id: UUID, name: String): F[Item] =
+      modify(ItemId(id), i => i.copy(name = name))
 
     private def modify(id: ItemId, f: Item => Item): F[Item] =
       flatMap(repo.load(id))(item => repo.save(id, f(item)))
