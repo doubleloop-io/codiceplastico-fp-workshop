@@ -6,9 +6,7 @@ import cats.implicits._
 import cats.effect._
 import cats.mtl.implicits._
 
-import scala.Console.RED
-import scala.Console.GREEN
-import scala.Console.RESET
+import scala.Console._
 
 import interpreter.console._
 import interpreter.randomid._

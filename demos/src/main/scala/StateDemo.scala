@@ -59,12 +59,10 @@ object StateDemo {
     health <- bomb(10)
   } yield health
 
-  def run = {
-
+  def run(): Unit = {
     val init = Player(100)
     println(program.run(init))
     println(program.runS(init))
     println(program.runA(init))
-
   }
 }

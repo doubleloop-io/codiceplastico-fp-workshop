@@ -1,11 +1,11 @@
 package demos
-
+
 import cats.data._
 import cats.implicits._
 
 object KleisliDemo {
 
-  def classicFunctionComposition() {
+  def classicFunctionComposition(): Double = {
 
     val parse: String => Int =
       s => s.toInt
@@ -16,10 +16,10 @@ object KleisliDemo {
     val program: String => Double =
       parse.andThen(reciprocal)
 
-    program
+    program("100")
   }
 
-  def kleisliMonadicFunctionComposition() {
+  def kleisliMonadicFunctionComposition(): Double = {
 
     val parseK: Kleisli[Option, String, Int] =
       Kleisli(s => if (s.matches("-?[0-9]+")) Some(s.toInt) else None)
@@ -30,6 +30,6 @@ object KleisliDemo {
     val program: Kleisli[Option, String, Double] =
       parseK.andThen(reciprocalK)
 
-    program
+    program("100").getOrElse(42)
   }
 }

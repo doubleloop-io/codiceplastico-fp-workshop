@@ -1,6 +1,6 @@
 package demos
 
-import cats._
+import cats._
 import cats.implicits._
 
 object EitherDemo {

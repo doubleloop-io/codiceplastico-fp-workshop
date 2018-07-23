@@ -1,8 +1,6 @@
 package day3.inventory
 
-import scala.Console.RED
-import scala.Console.GREEN
-import scala.Console.RESET
+import scala.Console._
 
 import cats.effect._
 

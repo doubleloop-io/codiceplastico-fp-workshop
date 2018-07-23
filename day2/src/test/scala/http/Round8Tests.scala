@@ -2,7 +2,6 @@ package day2.http
 
 import minitest._
 
-import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 import day2.http.solutions.Round8._

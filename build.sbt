@@ -49,6 +49,7 @@ lazy val scalacSettings = Seq(
   "-feature",
   "-language:existentials",
   "-language:higherKinds",
+  "-language:implicitConversions",  
   "-Ypartial-unification",
   "-Yrangepos",
   "-Xlint",
