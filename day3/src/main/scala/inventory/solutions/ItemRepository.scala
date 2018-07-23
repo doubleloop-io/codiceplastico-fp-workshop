@@ -1,11 +1,10 @@
 package day3.solutions.inventory
 
-import java.util.UUID
 import Models._
 
 trait ItemRepository[F[_]] {
   def load(id: ItemId): F[Item]
-  def save(id: ItemId, item: Item): F[Item]
+  def save(iitem: Item): F[Item]
 }
 
 object ItemRepository {
@@ -17,6 +16,6 @@ object ItemRepository {
   def load[F[_]](id: ItemId)(implicit R: ItemRepository[F]): F[Item] =
     R.load(id)
 
-  def save[F[_]](id: ItemId, item: Item)(implicit R: ItemRepository[F]): F[Item] =
-    R.save(id, item)
+  def save[F[_]](item: Item)(implicit R: ItemRepository[F]): F[Item] =
+    R.save(item)
 }

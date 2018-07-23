@@ -3,7 +3,6 @@ package day3.inventory
 import cats._
 import cats.data._
 import cats.implicits._
-import cats.effect._
 
 object Validation {
 

@@ -13,7 +13,7 @@ trait RandomInstances {
     private val S = Sync[F]
     import S._
 
-    def nextUUID(): F[UUID] = delay(UUID.randomUUID())
+    def nextId(): F[UUID] = delay(UUID.randomUUID())
   }
 
 }

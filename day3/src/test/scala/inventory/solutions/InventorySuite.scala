@@ -3,9 +3,7 @@ package day3.inventory.solutions
 import java.util.UUID
 import minitest._
 
-import cats._
 import cats.data._
-import cats.implicits._
 
 import day3.solutions.inventory._
 import day3.solutions.inventory.Models._
@@ -15,7 +13,6 @@ trait InventorySuite extends SimpleTestSuite {
 
   case class TestState(
       generatedId: UUID,
-      output: List[String] = List(),
       items: Map[ItemId, Item] = Map()
   )
 
@@ -40,16 +37,8 @@ trait InventorySuite extends SimpleTestSuite {
     }
 
   def fakeRandomId(): RandomId[TestResult] = new RandomId[TestResult] {
-    def nextUUID(): TestResult[UUID] =
+    def nextId(): TestResult[UUID] =
       EitherT.right(State.get.map(_.generatedId))
-  }
-
-  def fakeConsole(): Console[TestResult] = new Console[TestResult] {
-    def getLine(): TestResult[String] =
-      EitherT.leftT(new Exception("Why you call the getLine function?"))
-
-    def putLine(line: String): TestResult[Unit] =
-      EitherT.right(State.modify(s => s.copy(output = s.output :+ line)))
   }
 
   def fakeItemRepository(): ItemRepository[TestResult] = new ItemRepository[TestResult] {
@@ -57,10 +46,10 @@ trait InventorySuite extends SimpleTestSuite {
     def load(id: ItemId): TestResult[Item] =
       EitherT.right(State.get.map(s => s.items(id)))
 
-    def save(id: ItemId, item: Item): TestResult[Item] =
+    def save(item: Item): TestResult[Item] =
       EitherT.right(
         State
-          .modify[TestState](s => s.copy(items = s.items + (id -> item)))
+          .modify[TestState](s => s.copy(items = s.items + (item.id -> item)))
           .flatMap(_ => State.pure(item))
       )
   }
@@ -70,7 +59,7 @@ trait InventorySuite extends SimpleTestSuite {
     def load(id: ItemId): TestResult[Item] =
       EitherT.leftT(ItemNotFoundException(id))
 
-    def save(id: ItemId, item: Item): TestResult[Item] =
+    def save(item: Item): TestResult[Item] =
       EitherT.leftT(new Exception("Why you call the save function?"))
   }
 }

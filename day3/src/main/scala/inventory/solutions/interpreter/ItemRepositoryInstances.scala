@@ -1,7 +1,5 @@
 package day3.solutions.inventory.interpreter
 
-import java.util.UUID
-
 import cats.implicits._
 import cats.effect._
 import cats.mtl._
@@ -35,8 +33,8 @@ trait ItemRepositoryInstances {
         item  <- itemO.fold(raiseError[Item](new ItemNotFoundException(id)))(pure)
       } yield item
 
-    def save(id: ItemId, item: Item): F[Item] =
-      modify(s => s.copy(items = s.items + (id -> item))) *> pure(item)
+    def save(item: Item): F[Item] =
+      modify(s => s.copy(items = s.items + (item.id -> item))) *> pure(item)
   }
 
   object redis {
@@ -74,9 +72,9 @@ trait ItemRepositoryInstances {
               .fold(raiseError[Item](new ItemNotFoundException(id)))(pure)
           }
 
-        def save(id: ItemId, item: Item): F[Item] =
+        def save(item: Item): F[Item] =
           client.flatMap { cli =>
-            val isOK = cli.set(formatId(id), Serializer.serialize(item))
+            val isOK = cli.set(formatId(item.id), Serializer.serialize(item))
             if (isOK) pure(item) else raiseError[Item](new Exception(s"Can't write to redis: $item"))
           }
 

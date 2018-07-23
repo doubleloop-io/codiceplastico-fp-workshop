@@ -1,7 +1,6 @@
 package day3.inventory.solutions
 
 import java.util.UUID
-import minitest._
 
 import cats.data._
 
@@ -18,21 +17,18 @@ object ExamplesTests extends InventorySuite {
 
   test("demo ok") {
     implicit val rndId          = fakeRandomId()
-    implicit val console        = fakeConsole()
     implicit val itemRepository = fakeItemRepository()
 
     val program = Examples.demoOk[TestResult]
     val result  = runTestResult(program, init)
 
     assertRight(result) { ts =>
-      assertEquals(ts.output.size, 6)
-      assertEquals(ts.items(id), Item("pens", 12, false))
+      assertEquals(ts.items(id), Item(id, "pens", 12, false))
     }
   }
 
   test("demo bad name") {
     implicit val rndId          = fakeRandomId()
-    implicit val console        = fakeConsole()
     implicit val itemRepository = fakeItemRepository()
 
     val program = Examples.demoBad[TestResult]
@@ -52,9 +48,8 @@ object ExamplesTests extends InventorySuite {
   }
 
   test("demo not found") {
-    implicit val rndId   = fakeRandomId()
-    implicit val console = fakeConsole()
-    implicit val repo    = fakeItemRepository_ItemNotFoundException()
+    implicit val rndId = fakeRandomId()
+    implicit val repo  = fakeItemRepository_ItemNotFoundException()
 
     val program = Examples.demoNotFound[TestResult]
     val result  = runTestResult(program, init)

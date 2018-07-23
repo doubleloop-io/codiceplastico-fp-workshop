@@ -15,7 +15,6 @@ import interpreter.randomid._
 import interpreter.itemrepository.redis._
 import interpreter.itemservice._
 
-import Models._
 import Console._
 
 object AppRedis {

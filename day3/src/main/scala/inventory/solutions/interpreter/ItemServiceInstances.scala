@@ -6,20 +6,25 @@ import java.util.UUID
 
 import day3.solutions.inventory._
 import day3.solutions.inventory.Models._
+import day3.solutions.inventory.RandomId
 import day3.solutions.inventory.ItemRepository
 import day3.solutions.inventory.ItemService
 
 trait ItemServiceInstances {
 
-  implicit def itemService[F[_]: Throwing: ItemRepository]: ItemService[F] = new ItemService[F] {
+  implicit def itemService[F[_]: Throwing: RandomId: ItemRepository]: ItemService[F] = new ItemService[F] {
+
+    private val RID = RandomId[F]
+    import RID._
 
     private val IR = ItemRepository[F]
     import IR._
 
-    def create(id: UUID, name: String, count: Int): F[Item] =
+    def create(name: String, count: Int): F[Item] =
       for {
-        item <- Item.createF(name, count)(Throwing[F])
-        _    <- save(ItemId(id), item)
+        uuid <- nextId()
+        item <- Item.createF(uuid, name, count)(Throwing[F])
+        _    <- save(item)
       } yield item
 
     def deactivate(id: UUID): F[Item] =
@@ -38,7 +43,7 @@ trait ItemServiceInstances {
       for {
         item0 <- load(id)
         item1 = f(item0)
-        _     <- save(id, item1)
+        _     <- save(item1)
       } yield item1
   }
 }

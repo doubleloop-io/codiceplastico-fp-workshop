@@ -4,7 +4,7 @@ import java.util.UUID
 import Models._
 
 trait ItemService[F[_]] {
-  def create(id: UUID, name: String, count: Int): F[Item]
+  def create(name: String, count: Int): F[Item]
   def deactivate(id: UUID): F[Item]
   def checkout(id: UUID, count: Int): F[Item]
   def checkin(id: UUID, count: Int): F[Item]
@@ -15,8 +15,8 @@ object ItemService {
 
   def apply[F[_]](implicit S: ItemService[F]): ItemService[F] = S
 
-  def create[F[_]](id: UUID, name: String, count: Int)(implicit S: ItemService[F]): F[Item] =
-    S.create(id, name, count)
+  def create[F[_]](name: String, count: Int)(implicit S: ItemService[F]): F[Item] =
+    S.create(name, count)
 
   def deactivate[F[_]](id: UUID)(implicit S: ItemService[F]): F[Item] =
     S.deactivate(id)
