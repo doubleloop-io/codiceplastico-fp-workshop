@@ -1,6 +1,5 @@
 package demos
-
-import cats._
+
 import cats.data._
 import cats.implicits._
 
@@ -17,6 +16,7 @@ object KleisliDemo {
     val program: String => Double =
       parse.andThen(reciprocal)
 
+    program
   }
 
   def kleisliMonadicFunctionComposition() {
@@ -30,5 +30,6 @@ object KleisliDemo {
     val program: Kleisli[Option, String, Double] =
       parseK.andThen(reciprocalK)
 
+    program
   }
 }

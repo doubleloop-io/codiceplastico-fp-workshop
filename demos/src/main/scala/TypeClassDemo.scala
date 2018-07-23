@@ -20,10 +20,10 @@ object TypeClassDemo {
 
   // Type class instances
   // concrete implementations defined as implicit so the compiler can inject automatically
-  implicit val stringPrintable = new Printable[String] {
+  implicit val stringPrintable: _root_.demos.TypeClassDemo.Printable[_root_.scala.Predef.String] = new Printable[String] {
     def print(s: String): String = s
   }
-  implicit val intPrintable = new Printable[Int] {
+  implicit val intPrintable: _root_.demos.TypeClassDemo.Printable[_root_.scala.Int] = new Printable[Int] {
     def print(i: Int): String = i.toString
   }
 

@@ -8,7 +8,7 @@ object TypeLambdaDemo {
   }
 
   // Option has one type parameter so we can just provide it as the parameter to the Monad trait.
-  implicit val optionPoint = new Point[Option] {
+  implicit val optionPoint: _root_.demos.TypeLambdaDemo.Point[_root_.scala.Option] = new Point[Option] {
     def point[A](a: A): Option[A] =
       Some(a)
   }
@@ -20,7 +20,7 @@ object TypeLambdaDemo {
   // it's an inline definition and export of a type alias K with one type parameter
   // Then there is only one unbound typeparameter, R.
   // Since there is a right-bias in the Scala community, when it comes to monads for Either, we curry bind the left type param, L.
-  implicit def eitherPoint[L] = new Point[({ type K[+R] = Either[L, R] })#K] {
+  implicit def eitherPoint[L]: _root_.demos.TypeLambdaDemo.Point[({ type T[R] = _root_.scala.util.Either[L, point] })#T] = new Point[({ type K[+R] = Either[L, R] })#K] {
     def point[R](r: R): Either[L, R] =
       Right(r)
   }
