@@ -3,8 +3,6 @@ package day2.http.solutions
 import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
 
-import cats._
-import cats.data._
 import cats.implicits._
 
 import day2.http._

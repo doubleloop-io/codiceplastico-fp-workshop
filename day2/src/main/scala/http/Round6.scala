@@ -3,11 +3,7 @@ package day2.http
 import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
 
-import cats._
-import cats.data._
 import cats.implicits._
-
-import day2.http._
 
 object Round6 {
   // GOAL: Flip nested effects and collapse them w/ monad transformer

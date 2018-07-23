@@ -1,13 +1,10 @@
 package day2.http
 
-import scala.concurrent._
-import scala.concurrent.ExecutionContext.Implicits.global
+// TODO: uncomment
+// import scala.concurrent._
+// import scala.concurrent.ExecutionContext.Implicits.global
 
-import cats._
-import cats.data._
 import cats.implicits._
-
-import day2.http._
 
 object Round5 {
   // GOAL: Introduce asynchrony

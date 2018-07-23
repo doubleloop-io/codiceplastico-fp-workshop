@@ -1,7 +1,5 @@
 package day2.http
 
-import cats._
-import cats.data._
 import cats.implicits._
 
 object Round4 {

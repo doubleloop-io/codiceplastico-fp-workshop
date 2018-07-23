@@ -7,8 +7,6 @@ import cats._
 import cats.data._
 import cats.implicits._
 
-import day2.http._
-
 object Round9 {
   // GOAL: Remove custom combine
 

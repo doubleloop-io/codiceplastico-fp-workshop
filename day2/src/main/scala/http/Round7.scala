@@ -3,11 +3,8 @@ package day2.http
 import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
 
-import cats._
 import cats.data._
 import cats.implicits._
-
-import day2.http._
 
 object Round7 {
   // GOAL: Introduce route and app middlewares

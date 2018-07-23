@@ -3,7 +3,6 @@ package day2.validation.solutions
 import scala.util.Try
 
 import cats._
-import cats.data._
 import cats.implicits._
 
 object Round7 {
