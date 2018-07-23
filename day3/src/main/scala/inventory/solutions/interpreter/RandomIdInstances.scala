@@ -1,7 +1,8 @@
 package day3.solutions.inventory.interpreter
 
-import cats.effect.Sync
 import java.util.UUID
+
+import cats.effect._
 
 import day3.solutions.inventory.RandomId
 

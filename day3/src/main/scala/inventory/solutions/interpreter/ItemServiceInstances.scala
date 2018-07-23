@@ -1,7 +1,6 @@
 package day3.solutions.inventory.interpreter
 
-import cats._
-import cats.effect._
+import cats.implicits._
 
 import java.util.UUID
 
@@ -12,13 +11,16 @@ import day3.solutions.inventory.ItemService
 
 trait ItemServiceInstances {
 
-  implicit def itemService[F[_]: Throwing](implicit repo: ItemRepository[F]): ItemService[F] = new ItemService[F] {
+  implicit def itemService[F[_]: Throwing: ItemRepository]: ItemService[F] = new ItemService[F] {
 
-    val TH = Throwing[F]
-    import TH._
+    private val IR = ItemRepository[F]
+    import IR._
 
     def create(id: UUID, name: String, count: Int): F[Item] =
-      flatMap(Item.createF(name, count))(item => repo.save(ItemId(id), item))
+      for {
+        item <- Item.createF(name, count)(Throwing[F])
+        _    <- save(ItemId(id), item)
+      } yield item
 
     def deactivate(id: UUID): F[Item] =
       modify(ItemId(id), i => i.copy(activated = false))
@@ -33,7 +35,11 @@ trait ItemServiceInstances {
       modify(ItemId(id), i => i.copy(name = name))
 
     private def modify(id: ItemId, f: Item => Item): F[Item] =
-      flatMap(repo.load(id))(item => repo.save(id, f(item)))
+      for {
+        item0 <- load(id)
+        item1 = f(item0)
+        _     <- save(id, item1)
+      } yield item1
   }
 }
 

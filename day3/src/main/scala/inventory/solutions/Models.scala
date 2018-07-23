@@ -2,8 +2,6 @@ package day3.solutions.inventory
 
 import java.util.UUID
 
-import cats._
-import cats.data._
 import cats.implicits._
 
 import Validation._

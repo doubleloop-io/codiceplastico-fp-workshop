@@ -2,8 +2,6 @@ package day3.solutions.inventory.interpreter
 
 import java.util.UUID
 
-import cats._
-import cats.data._
 import cats.implicits._
 import cats.effect._
 import cats.mtl._
@@ -31,10 +29,14 @@ trait ItemRepositoryInstances {
     import SF._
 
     def load(id: ItemId): F[Item] =
-      flatMap(get)(s => s.items.get(id).fold(raiseError[Item](new ItemNotFoundException(id)))(pure))
+      for {
+        s     <- get
+        itemO = s.items.get(id)
+        item  <- itemO.fold(raiseError[Item](new ItemNotFoundException(id)))(pure)
+      } yield item
 
     def save(id: ItemId, item: Item): F[Item] =
-      map(modify(s => s.copy(items = s.items + (id -> item))))(_ => item)
+      modify(s => s.copy(items = s.items + (id -> item))) *> pure(item)
   }
 
   object redis {
@@ -42,11 +44,20 @@ trait ItemRepositoryInstances {
 
     case class Config(redisHost: String, redisPort: Int)
 
-    implicit def redisItemRepository[F[_]: Sync](implicit AA: ApplicativeAsk[F, Config]): ItemRepository[F] =
+    type Configful[F[_]] = ApplicativeAsk[F, Config]
+
+    object Configful {
+      def apply[F[_]](implicit S: Configful[F]): Configful[F] = S
+    }
+
+    implicit def redisItemRepository[F[_]: Sync: Configful]: ItemRepository[F] =
       new ItemRepository[F] {
 
         private val S = Sync[F]
         import S._
+
+        private val C = Configful[F]
+        import C._
 
         import com.redis._
         import com.redis._
@@ -56,7 +67,7 @@ trait ItemRepositoryInstances {
         private lazy val client: F[RedisClient] = mkClient()
 
         def load(id: ItemId): F[Item] =
-          flatMap(client) { cli =>
+          client.flatMap { cli =>
             cli
               .get[Array[Byte]](formatId(id))
               .map(bs => Serializer.deserialize[Item](bs))
@@ -64,7 +75,7 @@ trait ItemRepositoryInstances {
           }
 
         def save(id: ItemId, item: Item): F[Item] =
-          flatMap(client) { cli =>
+          client.flatMap { cli =>
             val isOK = cli.set(formatId(id), Serializer.serialize(item))
             if (isOK) pure(item) else raiseError[Item](new Exception(s"Can't write to redis: $item"))
           }
@@ -73,7 +84,10 @@ trait ItemRepositoryInstances {
           id.toString.replace("-", "")
 
         private def mkClient(): F[RedisClient] =
-          flatMap(AA.ask)(c => delay(new RedisClient(c.redisHost, c.redisPort)))
+          for {
+            conf   <- ask
+            client <- delay(new RedisClient(conf.redisHost, conf.redisPort))
+          } yield client
 
         object Serializer {
           import java.io._

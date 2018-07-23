@@ -1,6 +1,6 @@
 package day3.solutions.inventory.interpreter
 
-import cats.effect.Sync
+import cats.effect._
 
 import day3.solutions.inventory.Console
 
