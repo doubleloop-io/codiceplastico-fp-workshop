@@ -15,16 +15,20 @@ trait ItemRepositoryInstances {
   type Stateful[F[_]] = MonadState[F, ItemRepositoryState]
 
   object Stateful {
-    def apply[F[_]](implicit S: Stateful[F]): Stateful[F] = S
+    def apply[F[_]](implicit S: Stateful[F]): Stateful[F] =
+      S
+    def get[F[_]](implicit S: Stateful[F]): F[ItemRepositoryState] =
+      S.get
+    def modify[F[_]](f: ItemRepositoryState => ItemRepositoryState)(implicit S: Stateful[F]): F[Unit] =
+      S.modify(f)
   }
+
+  import Stateful._
 
   implicit def itemRepository[F[_]: Sync: Stateful]: ItemRepository[F] = new ItemRepository[F] {
 
     private val S = Sync[F]
     import S._
-
-    private val SF = Stateful[F]
-    import SF._
 
     def load(id: ItemId): F[Item] =
       for {
@@ -45,17 +49,17 @@ trait ItemRepositoryInstances {
     type Configful[F[_]] = ApplicativeAsk[F, Config]
 
     object Configful {
-      def apply[F[_]](implicit S: Configful[F]): Configful[F] = S
+      def apply[F[_]](implicit C: Configful[F]): Configful[F] = C
+      def ask[F[_]](implicit C: Configful[F]): F[Config]      = C.ask
     }
+
+    import Configful._
 
     implicit def redisItemRepository[F[_]: Sync: Configful]: ItemRepository[F] =
       new ItemRepository[F] {
 
         private val S = Sync[F]
         import S._
-
-        private val C = Configful[F]
-        import C._
 
         import com.redis._
         import com.redis._

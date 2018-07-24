@@ -7,23 +7,19 @@ import java.util.UUID
 import day3.solutions.inventory._
 import day3.solutions.inventory.Models._
 import day3.solutions.inventory.RandomId
+import day3.solutions.inventory.RandomId._
 import day3.solutions.inventory.ItemRepository
+import day3.solutions.inventory.ItemRepository._
 import day3.solutions.inventory.ItemService
 
 trait ItemServiceInstances {
 
   implicit def itemService[F[_]: Throwing: RandomId: ItemRepository]: ItemService[F] = new ItemService[F] {
 
-    private val RID = RandomId[F]
-    import RID._
-
-    private val IR = ItemRepository[F]
-    import IR._
-
     def create(name: String, count: Int): F[Item] =
       for {
         uuid <- nextId()
-        item <- Item.createF(uuid, name, count)(Throwing[F])
+        item <- Item.createF[F](uuid, name, count)
         _    <- save(item)
       } yield item
 

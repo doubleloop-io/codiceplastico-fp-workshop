@@ -17,8 +17,6 @@ import Console._
 
 object AppRedis {
 
-  val conf = Config("localhost", 6379)
-
   type Result[A] = ReaderT[IO, Config, A]
 
   def run(): IO[Unit] = {
@@ -33,7 +31,7 @@ object AppRedis {
 
   def run[A](prog: Result[A]): IO[Unit] =
     prog
-      .run(conf)
+      .run(Config("localhost", 6379))
       .attempt
       .flatMap(handle(_))
 
