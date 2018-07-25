@@ -13,11 +13,6 @@ object Models {
 
   object Item {
 
-    def createF[F[_]: Throwing](id: UUID, name: String, count: Int): F[Item] =
-      create(id, name, count)
-        .leftMap(ValidationErrorException.apply)
-        .toThrowing[F]
-
     def create(id: UUID, name: String, count: Int): ValidationResult[Item] =
       (
         valid(ItemId(id)),

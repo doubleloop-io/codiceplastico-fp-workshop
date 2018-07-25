@@ -8,11 +8,9 @@ object Validation {
 
   type ValidationResult[A] = ValidatedNel[ValidationError, A]
 
-  implicit class ValidatedOps[A](actual: Validated[Throwable, A]) {
-
-    def toThrowing[F[_]: Throwing]: F[A] =
-      actual.fold(Throwing[F].raiseError, Throwing[F].pure)
-  }
+  def liftF[F[_]: Throwing, A](vr: ValidationResult[A]): F[A] =
+    vr.leftMap(ValidationErrorException.apply)
+      .fold(Throwing[F].raiseError, Throwing[F].pure)
 
   implicit val validationErrorShow = new Show[ValidationError] {
     def show(value: ValidationError): String = value match {
