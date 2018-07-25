@@ -1,6 +1,7 @@
 package day3.solutions.inventory.interpreter
 
-import cats.implicits._
+import cats.syntax.functor._
+import cats.syntax.flatMap._
 
 import java.util.UUID
 
@@ -15,29 +16,35 @@ trait ItemServiceInstances {
 
   implicit def itemService[F[_]: Throwing: RandomId: ItemRepository]: ItemService[F] = new ItemService[F] {
 
+    private val TR = Throwing[F]
+    import TR._
+
     def create(name: String, count: Int): F[Item] =
       for {
         uuid <- nextId()
-        item <- liftF[F, Item](Item.create(uuid, name, count))
+        item <- liftF(Item.create(uuid, name, count))
         _    <- save(item)
       } yield item
 
     def deactivate(id: UUID): F[Item] =
-      modify(ItemId(id), i => i.copy(activated = false))
+      modify(ItemId(id), Item.deactivate)
 
     def checkout(id: UUID, count: Int): F[Item] =
-      modify(ItemId(id), i => i.copy(count = i.count - count))
+      modifyF(ItemId(id), i => pure(i.copy(count = i.count - count)))
 
     def checkin(id: UUID, count: Int): F[Item] =
-      modify(ItemId(id), i => i.copy(count = i.count + count))
+      modify(ItemId(id), Item.checkin(count))
 
     def rename(id: UUID, name: String): F[Item] =
-      modify(ItemId(id), i => i.copy(name = name))
+      modify(ItemId(id), Item.rename(name))
 
-    private def modify(id: ItemId, f: Item => Item): F[Item] =
+    private def modify(id: ItemId, f: Item => ValidationResult[Item]): F[Item] =
+      modifyF(id, liftF(f))
+
+    private def modifyF(id: ItemId, f: Item => F[Item]): F[Item] =
       for {
         item0 <- load(id)
-        item1 = f(item0)
+        item1 <- f(item0)
         _     <- save(item1)
       } yield item1
   }
